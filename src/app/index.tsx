@@ -1,5 +1,5 @@
-import { CharacterModule } from "../view/character";
+import { HomeView } from "../view/home";
 
 export const App: React.FC = () => {
-  return <CharacterModule />;
+  return <HomeView />;
 };

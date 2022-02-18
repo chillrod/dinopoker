@@ -1,11 +1,4 @@
-import {
-  Box,
-  FormLabel,
-  Input,
-  InputGroup,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Input, Text } from "@chakra-ui/react";
 
 export const Form: React.FC = () => {
   return (

@@ -3,25 +3,32 @@ import { useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { Box, Image, Text, Flex, Button, Stack } from "@chakra-ui/react";
 
-import YellowDino from "../assets/yellow.gif";
-import GreenDino from "../assets/green.gif";
-import RedDino from "../assets/red.gif";
-import BlueDino from "../assets/blue.gif";
+import YellowDino from "./assets/yellow.gif";
+import GreenDino from "./assets/green.gif";
+import RedDino from "./assets/red.gif";
+import BlueDino from "./assets/blue.gif";
 
-interface ICharacter {
-  changeDino: (state: string) => void;
-  selectedDino: number;
-}
+import { changeDino } from "./hooks/changeDino";
 
-export const Character: React.FC<ICharacter> = ({
-  changeDino,
-  selectedDino,
-}) => {
+export const Player = () => {
+  const [selectedDino, setSelectedDino] = useState(0);
+
   const dino = [YellowDino, GreenDino, RedDino, BlueDino];
+
+  const handleChangeDino = (state: string) => {
+    const action = changeDino(state, selectedDino);
+
+    setSelectedDino(action);
+  };
 
   return (
     <Box padding={6}>
-      <Image boxSize="100%" src={dino[selectedDino]} alt="Character image" />
+      <Image
+        src={dino[selectedDino]}
+        boxSize="250px"
+        role="@dino-image"
+        alt="Character image"
+      />
       <Stack spacing={3}>
         <Text
           as="h2"
@@ -30,22 +37,24 @@ export const Character: React.FC<ICharacter> = ({
           fontWeight={700}
           textAlign="center"
         >
-          Select your character
+          Select your Player
         </Text>
         <Flex justify="space-around">
           <Button
+            role="@dino-buttonback"
             border="0"
             variant="outline"
             colorScheme="purple"
-            onClick={() => changeDino("back")}
+            onClick={() => handleChangeDino("back")}
           >
             <ArrowLeftIcon cursor="pointer" color="purple.500" />
           </Button>
           <Button
+            role="@dino-buttonnext"
             border="0"
             variant="outline"
             colorScheme="purple"
-            onClick={() => changeDino("advance")}
+            onClick={() => handleChangeDino("next")}
           >
             <ArrowRightIcon cursor="pointer" color="purple.500" />
           </Button>
