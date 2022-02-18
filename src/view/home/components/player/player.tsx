@@ -1,7 +1,15 @@
 import { useState } from "react";
 
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { Box, Image, Text, Flex, Button, Stack } from "@chakra-ui/react";
+import {
+  Image,
+  Text,
+  Flex,
+  Button,
+  Tag,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 
 import YellowDino from "./assets/yellow.gif";
 import GreenDino from "./assets/green.gif";
@@ -10,56 +18,80 @@ import BlueDino from "./assets/blue.gif";
 
 import { changeDino } from "./hooks/changeDino";
 
+interface DinoText {
+  [dinoText: number]: string;
+  0: string;
+  1: string;
+  2: string;
+  3: string;
+}
+
 export const Player = () => {
   const [selectedDino, setSelectedDino] = useState(0);
+  const [dinoText, setDinoText] = useState("Hello? ");
 
   const dino = [YellowDino, GreenDino, RedDino, BlueDino];
 
   const handleChangeDino = (state: string) => {
     const action = changeDino(state, selectedDino);
 
+    const dinoText: DinoText = {
+      0: "Ok let's vote",
+      1: "Why voting at all??",
+      2: "5 points for this??",
+      3: "Maybe 3 points?",
+    };
+
+    setDinoText(dinoText[action]);
+
     setSelectedDino(action);
   };
 
   return (
-    <Box padding={6}>
-      <Image
-        src={dino[selectedDino]}
-        boxSize="250px"
-        role="@dino-image"
-        alt="Character image"
-      />
-      <Stack spacing={3}>
+    <Grid bg="gray.600" p={6} borderRadius="lg">
+      <GridItem order="2" gridColumn="1 / -1" gridRow="1" justifySelf="end">
+        <Tag colorScheme="green" variant="subtle" textAlign="center">
+          {dinoText}
+        </Tag>
+      </GridItem>
+      <GridItem gridColumn="1 / -1" gridRow="1">
+        <Image
+          src={dino[selectedDino]}
+          boxSize="100%"
+          role="@dino-image"
+          p={8}
+          alt="Character image"
+        />
+      </GridItem>
+      <GridItem gridRow="2" alignSelf="end">
         <Text
           as="h2"
-          fontSize="sm"
-          color="purple.100"
+          fontSize="md"
           fontWeight={700}
           textAlign="center"
+          mb={3}
         >
           Select your Player
         </Text>
-        <Flex justify="space-around">
+        <Flex bg="gray.700" p={1} borderRadius="md" justify="space-around">
           <Button
             role="@dino-buttonback"
-            border="0"
-            variant="outline"
-            colorScheme="purple"
+            variant="unstyled"
+            _hover={{ transform: "scale(1.1)" }}
             onClick={() => handleChangeDino("back")}
           >
-            <ArrowLeftIcon cursor="pointer" color="purple.500" />
+            <ArrowLeftIcon fontSize="sm" cursor="pointer" color="white" />
           </Button>
           <Button
             role="@dino-buttonnext"
-            border="0"
-            variant="outline"
-            colorScheme="purple"
+            variant="unstyled"
+            _hover={{ transform: "scale(1.1)" }}
             onClick={() => handleChangeDino("next")}
           >
-            <ArrowRightIcon cursor="pointer" color="purple.500" />
+            <ArrowRightIcon fontSize="sm" cursor="pointer" color="white" />
           </Button>
         </Flex>
-      </Stack>
-    </Box>
+      </GridItem>
+    </Grid>
   );
 };
