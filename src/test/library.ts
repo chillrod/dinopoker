@@ -13,3 +13,4 @@ export { default as userEvent } from "@testing-library/user-event";
 
 // override render export
 export { customRender as render };
+export * as hooks from "@testing-library/react-hooks";

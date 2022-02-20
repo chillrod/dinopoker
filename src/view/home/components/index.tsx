@@ -1,14 +1,5 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Grid,
-  GridItem,
-  Text,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 
-import { Form } from "./form/form";
 import { Player } from "./player/player";
 
 export const Home: React.FC = () => {
@@ -18,9 +9,7 @@ export const Home: React.FC = () => {
         <GridItem gridColumn={1}>
           <Player />
         </GridItem>
-        <GridItem gridColumn={2}>
-          <Form />
-        </GridItem>
+        <GridItem gridColumn={2}></GridItem>
       </Grid>
     </Box>
   );
