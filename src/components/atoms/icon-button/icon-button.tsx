@@ -9,6 +9,8 @@ interface IButtonProps {
   disabled?: boolean;
   icon?: React.ReactElement;
   ariaLabel: string;
+  bg?: string;
+  color?: string;
   onClick?: React.MouseEventHandler;
 }
 
@@ -17,6 +19,8 @@ export const IconButton = ({
   disabled,
   loading,
   icon,
+  color = "dino.primary",
+  bg = "none",
   ariaLabel,
   onClick,
 }: IButtonProps) => {
@@ -24,9 +28,9 @@ export const IconButton = ({
     <Btn
       aria-label={ariaLabel}
       icon={icon}
-      bg="none"
+      bg={bg}
       fontSize="42px"
-      color="dino.primary"
+      color={color}
       isDisabled={disabled}
       role="@dino-iconbutton"
       onClick={onClick}
