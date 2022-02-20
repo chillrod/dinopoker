@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { chakra, Select as Sl } from "@chakra-ui/react";
 
 export type IOption = {
@@ -19,12 +21,12 @@ export const Select = ({ options, onChange, disabled, selected }: ISelect) => {
   return (
     <Sl
       role="@dino-select"
+      defaultValue={selected?.length && selected}
       onChange={onChange}
       bg="dino.secondary"
       color="dino.text"
       border="none"
       isDisabled={disabled}
-      value={selected}
     >
       {options.map((option) => (
         <Option

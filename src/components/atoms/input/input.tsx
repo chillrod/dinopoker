@@ -6,7 +6,8 @@ interface IInputProps {
   required?: boolean;
   invalid?: boolean;
   size?: string;
-  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  value?: string | number;
 }
 
 export const Input = ({
@@ -15,10 +16,12 @@ export const Input = ({
   required,
   invalid,
   size = "md",
+  onChange,
   value,
 }: IInputProps) => {
   return (
     <Inp
+      border="none"
       bg="dino.secondary"
       color="dino.text"
       role="@dino-input"
@@ -26,8 +29,10 @@ export const Input = ({
       isDisabled={disabled}
       required={required}
       isInvalid={invalid}
+      width="100%"
       size={size}
-      value={value}
+      defaultValue={value}
+      onChange={onChange}
     />
   );
 };

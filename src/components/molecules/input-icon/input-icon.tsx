@@ -1,50 +1,58 @@
+import React, { useEffect, useState } from "react";
+
 import { CheckIcon } from "@chakra-ui/icons";
-import { InputGroup } from "@chakra-ui/react";
+import { Box, Flex, InputGroup } from "@chakra-ui/react";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { Input } from "../../atoms/input/input";
 
 interface IInputIconProps {
-  action?: {
-    type: string;
-    fn: () => void;
-  };
   placeholder?: string;
-  required?: boolean;
-  size?: string;
-  value?: string;
   loading?: boolean;
   disabled?: boolean;
-  icon?: React.ReactElement;
-}
-
-function JoinRoom() {
-  alert("Join Room");
+  confirm?: (e: any) => void;
+  value?: string;
+  ariaLabel: string;
 }
 
 export const InputIcon = ({
-  placeholder = "placeholder",
-  required,
-  size = "md",
+  placeholder,
+  disabled,
+  loading,
+  confirm,
   value,
+  ariaLabel,
 }: IInputIconProps) => {
+  const [inputValue, setInputValue] = useState(value);
+
+  const handleConfirm = (e: any) => {
+    if (confirm) {
+      return confirm(e);
+    }
+  };
+
+  useEffect(() => {
+    if (value?.length) setInputValue(value);
+  }, []);
+
   return (
     <>
-      <InputGroup maxW="sm" size="sm">
+      <Flex>
         <Input
           placeholder={placeholder}
-          required={required}
-          size={size}
-          value={value}
+          onChange={(e) => setInputValue(e.target.value)}
+          disabled={loading || disabled}
+          value={inputValue}
         />
         <IconButton
-          disabled={!!value}
-          bg="purple.500"
-          color="rgb(153, 153, 153)"
+          onClick={() => handleConfirm(inputValue)}
+          disabled={!inputValue?.length || disabled}
+          loading={loading}
+          bg="dino.primary"
+          color="dino.text"
           icon={<CheckIcon />}
-          ariaLabel="Join a room"
-          onClick={() => JoinRoom()}
+          ariaLabel={ariaLabel}
         ></IconButton>
-      </InputGroup>
+      </Flex>
     </>
   );
 };

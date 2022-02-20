@@ -1,7 +1,10 @@
+import { Input } from "@chakra-ui/react";
+import { useState } from "react";
 import { IOption, Select } from "../components/atoms/select/select";
-import { Home } from "../view/home";
+import { InputIcon } from "../components/molecules/input-icon/input-icon";
 
 export const App = () => {
+  const [input, setInput] = useState("");
   const options: IOption[] = [
     {
       action: () => "emitted",
@@ -15,9 +18,18 @@ export const App = () => {
     },
   ];
 
-  const handleSelectValue = (e: any) => {
-    return e.target.value;
+  const handleChange = (x: any) => {
+    return x;
   };
 
-  return <Select options={options} onChange={(e) => handleSelectValue(e)} />;
+  return (
+    <>
+      <InputIcon
+        placeholder="Room code"
+        value={input}
+        ariaLabel="Join a room"
+        confirm={handleChange}
+      />
+    </>
+  );
 };
