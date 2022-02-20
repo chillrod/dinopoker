@@ -21,7 +21,12 @@ describe("Character Wrapper", () => {
   ];
 
   it("should render multiple cards and paint the border on the selected", async () => {
-    const wrapper = render(<CharacterWrapper characters={characters} />);
+    const wrapper = render(
+      <CharacterWrapper
+        selectedCharacter={() => null}
+        characters={characters}
+      />
+    );
 
     const cards = wrapper.getAllByRole("@dino-charactercard");
 
@@ -46,7 +51,12 @@ describe("Character Wrapper", () => {
   });
 
   it("should change character if clicked on arrow next", async () => {
-    const wrapper = render(<CharacterWrapper characters={characters} />);
+    const wrapper = render(
+      <CharacterWrapper
+        selectedCharacter={() => null}
+        characters={characters}
+      />
+    );
 
     const cards = wrapper.getAllByRole("@dino-charactercard");
     const secondCard = cards[1];
@@ -63,7 +73,12 @@ describe("Character Wrapper", () => {
   });
 
   it("should reset character position if clicked on arrow next on last item", async () => {
-    const wrapper = render(<CharacterWrapper characters={characters} />);
+    const wrapper = render(
+      <CharacterWrapper
+        selectedCharacter={() => null}
+        characters={characters}
+      />
+    );
 
     const cards = wrapper.getAllByRole("@dino-charactercard");
     const firstCard = cards[0];
@@ -82,7 +97,12 @@ describe("Character Wrapper", () => {
   });
 
   it("should select prev character if arrow back", async () => {
-    const wrapper = render(<CharacterWrapper characters={characters} />);
+    const wrapper = render(
+      <CharacterWrapper
+        selectedCharacter={() => null}
+        characters={characters}
+      />
+    );
 
     const cards = wrapper.getAllByRole("@dino-charactercard");
 

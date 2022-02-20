@@ -36,7 +36,6 @@ describe.only("Select", () => {
     const handleFunc = () => "Hi there";
 
     const func = fn(handleSelectValue);
-    const func2 = fn(handleFunc);
 
     const wrapper = render(
       <Select options={options} onChange={(e) => func(e)} />

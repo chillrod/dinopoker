@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CheckIcon } from "@chakra-ui/icons";
-import { Box, Flex, InputGroup } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { Input } from "../../atoms/input/input";
 

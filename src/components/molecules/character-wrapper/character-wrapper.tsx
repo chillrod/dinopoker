@@ -10,28 +10,37 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 
 interface ICharacterWrapper {
   characters: character[];
+  selectedCharacter: (id: number) => void;
 }
-export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
+export const CharacterWrapper = ({
+  characters,
+  selectedCharacter,
+}: ICharacterWrapper) => {
   const [selected, setSelected] = useState(0);
 
+  const handleSelect = (id: number) => {
+    selectedCharacter(id);
+    return setSelected(id);
+  };
+
   const handleCharacter = (character: character) => {
-    setSelected(character.id);
+    handleSelect(character.id);
   };
 
   const handleArrowNext = (id: number) => {
     const lastCharacter = characters.length - 1;
 
-    if (id === lastCharacter) return setSelected(0);
+    if (id === lastCharacter) return handleSelect(0);
 
-    return setSelected(id + 1);
+    return handleSelect(id + 1);
   };
 
   const handleArrowBack = (id: number) => {
     const lastCharacter = characters.length - 1;
 
-    if (id === 0) return setSelected(lastCharacter);
+    if (id === 0) return handleSelect(lastCharacter);
 
-    return setSelected(id - 1);
+    return handleSelect(id - 1);
   };
 
   return (
@@ -44,11 +53,11 @@ export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
         lg: "xl",
       }}
     >
-      <Stack spacing={1}>
+      <Stack spacing={2.5}>
         <Box overflowX="scroll" maxWidth="100%">
           <Flex>
             {characters.map((character) => (
-              <Box m={1}>
+              <Box mx={1}>
                 <CharacterCard
                   isSelected={selected}
                   onClick={() => handleCharacter(character)}

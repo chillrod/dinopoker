@@ -1,10 +1,6 @@
 import { IconButton as Btn } from "@chakra-ui/react";
 
 interface IButtonProps {
-  action?: {
-    type: string;
-    fn: () => void;
-  };
   loading?: boolean;
   disabled?: boolean;
   icon?: React.ReactElement;
@@ -15,7 +11,6 @@ interface IButtonProps {
 }
 
 export const IconButton = ({
-  action,
   disabled,
   loading,
   icon,
