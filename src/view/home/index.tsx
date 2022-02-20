@@ -1,45 +1,66 @@
-import { ExternalLinkIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Flex,
-  Grid,
-  Heading,
-  Tag,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
-import { Home } from "./components";
+import { Box, Flex, Heading, Select, Stack, Text } from "@chakra-ui/react";
 
-export const HomeView = () => {
+import YellowDino from "../../assets/yellow.gif";
+import BlueDino from "../../assets/blue.gif";
+
+import { CharacterWrapper } from "../../components/molecules/character-wrapper/character-wrapper";
+
+export const Home: React.FC = () => {
+  const characters = [
+    {
+      id: 0,
+      src: YellowDino,
+    },
+    {
+      id: 1,
+      src: BlueDino,
+    },
+    {
+      id: 2,
+      src: BlueDino,
+    },
+    {
+      id: 3,
+      src: BlueDino,
+    },
+    {
+      id: 4,
+      src: BlueDino,
+    },
+  ];
+
   return (
-    <Box>
-      <Box bg="gray.800" borderRadius="lg" mb={5}>
-        <Flex p={2} justifyContent="space-between">
-          <Tag size="lg" colorScheme="purple">
-            dino poker
-          </Tag>
-          <Tag colorScheme="gray">
-            <Tooltip label="Share room code">
-              <Button mr={3} size="xs" rounded="full">
-                <ExternalLinkIcon />
-              </Button>
-            </Tooltip>
-            <Tooltip label="Light Mode">
-              <Button mr={3} size="xs" rounded="full">
-                <SunIcon />
-              </Button>
-            </Tooltip>
-            <Text mr={2}>room code: </Text>
-            <Tag colorScheme="gray">KHGGLS</Tag>
-          </Tag>
-        </Flex>
-      </Box>
-      <Container maxW="container.md">
-        <Home />
-      </Container>
+    <Box p={6} bg="dino.base3" minHeight="100vh">
+      <Heading textAlign="center" size="md">
+        dino {""}
+        <Text as="span" color="dino.primary">
+          planningpoker
+        </Text>
+      </Heading>
+
+      <Text fontSize="sm">To begin with</Text>
+      <Text fontSize="lg" fontWeight="semibold">
+        Select your avatar
+      </Text>
+      <Flex gap={3} justifyContent="space-between" mt={3}>
+        <Stack m={2}>
+          <CharacterWrapper characters={characters} />
+          <Box>
+            {/* <Text>Room configuration</Text>
+            <Select bg="dino.secondary" border="none">
+              <option>Modified Fibonacci (0.5, 2)</option>
+              <option>2</option>
+            </Select> */}
+          </Box>
+        </Stack>
+        <Box
+          m={2}
+          bg="dino.secondary"
+          borderRadius="lg"
+          width="100%"
+          height="fit"
+        ></Box>
+      </Flex>
     </Box>
   );
 };

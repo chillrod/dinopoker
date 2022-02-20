@@ -6,7 +6,7 @@ interface IBaseBox {
 
 export const BaseBox = ({ children }: IBaseBox) => {
   return (
-    <Box p={1} bg="dino.secondary" borderRadius="md">
+    <Box p={0.5} bg="dino.secondary" borderRadius="md">
       {children}
     </Box>
   );

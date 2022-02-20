@@ -35,12 +35,20 @@ export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
   };
 
   return (
-    <Container m={0} p={0} maxWidth="sm">
-      <Stack spacing={3}>
+    <Container
+      m={0}
+      p={0}
+      maxWidth={{
+        sm: "sm",
+        md: "sm",
+        lg: "xl",
+      }}
+    >
+      <Stack spacing={1}>
         <Box overflowX="scroll" maxWidth="100%">
-          <Flex gap={2}>
+          <Flex>
             {characters.map((character) => (
-              <Box>
+              <Box m={1}>
                 <CharacterCard
                   isSelected={selected}
                   onClick={() => handleCharacter(character)}

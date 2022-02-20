@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect } from "react";
-
 import { Button, Img } from "@chakra-ui/react";
 
-import { actionType, character } from "./hooks";
+import { character } from "./hooks";
 
 interface ICharacterCardProps {
   character: character;
@@ -26,8 +24,8 @@ export const CharacterCard = ({
   return (
     <Button
       _focus={{
-        borderWidth: '2px',
-        borderColor: 'dino.primary',
+        borderWidth: "2px",
+        borderColor: "dino.primary",
       }}
       outline="none"
       onClick={onClick}
@@ -35,8 +33,16 @@ export const CharacterCard = ({
       role="@dino-charactercard"
       disabled={disabled}
       size="lg"
-      width="8em"
-      h="8em"
+      width={{
+        sm: "5em",
+        md: "5em",
+        lg: "8em",
+      }}
+      height={{
+        sm: "5em",
+        md: "5em",
+        lg: "8em",
+      }}
     >
       <Img src={character?.src || ""} w="100%" />
     </Button>
