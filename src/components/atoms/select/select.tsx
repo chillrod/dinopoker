@@ -1,6 +1,6 @@
 import { chakra, Select as Sl } from "@chakra-ui/react";
 
-type IOption = {
+export type IOption = {
   action: () => void;
   text: string;
   value: string;
@@ -8,19 +8,32 @@ type IOption = {
 
 interface ISelect {
   options: IOption[];
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  disabled?: boolean;
+  selected?: string;
 }
 
 const Option = chakra("option", {});
 
-export const Select = ({ options }: ISelect) => {
+export const Select = ({ options, onChange, disabled, selected }: ISelect) => {
   return (
-    <Sl>
+    <Sl
+      role="@dino-select"
+      onChange={onChange}
+      bg="dino.secondary"
+      color="dino.text"
+      border="none"
+      isDisabled={disabled}
+      value={selected}
+    >
       {options.map((option) => (
         <Option
+          role="@dino-selectoption"
           key={option.text}
           value={option.value}
-          onChange={() => option.action()}
-        />
+        >
+          {option.text}
+        </Option>
       ))}
     </Sl>
   );
