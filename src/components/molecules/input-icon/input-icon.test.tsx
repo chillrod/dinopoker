@@ -1,28 +1,28 @@
 import { fn } from "vitest";
-import { fireEvent, render } from "../../../test/library";
+import { fireEvent, render, screen } from "../../../test/library";
 import { InputIcon } from "./input-icon";
 
 describe("Input Icon Component", () => {
   it("should render input icon", () => {
-    const wrapper = render(<InputIcon ariaLabel="Hello" />);
+    render(<InputIcon ariaLabel="Hello" />);
 
-    expect(wrapper).toBeDefined();
+    expect(screen.getByRole("@dino-inputicon")).toBeDefined();
   });
 
   it("should enable the button if input value has changed", () => {
-    const wrapper = render(<InputIcon ariaLabel="Hello" value="hello" />);
+    render(<InputIcon ariaLabel="Hello" value="hello" />);
 
-    const input = wrapper.getByRole("@dino-input");
-    const button = wrapper.getByRole("@dino-iconbutton");
+    const input = screen.getByRole("@dino-input");
+    const button = screen.getByRole("@dino-iconbutton");
 
     expect(button).toBeEnabled();
   });
 
   it("should put the component in loading state if loading", () => {
-    const wrapper = render(<InputIcon ariaLabel="Hello" loading />);
+    render(<InputIcon ariaLabel="Hello" loading />);
 
-    const button = wrapper.getByRole("@dino-iconbutton");
-    const loading = wrapper.getByRole("@dino-input");
+    const button = screen.getByRole("@dino-iconbutton");
+    const loading = screen.getByRole("@dino-input");
 
     expect(button).toBeDisabled();
     expect(loading).toBeDisabled();
@@ -35,11 +35,9 @@ describe("Input Icon Component", () => {
 
     const func = fn(handleChange);
 
-    const wrapper = render(
-      <InputIcon ariaLabel="Hello" value="hi" confirm={func} />
-    );
+    render(<InputIcon ariaLabel="Hello" value="hi" confirm={func} />);
 
-    const button = wrapper.getByRole("@dino-iconbutton");
+    const button = screen.getByRole("@dino-iconbutton");
 
     fireEvent.click(button);
 

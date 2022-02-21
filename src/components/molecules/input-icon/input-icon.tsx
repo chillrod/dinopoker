@@ -37,7 +37,7 @@ export const InputIcon = ({
 
   return (
     <>
-      <Flex>
+      <Flex role="@dino-inputicon">
         <Input
           placeholder={placeholder}
           onChange={(e) => setInputValue(e.target.value)}

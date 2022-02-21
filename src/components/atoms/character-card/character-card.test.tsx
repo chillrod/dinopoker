@@ -1,4 +1,4 @@
-import { render } from "../../../test/library";
+import { render, screen } from "../../../test/library";
 import { CharacterCard } from "./character-card";
 
 import YellowDino from "../../../assets/yellow.gif";
@@ -25,7 +25,7 @@ describe("Character card", () => {
       </div>
     );
 
-    const element = wrapper;
+    const element = screen;
 
     const card = element.getAllByRole("@dino-charactercard");
 

@@ -1,12 +1,12 @@
 import { fn } from "vitest";
-import { fireEvent, render } from "../../../test/library";
+import { fireEvent, render, screen } from "../../../test/library";
 import { RoomConfig } from "./room-config";
 
-describe("Room config", () => {
+describe.only("Room config", () => {
   it("should render room config", () => {
-    const wrapper = render(<RoomConfig selectedConfig={() => null} />);
+    render(<RoomConfig selectedConfig={() => null} />);
 
-    expect(wrapper).toBeDefined();
+    expect(screen.getByRole("@dino-roomconfig")).toBeInTheDocument();
   });
 
   it("should push the selected config action", () => {
@@ -14,9 +14,9 @@ describe("Room config", () => {
 
     const func = fn(handleChange);
 
-    const wrapper = render(<RoomConfig selectedConfig={(e) => func(e)} />);
+    render(<RoomConfig selectedConfig={(e) => func(e)} />);
 
-    const select = wrapper.getByRole("@dino-select");
+    const select = screen.getByRole("@dino-select");
 
     fireEvent.change(select, { target: { value: "fibonacci" } });
 

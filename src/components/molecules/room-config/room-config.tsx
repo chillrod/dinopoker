@@ -42,7 +42,7 @@ export const RoomConfig = ({ selectedConfig }: IRoomConfig) => {
   };
 
   return (
-    <Box width="100%">
+    <Box width="100%" role="@dino-roomconfig">
       <TitleSubtitle title="" subtitle="Room configuration" />
       <Select options={selectOptions} onChange={(e) => handleSetSelected(e)} />
     </Box>

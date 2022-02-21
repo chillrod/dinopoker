@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Box, Flex, Stack, Container, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { BaseBox } from "../../atoms/base-box/base-box";

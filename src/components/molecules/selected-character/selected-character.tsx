@@ -13,7 +13,7 @@ interface ISelectedCharacter {
 export const SelectedCharacter = ({ character }: ISelectedCharacter) => {
   return (
     <>
-      <SimpleGrid spacing={3}>
+      <SimpleGrid spacing={3} role="@dino-selectchar">
         {!character && (
           <Center role="@dino-nocharacter">
             <Button

@@ -1,15 +1,16 @@
-import { render } from "../../../test/library";
+import { render, screen } from "../../../test/library";
 import { fn } from "vitest";
 import { IconButton } from "./icon-button";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 
-describe.only("Icon Button Component", () => {
+describe("Icon Button Component", () => {
   it("should render button component", () => {
-    const wrapper = render(<IconButton ariaLabel="hey" />);
-    expect(wrapper).toBeDefined();
+    render(<IconButton ariaLabel="hey" />);
+
+    expect(screen.getByRole("@dino-iconbutton")).toBeInTheDocument();
   });
 
-  it("should prevent click if loading", async () => {
+  it.only("should prevent click if loading", async () => {
     const fn2 = fn(() => "hello");
 
     const action = {
@@ -18,7 +19,7 @@ describe.only("Icon Button Component", () => {
       fn: fn2,
     };
 
-    const wrapper = render(
+    render(
       <IconButton
         onClick={() => fn2()}
         ariaLabel={action.type}
@@ -27,7 +28,7 @@ describe.only("Icon Button Component", () => {
       />
     );
 
-    const button = wrapper.getByRole("@dino-iconbutton");
+    const button = screen.getByRole("@dino-iconbutton");
 
     button.click();
 

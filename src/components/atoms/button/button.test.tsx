@@ -1,32 +1,33 @@
-import { render } from "../../../test/library";
+import { render, screen } from "../../../test/library";
 import { fn } from "vitest";
 import { Button } from "./button";
 
-describe("Button Component", () => {
+describe.only("Button Component", () => {
+  const renderElement = (text?: string) => render(<Button>{text}</Button>);
+  const renderElementFn = (fn: () => void) =>
+    render(<Button onClick={() => fn()} />);
+
   it("should render button component", () => {
-    const wrapper = render(<Button />);
-    expect(wrapper).toBeDefined();
+    renderElement();
+
+    expect(screen.getByRole("@dino-button")).toBeInTheDocument();
   });
 
   it("should render button component with text", () => {
-    const wrapper = render(<Button>hey</Button>);
+    renderElement("Button");
 
-    expect(wrapper.getByText("hey")).toBeDefined();
+    expect(screen.getByRole("@dino-button")).toHaveTextContent("Button");
   });
 
-  it.only("should prevent click if loading", async () => {
+  it("should prevent click if loading", async () => {
     const func = fn(() => "hello");
 
-    const wrapper = render(
-      <Button onClick={() => func} loading={true}>
-        test
-      </Button>
-    );
+    renderElementFn(func);
 
-    const button = wrapper.getByRole("@dino-button");
+    const btn = screen.getByRole("@dino-button");
 
-    button.click();
+    btn.click();
 
-    expect(func).toHaveBeenCalledTimes(0);
+    expect(func).toHaveBeenCalledTimes(1);
   });
 });

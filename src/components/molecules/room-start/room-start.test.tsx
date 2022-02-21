@@ -1,12 +1,12 @@
 import { fn } from "vitest";
-import { fireEvent, render, userEvent } from "../../../test/library";
+import { fireEvent, render, screen } from "../../../test/library";
 import { RoomStart } from "./room-start";
 
 describe("Room Start", () => {
   it("should render room Start", () => {
-    const wrapper = render(<RoomStart onCreateRoom={() => null} />);
+    render(<RoomStart onCreateRoom={() => null} />);
 
-    expect(wrapper).toBeDefined();
+    expect(screen.getByRole("@dino-roomstart")).toBeDefined();
   });
 
   it("should create a new room", () => {
@@ -14,9 +14,9 @@ describe("Room Start", () => {
 
     const func = fn(handleCreate);
 
-    const wrapper = render(<RoomStart onCreateRoom={func} />);
+    render(<RoomStart onCreateRoom={func} />);
 
-    const btn = wrapper.getByRole("@dino-button");
+    const btn = screen.getByRole("@dino-button");
 
     fireEvent.click(btn);
 
@@ -29,7 +29,7 @@ describe("Room Start", () => {
 
   //   const func = fn(handleJoinRoom);
 
-  //   const wrapper = render(
+  //   const screen = render(
   //     <RoomStart onCreateRoom={() => null} onJoinRoom={func} />
   //   );
 

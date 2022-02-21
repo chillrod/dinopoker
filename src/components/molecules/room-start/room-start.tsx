@@ -17,7 +17,7 @@ export const RoomStart = ({ onCreateRoom }: RoomStartProps) => {
   };
 
   return (
-    <Box>
+    <Box role="@dino-roomstart">
       <SimpleGrid columns={2} spacing={4} p={0} m={0}>
         <InputIcon ariaLabel="Confirm" icon={<CheckIcon />} />
         <Button onClick={() => action.fn()} action={action}>
