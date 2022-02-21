@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Box, Container, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack, Container, SimpleGrid } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { BaseBox } from "../../atoms/base-box/base-box";
@@ -10,7 +10,7 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 
 interface ICharacterWrapper {
   characters: character[];
-  selectedCharacter: (id: number) => void;
+  selectedCharacter: (value?: character) => void;
 }
 export const CharacterWrapper = ({
   characters,
@@ -19,7 +19,10 @@ export const CharacterWrapper = ({
   const [selected, setSelected] = useState(0);
 
   const handleSelect = (id: number) => {
-    selectedCharacter(id);
+    const selected = characters.find((item) => item.id === id);
+
+    selectedCharacter(selected);
+
     return setSelected(id);
   };
 
@@ -44,15 +47,7 @@ export const CharacterWrapper = ({
   };
 
   return (
-    <Container
-      m={0}
-      p={0}
-      maxWidth={{
-        sm: "sm",
-        md: "sm",
-        lg: "xl",
-      }}
-    >
+    <>
       <Stack spacing={2.5}>
         <Box overflowX="scroll" maxWidth="100%">
           <Flex>
@@ -83,6 +78,6 @@ export const CharacterWrapper = ({
           </Flex>
         </BaseBox>
       </Stack>
-    </Container>
+    </>
   );
 };

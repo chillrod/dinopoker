@@ -4,7 +4,6 @@ interface IButtonProps {
   children?: React.ReactNode;
   action?: {
     type: string;
-    fn?: () => void;
   };
   loading?: boolean;
   disabled?: boolean;

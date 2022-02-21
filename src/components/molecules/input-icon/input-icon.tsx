@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { CheckIcon } from "@chakra-ui/icons";
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { Input } from "../../atoms/input/input";
 
@@ -12,6 +11,7 @@ interface IInputIconProps {
   confirm?: (e: any) => void;
   value?: string;
   ariaLabel: string;
+  icon?: React.ReactElement;
 }
 
 export const InputIcon = ({
@@ -21,6 +21,7 @@ export const InputIcon = ({
   confirm,
   value,
   ariaLabel,
+  icon,
 }: IInputIconProps) => {
   const [inputValue, setInputValue] = useState(value);
 
@@ -49,7 +50,7 @@ export const InputIcon = ({
           loading={loading}
           bg="dino.primary"
           color="dino.text"
-          icon={<CheckIcon />}
+          icon={icon}
           ariaLabel={ariaLabel}
         ></IconButton>
       </Flex>

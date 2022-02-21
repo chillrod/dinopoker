@@ -11,6 +11,7 @@ const dino = {
   base1: "#777777",
   base2: "#555555",
   base3: "#212121",
+  base4: "#2B2B2B",
   text: "#DDDDDD",
 };
 

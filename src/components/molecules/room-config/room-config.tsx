@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { IOption, Select } from "../../atoms/select/select";
 import { TitleSubtitle } from "../../atoms/title-subtitle";
@@ -41,9 +42,9 @@ export const RoomConfig = ({ selectedConfig }: IRoomConfig) => {
   };
 
   return (
-    <>
+    <Box width="100%">
       <TitleSubtitle title="" subtitle="Room configuration" />
       <Select options={selectOptions} onChange={(e) => handleSetSelected(e)} />
-    </>
+    </Box>
   );
 };

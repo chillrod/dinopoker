@@ -9,7 +9,7 @@ export const TitleSubtitle = ({ title, subtitle }: ITitleSubtitle) => {
   return (
     <>
       <Text fontSize="sm">{title}</Text>
-      <Text fontSize="lg" fontWeight="semibold">
+      <Text fontSize="md" fontWeight="semibold">
         {subtitle}
       </Text>
     </>

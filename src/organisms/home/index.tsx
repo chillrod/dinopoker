@@ -1,19 +1,33 @@
 import { useState } from "react";
 
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+  Stack,
+  Tag,
+} from "@chakra-ui/react";
 
 import YellowDino from "../../assets/yellow.gif";
 import BlueDino from "../../assets/blue.gif";
+import RedDino from "../../assets/red.gif";
+import GreenDino from "../../assets/green.gif";
 
 import { CharacterWrapper } from "../../components/molecules/character-wrapper/character-wrapper";
+import { SelectedCharacter } from "../../components/molecules/selected-character/selected-character";
+import { RoomConfig } from "../../components/molecules/room-config/room-config";
+import { RoomStart } from "../../components/molecules/room-start/room-start";
+
 import { TitleSubtitle } from "../../components/atoms/title-subtitle";
 import { DinoPoker } from "../../components/atoms/dinopoker";
-import { RoomConfig } from "../../components/molecules/room-config/room-config";
-
 import { IOption } from "../../components/atoms/select/select";
+import { character } from "../../components/atoms/character-card/hooks";
 
 export const Home: React.FC = () => {
-  const [characterSelected, setCharacterSelected] = useState<number>();
+  const [characterSelected, setCharacterSelected] = useState<character>();
   const [selectedConfig, setSelectedConfig] = useState<IOption>();
 
   const characters = [
@@ -27,20 +41,16 @@ export const Home: React.FC = () => {
     },
     {
       id: 2,
-      src: BlueDino,
+      src: GreenDino,
     },
     {
       id: 3,
-      src: BlueDino,
-    },
-    {
-      id: 4,
-      src: BlueDino,
+      src: RedDino,
     },
   ];
 
-  const handleSelectedCharacter = (id: number) => {
-    setCharacterSelected(id);
+  const handleSelectedCharacter = (value?: character) => {
+    setCharacterSelected(value);
 
     return characterSelected;
   };
@@ -52,18 +62,38 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <Box p={6} bg="dino.base3" minHeight="100vh">
+    <Box
+      p={6}
+      maxWidth={{
+        lg: "800px",
+      }}
+      sx={{
+        margin: "0 auto",
+      }}
+    >
       <DinoPoker />
       <TitleSubtitle title="to begin with" subtitle="Select a character" />
-      <Flex gap={3} mt={3}>
-        <Stack spacing={1}>
-          <CharacterWrapper
-            selectedCharacter={handleSelectedCharacter}
-            characters={characters}
-          />
-          <RoomConfig selectedConfig={handleRoomConfig} />
-        </Stack>
-      </Flex>
+      <SimpleGrid columns={2} spacing={6}>
+        <Container m={0} p={0}>
+          <SimpleGrid columns={1} spacing={12}>
+            <CharacterWrapper
+              selectedCharacter={handleSelectedCharacter}
+              characters={characters}
+            />
+            <Box>
+              <RoomConfig selectedConfig={handleRoomConfig} />
+            </Box>
+          </SimpleGrid>
+        </Container>
+        <Container m={0} p={0}>
+          <Flex direction="column" justifyContent="space-between" height="100%">
+            <SelectedCharacter character={characterSelected} />
+            <Box mt="auto">
+              <RoomStart />
+            </Box>
+          </Flex>
+        </Container>
+      </SimpleGrid>
     </Box>
   );
 };
