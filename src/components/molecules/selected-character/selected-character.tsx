@@ -1,16 +1,4 @@
-import { useState } from "react";
-
-import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Grid,
-  GridItem,
-  SimpleGrid,
-  Tag,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Center, SimpleGrid } from "@chakra-ui/react";
 
 import { CharacterCard } from "../../atoms/character-card/character-card";
 
@@ -27,7 +15,7 @@ export const SelectedCharacter = ({ character }: ISelectedCharacter) => {
     <>
       <SimpleGrid spacing={3}>
         {!character && (
-          <Center>
+          <Center role="@dino-nocharacter">
             <Button
               outline="none"
               disabled

@@ -27,7 +27,6 @@ import { IOption } from "../../components/atoms/select/select";
 import { character } from "../../components/atoms/character-card/hooks";
 
 export const Home: React.FC = () => {
-  const [characterSelected, setCharacterSelected] = useState<character>();
   const [selectedConfig, setSelectedConfig] = useState<IOption>();
 
   const characters = [
@@ -49,6 +48,10 @@ export const Home: React.FC = () => {
     },
   ];
 
+  const [characterSelected, setCharacterSelected] = useState<
+    character | undefined
+  >(characters[0]);
+
   const handleSelectedCharacter = (value?: character) => {
     setCharacterSelected(value);
 
@@ -59,6 +62,10 @@ export const Home: React.FC = () => {
     setSelectedConfig(config);
 
     return selectedConfig;
+  };
+
+  const handleCreateRoom = (event: string) => {
+    return event;
   };
 
   return (
@@ -89,7 +96,7 @@ export const Home: React.FC = () => {
           <Flex direction="column" justifyContent="space-between" height="100%">
             <SelectedCharacter character={characterSelected} />
             <Box mt="auto">
-              <RoomStart />
+              <RoomStart onCreateRoom={handleCreateRoom} />
             </Box>
           </Flex>
         </Container>

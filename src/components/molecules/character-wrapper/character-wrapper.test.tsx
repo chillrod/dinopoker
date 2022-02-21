@@ -36,7 +36,7 @@ describe("Character Wrapper", () => {
     secondCard.click();
 
     expect(secondCard).toHaveStyle({
-      border: "2px",
+      border: "4px",
       borderStyle: "dotted",
       borderColor: "dino.primary",
     });
@@ -44,7 +44,7 @@ describe("Character Wrapper", () => {
     thirdCard.click();
 
     expect(secondCard).not.toHaveStyle({
-      border: "2px",
+      border: "4px",
       borderStyle: "dotted",
       borderColor: "dino.primary",
     });
@@ -66,7 +66,7 @@ describe("Character Wrapper", () => {
     arrowNext.click();
 
     expect(secondCard).toHaveStyle({
-      border: "2px",
+      border: "4px",
       borderStyle: "dotted",
       borderColor: "dino.primary",
     });
@@ -90,7 +90,7 @@ describe("Character Wrapper", () => {
     arrowNext.click();
 
     expect(firstCard).toHaveStyle({
-      border: "2px",
+      border: "4px",
       borderStyle: "dotted",
       borderColor: "dino.primary",
     });
@@ -113,7 +113,7 @@ describe("Character Wrapper", () => {
     arrowBack.click();
 
     expect(lastCard).toHaveStyle({
-      border: "2px",
+      border: "4px",
       borderStyle: "dotted",
       borderColor: "dino.primary",
     });

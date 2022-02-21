@@ -3,10 +3,17 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Button } from "../../atoms/button/button";
 import { InputIcon } from "../input-icon/input-icon";
 
-export const RoomStart = ({}) => {
+interface RoomStartProps {
+  onCreateRoom: (x: string) => void;
+}
+
+export const RoomStart = ({ onCreateRoom }: RoomStartProps) => {
   const action = {
     type: "confirm",
-    fn: () => console.log("CREATE_ROOM"),
+    fn: () => {
+      onCreateRoom("CREATE_ROOM");
+      return "CREATE_ROOM";
+    },
   };
 
   return (

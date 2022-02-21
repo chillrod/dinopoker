@@ -1,7 +1,7 @@
 import { render } from "../../../test/library";
 import { SelectedCharacter } from "./selected-character";
 
-describe.only("Selected Character", () => {
+describe("Selected Character", () => {
   it("should render room config", () => {
     const character = { id: 1, src: "/src/assets/blue.gif" };
 
@@ -18,5 +18,13 @@ describe.only("Selected Character", () => {
     const find = wrapper.getByRole("@dino-characterimg");
 
     expect(find).toHaveAttribute("src", "/src/assets/blue.gif");
+  });
+
+  it("should show the empty character if no src provided", () => {
+    const wrapper = render(<SelectedCharacter />);
+
+    const find = wrapper.getByRole("@dino-nocharacter");
+
+    expect(find).toBeInTheDocument();
   });
 });
