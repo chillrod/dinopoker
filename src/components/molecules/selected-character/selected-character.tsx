@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   Box,
   Center,
@@ -6,7 +8,6 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
-import { useEffect, useState } from "react";
 import { characters } from "../../../organisms/home/characters";
 
 import { emitter } from "../../../service/emitter";
@@ -49,7 +50,7 @@ export const SelectedCharacter = () => {
             <Input
               onChange={(e) => handleSelectedName(e)}
               required
-              disabled={!character?.src.length}
+              disabled={!character?.src?.length}
               placeholder="Patrinho"
             />
           </FormControl>

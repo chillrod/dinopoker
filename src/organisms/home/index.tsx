@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
 
 import { CharacterWrapper } from "../../components/molecules/character-wrapper/character-wrapper";
@@ -9,37 +7,9 @@ import { RoomStart } from "../../components/molecules/room-start/room-start";
 
 import { TitleSubtitle } from "../../components/atoms/title-subtitle";
 import { DinoPoker } from "../../components/atoms/dinopoker";
-import { IOption } from "../../components/atoms/select/select";
-import { character } from "../../components/atoms/character-card/hooks";
-import { emitter } from "../../service/emitter";
 import { characters } from "./characters";
 
 export const Home: React.FC = () => {
-  const [selectedConfig, setSelectedConfig] = useState<IOption>();
-
-  const [characterSelected, setCharacterSelected] = useState<
-    character | undefined
-  >();
-
-  const handleCreateRoom = (event: string) => {
-    emitter.emit("CREATE_ROOM", {
-      character: characterSelected,
-      pointSystem: selectedConfig,
-    });
-
-    return event;
-  };
-
-  useEffect(() => {
-    emitter.on("SELECTED_CHARACTER", (data) => {
-      setCharacterSelected(data);
-    });
-
-    emitter.on("SELECTED_CONFIGURATION", (data) => {
-      setSelectedConfig(data);
-    });
-  }, []);
-
   return (
     <Box
       p={6}

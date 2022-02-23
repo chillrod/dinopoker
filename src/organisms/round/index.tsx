@@ -1,18 +1,20 @@
 import { Box, Img } from "@chakra-ui/react";
 import { character } from "../../components/atoms/character-card/hooks";
-import { Input } from "../../components/atoms/input/input";
-import { IOption } from "../../components/atoms/select/select";
 
 interface IRound {
   character?: character;
-  pointSystem?: IOption;
+  pointSystem?: number[];
+  name?: string;
 }
 
-export const Round = ({ character, pointSystem }: IRound) => {
+export const Round = ({ character, pointSystem, name }: IRound) => {
   return (
     <Box>
       <Img src={character?.src} />
-      <Input value={pointSystem?.text} />
+      {pointSystem?.map((point, id) => (
+        <div key={id}>{point}</div>
+      ))}
+      <p>{name}</p>
     </Box>
   );
 };

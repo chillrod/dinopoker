@@ -11,10 +11,7 @@ export type Events = {
   SELECTED_CHARACTER?: character;
   SELECTED_CONFIGURATION?: IOption;
 
-  CREATE_ROOM: {
-    character?: character;
-    pointSystem?: IOption;
-  };
+  CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
 
   CHANGE_ROOM_CONFIG: { point: string; rounds: number };
   JOIN_ROOM: () => void;

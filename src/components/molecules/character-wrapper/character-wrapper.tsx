@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -12,6 +12,7 @@ import { emitter } from "../../../service/emitter";
 interface ICharacterWrapper {
   characters: character[];
 }
+
 export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
   const [selected, setSelected] = useState(0);
 

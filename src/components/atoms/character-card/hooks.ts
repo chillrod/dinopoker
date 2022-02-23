@@ -1,6 +1,6 @@
 export type character = {
   id: number;
-  src: string;
+  src?: string;
 };
 
 export type actionType = {

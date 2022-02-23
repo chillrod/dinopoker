@@ -20,43 +20,32 @@ describe("Character Wrapper", () => {
     },
   ];
 
+  const borderStyle = {
+    border: "4px",
+    borderStyle: "dotted",
+    borderColor: "dino.primary",
+  };
+
   it("should render multiple cards and paint the border on the selected", async () => {
-    render(
-      <CharacterWrapper
-        selectedCharacter={() => null}
-        characters={characters}
-      />
-    );
+    render(<CharacterWrapper characters={characters} />);
 
     const cards = screen.getAllByRole("@dino-charactercard");
 
     const secondCard = cards[1];
+
     const thirdCard = cards[2];
 
     secondCard.click();
 
-    expect(secondCard).toHaveStyle({
-      border: "4px",
-      borderStyle: "dotted",
-      borderColor: "dino.primary",
-    });
+    expect(secondCard).toHaveStyle(borderStyle);
 
     thirdCard.click();
 
-    expect(secondCard).not.toHaveStyle({
-      border: "4px",
-      borderStyle: "dotted",
-      borderColor: "dino.primary",
-    });
+    expect(secondCard).not.toHaveStyle(borderStyle);
   });
 
   it("should change character if clicked on arrow next", async () => {
-    render(
-      <CharacterWrapper
-        selectedCharacter={() => null}
-        characters={characters}
-      />
-    );
+    render(<CharacterWrapper characters={characters} />);
 
     const cards = screen.getAllByRole("@dino-charactercard");
     const secondCard = cards[1];
@@ -73,12 +62,7 @@ describe("Character Wrapper", () => {
   });
 
   it("should reset character position if clicked on arrow next on last item", async () => {
-    render(
-      <CharacterWrapper
-        selectedCharacter={() => null}
-        characters={characters}
-      />
-    );
+    render(<CharacterWrapper characters={characters} />);
 
     const cards = screen.getAllByRole("@dino-charactercard");
     const firstCard = cards[0];
@@ -89,20 +73,11 @@ describe("Character Wrapper", () => {
     arrowNext.click();
     arrowNext.click();
 
-    expect(firstCard).toHaveStyle({
-      border: "4px",
-      borderStyle: "dotted",
-      borderColor: "dino.primary",
-    });
+    expect(firstCard).toHaveStyle(borderStyle);
   });
 
   it("should select prev character if arrow back", async () => {
-    render(
-      <CharacterWrapper
-        selectedCharacter={() => null}
-        characters={characters}
-      />
-    );
+    render(<CharacterWrapper characters={characters} />);
 
     const cards = screen.getAllByRole("@dino-charactercard");
 
@@ -112,10 +87,6 @@ describe("Character Wrapper", () => {
 
     arrowBack.click();
 
-    expect(lastCard).toHaveStyle({
-      border: "4px",
-      borderStyle: "dotted",
-      borderColor: "dino.primary",
-    });
+    expect(lastCard).toHaveStyle(borderStyle);
   });
 });

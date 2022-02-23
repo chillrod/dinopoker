@@ -17,7 +17,7 @@ describe("Character card", () => {
   ];
 
   it("should render multiple cards and get the src of the first", async () => {
-    const wrapper = render(
+    render(
       <div>
         {characters.map((character) => (
           <CharacterCard key={character.id} character={character} />
@@ -32,5 +32,29 @@ describe("Character card", () => {
     const img = card[0].getElementsByTagName("img")[0];
 
     expect(img).toHaveAttribute("src", YellowDino);
+  });
+
+  it("should display different bg colors if isSelectedScreen prop is provided", () => {
+    render(<CharacterCard character={characters[0]} isSelectedScreen />);
+
+    const characterCard = screen.getByRole("@dino-charactercard");
+
+    expect(characterCard).toHaveStyle({
+      backgroundColor: "dino.primary",
+    });
+  });
+
+  it("should display empty src string if no image is provided", () => {
+    const character = {
+      id: 0,
+    };
+
+    render(<CharacterCard character={character} isSelectedScreen />);
+
+    const characterCard = screen
+      .getByRole("@dino-charactercard")
+      .getElementsByTagName("img");
+
+    expect(characterCard[0]).toHaveAttribute("src", "");
   });
 });
