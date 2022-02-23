@@ -1,15 +1,6 @@
 import { useState } from "react";
 
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  SimpleGrid,
-  Stack,
-  Tag,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
 
 import YellowDino from "../../assets/yellow.gif";
 import BlueDino from "../../assets/blue.gif";
@@ -25,6 +16,7 @@ import { TitleSubtitle } from "../../components/atoms/title-subtitle";
 import { DinoPoker } from "../../components/atoms/dinopoker";
 import { IOption } from "../../components/atoms/select/select";
 import { character } from "../../components/atoms/character-card/hooks";
+import { emitter } from "../../service/emitter";
 
 export const Home: React.FC = () => {
   const [selectedConfig, setSelectedConfig] = useState<IOption>();
@@ -65,6 +57,11 @@ export const Home: React.FC = () => {
   };
 
   const handleCreateRoom = (event: string) => {
+    emitter.emit("CREATE_ROOM", {
+      character: characterSelected,
+      pointSystem: selectedConfig,
+    });
+
     return event;
   };
 
