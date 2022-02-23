@@ -1,50 +1,43 @@
-import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, FormControl, FormLabel } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { emitter } from "../../../service/emitter";
 import { IOption, Select } from "../../atoms/select/select";
-import { TitleSubtitle } from "../../atoms/title-subtitle";
 
-interface IRoomConfig {
-  selectedConfig: (config: IOption) => void;
-}
-
-export const RoomConfig = ({ selectedConfig }: IRoomConfig) => {
-  const [selected, setSelected] = useState<IOption>();
+export const RoomConfig = () => {
   // todo - change to api
   const selectOptions: IOption[] = [
     {
-      action: () => "SELECTED_FIBONACCI",
-      text: "Modified Fibonacci (0.5, 2, 30",
-      value: "fibonacci-modified",
+      id: 0,
+      text: "Modified Fibonacci (0.5, 2, 30...)",
+      value: [0, 0.5, 1, 2, 3, 5, 8, 13, 21],
     },
     {
-      action: () => "SELECTED_FIBONACCINORMAL",
-      text: " Fibonacci (0.5, 2, 30",
-      value: "fibonacci",
+      id: 1,
+      text: "Fibonacci (0.5, 2, 30...)",
+      value: [0, 0.5, 1, 2, 3, 5, 8, 13, 21],
     },
   ];
 
   const handleSetSelected = (e: any) => {
-    const emitEvent = selectOptions.find(
-      (item) => e.target.value === item.value
-    ) || {
-      action: () => console.log("NO_ACTION"),
-      text: "",
-      value: "",
-    };
+    const findOption = selectOptions.find(
+      (option) => option.id === e.target.value
+    );
 
-    selectedConfig(emitEvent);
+    emitter.emit("SELECTED_CONFIGURATION", findOption);
 
-    emitEvent?.action();
-
-    setSelected(emitEvent);
-
-    return selected;
+    return e.target.value;
   };
 
   return (
     <Box width="100%" role="@dino-roomconfig">
-      <TitleSubtitle title="" subtitle="Room configuration" />
-      <Select options={selectOptions} onChange={(e) => handleSetSelected(e)} />
+      <FormControl>
+        <FormLabel>Room configuration</FormLabel>
+        <Select
+          selected={0}
+          options={selectOptions}
+          onChange={(e) => handleSetSelected(e)}
+        />
+      </FormControl>
     </Box>
   );
 };

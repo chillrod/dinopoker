@@ -7,6 +7,10 @@ export type Events = {
   ADD_COUNT: number;
   //
 
+  CHARACTER_NAME: string;
+  SELECTED_CHARACTER?: character;
+  SELECTED_CONFIGURATION?: IOption;
+
   CREATE_ROOM: {
     character?: character;
     pointSystem?: IOption;

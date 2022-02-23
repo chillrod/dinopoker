@@ -3,43 +3,14 @@ import { fireEvent, render, screen } from "../../../test/library";
 import { RoomStart } from "./room-start";
 
 describe("Room Start", () => {
-  it("should render room Start", () => {
-    render(<RoomStart onCreateRoom={() => null} />);
+  it.todo("should render room Start", () => {});
 
-    expect(screen.getByRole("@dino-roomstart")).toBeDefined();
+  it.todo("should create a new room", () => {
+    // expect(func).toHaveBeenCalledTimes(1);
+    // expect(func).toHaveReturnedWith("dispatch");
   });
 
-  it("should create a new room", () => {
-    const handleCreate = (x: any) => x;
+  it.todo("should join a existing room", () => {});
 
-    const func = fn(handleCreate);
-
-    render(<RoomStart onCreateRoom={func} />);
-
-    const btn = screen.getByRole("@dino-button");
-
-    fireEvent.click(btn);
-
-    expect(func).toHaveBeenCalledTimes(1);
-    expect(func).toHaveReturnedWith("CREATE_ROOM");
-  });
-
-  // it.skip("should join a existing room", () => {
-  //   const handleJoinRoom = (x: any) => x;
-
-  //   const func = fn(handleJoinRoom);
-
-  //   const screen = render(
-  //     <RoomStart onCreateRoom={() => null} onJoinRoom={func} />
-  //   );
-
-  //   const input = wrapper.getByRole("@dino-input");
-
-  //   userEvent.type(input, "123");
-
-  //   fireEvent.click(btn);
-
-  //   expect(func).toHaveBeenCalledTimes(1);
-  //   expect(func).toHaveReturnedWith("CREATE_ROOM");
-  // });
+  it.todo("should enable create room only if name is provided", () => {});
 });

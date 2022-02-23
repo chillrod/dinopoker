@@ -2,9 +2,7 @@ import { Button as Btn } from "@chakra-ui/react";
 
 interface IButtonProps {
   children?: React.ReactNode;
-  action?: {
-    type: string;
-  };
+  action?: string;
   loading?: boolean;
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
@@ -21,7 +19,7 @@ export const Button = ({
     <Btn
       isDisabled={disabled}
       role="@dino-button"
-      bg={action?.type === "confirm" ? "dino.primary" : "dino.secondary"}
+      bg={action === "confirm" ? "dino.primary" : "dino.secondary"}
       onClick={onClick}
       isLoading={loading}
     >

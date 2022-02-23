@@ -1,11 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
-
-import YellowDino from "../../assets/yellow.gif";
-import BlueDino from "../../assets/blue.gif";
-import RedDino from "../../assets/red.gif";
-import GreenDino from "../../assets/green.gif";
 
 import { CharacterWrapper } from "../../components/molecules/character-wrapper/character-wrapper";
 import { SelectedCharacter } from "../../components/molecules/selected-character/selected-character";
@@ -17,44 +12,14 @@ import { DinoPoker } from "../../components/atoms/dinopoker";
 import { IOption } from "../../components/atoms/select/select";
 import { character } from "../../components/atoms/character-card/hooks";
 import { emitter } from "../../service/emitter";
+import { characters } from "./characters";
 
 export const Home: React.FC = () => {
   const [selectedConfig, setSelectedConfig] = useState<IOption>();
 
-  const characters = [
-    {
-      id: 0,
-      src: YellowDino,
-    },
-    {
-      id: 1,
-      src: BlueDino,
-    },
-    {
-      id: 2,
-      src: GreenDino,
-    },
-    {
-      id: 3,
-      src: RedDino,
-    },
-  ];
-
   const [characterSelected, setCharacterSelected] = useState<
     character | undefined
-  >(characters[0]);
-
-  const handleSelectedCharacter = (value?: character) => {
-    setCharacterSelected(value);
-
-    return characterSelected;
-  };
-
-  const handleRoomConfig = (config: IOption) => {
-    setSelectedConfig(config);
-
-    return selectedConfig;
-  };
+  >();
 
   const handleCreateRoom = (event: string) => {
     emitter.emit("CREATE_ROOM", {
@@ -64,6 +29,16 @@ export const Home: React.FC = () => {
 
     return event;
   };
+
+  useEffect(() => {
+    emitter.on("SELECTED_CHARACTER", (data) => {
+      setCharacterSelected(data);
+    });
+
+    emitter.on("SELECTED_CONFIGURATION", (data) => {
+      setSelectedConfig(data);
+    });
+  }, []);
 
   return (
     <Box
@@ -80,20 +55,17 @@ export const Home: React.FC = () => {
       <SimpleGrid columns={2} spacing={6}>
         <Container m={0} p={0}>
           <SimpleGrid columns={1} spacing={12}>
-            <CharacterWrapper
-              selectedCharacter={handleSelectedCharacter}
-              characters={characters}
-            />
+            <CharacterWrapper characters={characters} />
             <Box>
-              <RoomConfig selectedConfig={handleRoomConfig} />
+              <RoomConfig />
             </Box>
           </SimpleGrid>
         </Container>
         <Container m={0} p={0}>
           <Flex direction="column" justifyContent="space-between" height="100%">
-            <SelectedCharacter character={characterSelected} />
+            <SelectedCharacter />
             <Box mt="auto">
-              <RoomStart onCreateRoom={handleCreateRoom} />
+              <RoomStart />
             </Box>
           </Flex>
         </Container>
