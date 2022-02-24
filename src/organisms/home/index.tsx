@@ -21,7 +21,9 @@ export const Home: React.FC = () => {
       }}
     >
       <DinoPoker />
-      <TitleSubtitle title="to begin with" subtitle="Select a character" />
+      <Box py={2} px={1}>
+        <TitleSubtitle title="to start" subtitle="Select a character" />
+      </Box>
       <SimpleGrid columns={2} spacing={6}>
         <Container m={0} p={0}>
           <SimpleGrid columns={1} spacing={12}>

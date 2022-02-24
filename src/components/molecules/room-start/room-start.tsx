@@ -27,11 +27,19 @@ export const RoomStart = () => {
   );
 
   const handleCreateRoom = () => {
+    const updatedOrDefaultCharacter =
+      roomConfiguration.character || characters[0];
+
+    const updatedOrDefaultPointSystem =
+      roomConfiguration?.pointSystem?.value || pointSystem[0].value;
+
     emitter.emit("CREATE_ROOM", {
-      character: roomConfiguration.character || characters[0],
-      pointSystem: roomConfiguration.pointSystem?.value || pointSystem[0].value,
+      character: updatedOrDefaultCharacter,
+      pointSystem: updatedOrDefaultPointSystem,
       name: roomConfiguration.name,
     });
+
+    emitter.emit("EMIT_TOAST", "Room created");
 
     return roomConfiguration;
   };
@@ -67,7 +75,7 @@ export const RoomStart = () => {
 
   return (
     <Box role="@dino-roomstart">
-      <SimpleGrid columns={2} spacing={3} p={0} m={0}>
+      <SimpleGrid columns={2} p={0} m={0}>
         <FormControl>
           <FormLabel>Or join a room</FormLabel>
           <InputIcon ariaLabel="Confirm" icon={<CheckIcon />} />

@@ -1,3 +1,4 @@
+import { ToastId } from "@chakra-ui/react";
 import mitt, { Emitter } from "mitt";
 import { character } from "../components/atoms/character-card/hooks";
 import { IOption } from "../components/atoms/select/select";
@@ -21,13 +22,12 @@ export type Events = {
 
   CONFIRM_ACTION: () => void;
   CANCEL_ACTION: () => void;
-  EMIT_TOAST: (message: string) => void;
+  EMIT_TOAST: string;
+  EMIT_MESSAGEBOX: (message: string) => void;
 
   ERROR: string;
   SUCCESS: string;
   LOADING: boolean;
-
-  EMIT_MESSAGEBOX: (message: string) => void;
 
   VOTE_START: () => void;
   VOTE_SELECT: (point: number) => void;

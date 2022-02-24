@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";

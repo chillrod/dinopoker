@@ -4,7 +4,7 @@ export const config: ThemeConfig = {
   initialColorMode: "dark",
 };
 
-const dino = {
+export const dino = {
   primary: "#7755CC",
   secondary: "#333333",
   base1: "#777777",
