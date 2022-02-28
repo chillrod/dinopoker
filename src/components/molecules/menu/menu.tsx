@@ -16,8 +16,8 @@ export const Menu = ({ menuItems }: IMenu) => {
       <BaseBox>
         <Grid templateRows="1fr 1fr">
           <Flex flexDirection="column" gap={2}>
-            {menuItems.map(({ label, icon }) => (
-              <Tooltip label={label}>
+            {menuItems.map(({ label, icon }, index) => (
+              <Tooltip label={label} key={index}>
                 <span>
                   <IconButton
                     color="dino.base1"
@@ -29,7 +29,7 @@ export const Menu = ({ menuItems }: IMenu) => {
               </Tooltip>
             ))}
           </Flex>
-          <Box p={0} m={0} justifySelf="center" alignSelf="end">
+          <Box py={4} m={0} justifySelf="center" alignSelf="end">
             <Text
               fontSize="xl"
               sx={{

@@ -4,17 +4,23 @@ import { IMenu, Menu } from "../components/molecules/menu/menu";
 import { Home } from "../organisms/home";
 
 import {
+  EmailIcon,
   LinkIcon,
   RepeatIcon,
   SettingsIcon,
   SmallCloseIcon,
 } from "@chakra-ui/icons";
+import { CardPoints } from "../components/atoms/card-points/card-points";
 
 const actions: IMenu = {
   menuItems: [
     {
       icon: <LinkIcon />,
       label: "Share",
+    },
+    {
+      icon: <EmailIcon />,
+      label: "Messages",
     },
     {
       icon: <RepeatIcon />,
@@ -35,9 +41,10 @@ export const App = () => {
   return (
     <>
       <SimpleGrid p={1}>
-        <Flex>
+        <Flex gap={3}>
           <Menu menuItems={actions.menuItems} />
-          <Home />
+          <CardPoints />
+          {/* <Home /> */}
         </Flex>
       </SimpleGrid>
     </>
