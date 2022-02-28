@@ -12,7 +12,7 @@ import { characters } from "./characters";
 export const Home: React.FC = () => {
   return (
     <Box
-      p={6}
+      p={2}
       maxWidth={{
         lg: "800px",
       }}
@@ -21,7 +21,7 @@ export const Home: React.FC = () => {
       }}
     >
       <DinoPoker />
-      <Box py={2} px={1}>
+      <Box py={1} px={1}>
         <TitleSubtitle title="to start" subtitle="Select a character" />
       </Box>
       <SimpleGrid columns={2} spacing={6}>

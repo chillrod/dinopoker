@@ -1,55 +1,55 @@
-import {
-  CopyIcon,
-  InfoIcon,
-  LinkIcon,
-  RepeatIcon,
-  SettingsIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
-import { Stack, Tooltip, Box, Flex } from "@chakra-ui/react";
+import { Tooltip, Box, Flex, Text, Grid } from "@chakra-ui/react";
+
 import { BaseBox } from "../../atoms/base-box/base-box";
-import { DinoPoker } from "../../atoms/dinopoker";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 
-export const Menu = () => {
+export interface IMenu {
+  menuItems: {
+    icon: React.ReactElement;
+    label: string;
+  }[];
+}
+
+export const Menu = ({ menuItems }: IMenu) => {
   return (
     <>
       <BaseBox>
-        <Flex flexDirection="column">
-          <Tooltip label="Share">
-            <span>
-              <IconButton ariaLabel="share" icon={<LinkIcon />}></IconButton>
-            </span>
-          </Tooltip>
-          <Tooltip label="Configurations">
-            <span>
-              <IconButton
-                ariaLabel="configurations"
-                icon={<SettingsIcon />}
-              ></IconButton>
-            </span>
-          </Tooltip>
-          <Tooltip label="restart">
-            <span>
-              <IconButton
-                ariaLabel="restart"
-                icon={<RepeatIcon />}
-              ></IconButton>
-            </span>
-          </Tooltip>
-          <Tooltip label="close">
-            <span>
-              <IconButton
-                ariaLabel="close"
-                icon={<SmallCloseIcon />}
-              ></IconButton>
-            </span>
-          </Tooltip>
-
-          <Box p={0} m={0} transform="rotate(90deg)">
-            <DinoPoker />
+        <Grid templateRows="1fr 1fr">
+          <Flex flexDirection="column" gap={2}>
+            {menuItems.map(({ label, icon }) => (
+              <Tooltip label={label}>
+                <span>
+                  <IconButton
+                    color="dino.base1"
+                    onClick={() => console.log("TODO")}
+                    ariaLabel={label}
+                    icon={icon}
+                  />
+                </span>
+              </Tooltip>
+            ))}
+          </Flex>
+          <Box p={0} m={0} justifySelf="center" alignSelf="end">
+            <Text
+              fontSize="xl"
+              sx={{
+                writingMode: "vertical-lr",
+                textOrientation: "mixed",
+              }}
+            >
+              Dino
+              <Text
+                fontWeight={800}
+                as="span"
+                sx={{
+                  color: "dino.primary",
+                }}
+              >
+                poker
+              </Text>
+            </Text>
           </Box>
-        </Flex>
+        </Grid>
       </BaseBox>
     </>
   );

@@ -46,6 +46,7 @@ export const MessageBox = ({ onConfirm, open = false }: IMessageBox) => {
       onClose={onClose}
     >
       <AlertDialogContent
+        boxShadow="xl"
         role="@dino-dialogcontent"
         bg="dino.base4"
         borderRadius="lg"

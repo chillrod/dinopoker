@@ -74,7 +74,7 @@ export const RoomStart = () => {
 
   return (
     <Box role="@dino-roomstart">
-      <SimpleGrid columns={2} p={0} m={0}>
+      <SimpleGrid columns={2} gap={6} p={0} m={0}>
         <FormControl>
           <FormLabel>Or join a room</FormLabel>
           <InputIcon ariaLabel="Confirm" icon={<CheckIcon />} />
