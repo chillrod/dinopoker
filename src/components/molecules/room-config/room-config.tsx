@@ -1,5 +1,5 @@
 import { Box, FormControl, FormLabel } from "@chakra-ui/react";
-import { emitter } from "../../../service/emitter";
+import { emitter } from "../../../service/emitter/emitter";
 import { Select } from "../../atoms/select/select";
 import { pointSystem } from "./pointSystem";
 

@@ -1,4 +1,4 @@
-import { render, screen } from "../test/library";
+import { render, screen } from "../../test/library";
 import { EmitTest, EmitButton } from "./emitTest";
 
 describe("Event emitter", () => {

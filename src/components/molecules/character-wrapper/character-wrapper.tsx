@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -7,7 +7,7 @@ import { BaseBox } from "../../atoms/base-box/base-box";
 import { CharacterCard } from "../../atoms/character-card/character-card";
 import { character } from "../../atoms/character-card/hooks";
 import { IconButton } from "../../atoms/icon-button/icon-button";
-import { emitter } from "../../../service/emitter";
+import { emitter } from "../../../service/emitter/emitter";
 
 interface ICharacterWrapper {
   characters: character[];

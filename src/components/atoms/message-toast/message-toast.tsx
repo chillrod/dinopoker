@@ -4,13 +4,13 @@ import theme from "../../../config/theme";
 
 const toast = createStandaloneToast({ theme: theme });
 
-//TODO - Make button of closable toast, make version of vote with character img
+//TODO - Make button of closable toast
 
 export const emitToast = ({ message }: { message: string }) =>
   toast({
     position: "top-right",
     render: () => (
-      <SimpleGrid bg="dino.secondary" borderRadius="md">
+      <SimpleGrid bg="dino.secondary" borderRadius="md" p={2}>
         <Box p={2.5}>
           <Text as="span">{message}</Text>
         </Box>

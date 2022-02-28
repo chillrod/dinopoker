@@ -9,13 +9,11 @@ import {
 } from "@chakra-ui/react";
 
 import { characters } from "../../../organisms/home/characters";
-
-import { emitter } from "../../../service/emitter";
-
 import { CharacterCard } from "../../atoms/character-card/character-card";
-
 import { character } from "../../atoms/character-card/hooks";
 import { Input } from "../../atoms/input/input";
+
+import { emitter } from "../../../service/emitter/emitter";
 
 export const SelectedCharacter = () => {
   const [name, setName] = useState("");

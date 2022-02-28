@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { CheckIcon } from "@chakra-ui/icons";
 
 import { Box, FormControl, FormLabel, SimpleGrid } from "@chakra-ui/react";
-import { emitter } from "../../../service/emitter";
 import { Button } from "../../atoms/button/button";
 import { InputIcon } from "../input-icon/input-icon";
 import { IOption } from "../../atoms/select/select";
 import { character } from "../../atoms/character-card/hooks";
 import { characters } from "../../../organisms/home/characters";
 import { pointSystem } from "../room-config/pointSystem";
+
+import { emitter } from "../../../service/emitter/emitter";
 
 interface RoomConfiguration {
   character?: character;
@@ -38,8 +39,6 @@ export const RoomStart = () => {
       pointSystem: updatedOrDefaultPointSystem,
       name: roomConfiguration.name,
     });
-
-    emitter.emit("EMIT_TOAST", "Room created");
 
     return roomConfiguration;
   };

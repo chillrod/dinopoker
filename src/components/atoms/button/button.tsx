@@ -6,6 +6,7 @@ interface IButtonProps {
   loading?: boolean;
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
+  ref?: any;
 }
 
 export const Button = ({
@@ -14,9 +15,11 @@ export const Button = ({
   disabled,
   loading,
   onClick,
+  ref,
 }: IButtonProps) => {
   return (
     <Btn
+      ref={ref}
       isDisabled={disabled}
       role="@dino-button"
       bg={action === "confirm" ? "dino.primary" : "dino.secondary"}
