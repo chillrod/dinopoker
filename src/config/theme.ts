@@ -1,11 +1,10 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-const config: ThemeConfig = {
+export const config: ThemeConfig = {
   initialColorMode: "dark",
-  useSystemColorMode: true,
 };
 
-const dino = {
+export const dino = {
   primary: "#7755CC",
   secondary: "#333333",
   base1: "#777777",

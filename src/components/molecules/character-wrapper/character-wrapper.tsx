@@ -7,21 +7,19 @@ import { BaseBox } from "../../atoms/base-box/base-box";
 import { CharacterCard } from "../../atoms/character-card/character-card";
 import { character } from "../../atoms/character-card/hooks";
 import { IconButton } from "../../atoms/icon-button/icon-button";
+import { emitter } from "../../../service/emitter/emitter";
 
 interface ICharacterWrapper {
   characters: character[];
-  selectedCharacter: (value?: character) => void;
 }
-export const CharacterWrapper = ({
-  characters,
-  selectedCharacter,
-}: ICharacterWrapper) => {
+
+export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
   const [selected, setSelected] = useState(0);
 
   const handleSelect = (id: number) => {
     const selected = characters.find((item) => item.id === id);
 
-    selectedCharacter(selected);
+    emitter.emit("SELECTED_CHARACTER", selected);
 
     return setSelected(id);
   };
@@ -52,11 +50,10 @@ export const CharacterWrapper = ({
         <Box overflowX="scroll" maxWidth="100%">
           <Flex>
             {characters.map((character) => (
-              <Box mx={1}>
+              <Box mx={1} key={character.id}>
                 <CharacterCard
                   isSelected={selected}
                   onClick={() => handleCharacter(character)}
-                  key={character.id}
                   character={character}
                 />
               </Box>

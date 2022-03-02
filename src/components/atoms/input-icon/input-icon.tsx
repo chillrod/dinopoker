@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Flex } from "@chakra-ui/react";
-import { IconButton } from "../../atoms/icon-button/icon-button";
-import { Input } from "../../atoms/input/input";
+import { IconButton } from "../icon-button/icon-button";
+import { Input } from "../input/input";
 
 interface IInputIconProps {
   placeholder?: string;
@@ -31,16 +31,16 @@ export const InputIcon = ({
     }
   };
 
-  useEffect(() => {
-    if (value?.length) setInputValue(value);
-  }, []);
+  const handleChangeInputValue = (e: any) => {
+    setInputValue(e.target.value);
+  };
 
   return (
     <>
       <Flex role="@dino-inputicon">
         <Input
           placeholder={placeholder}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleChangeInputValue(e)}
           disabled={loading || disabled}
           value={inputValue}
         />

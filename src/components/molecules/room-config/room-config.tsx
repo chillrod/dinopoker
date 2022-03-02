@@ -1,50 +1,29 @@
-import { Box } from "@chakra-ui/react";
-import { useState } from "react";
-import { IOption, Select } from "../../atoms/select/select";
-import { TitleSubtitle } from "../../atoms/title-subtitle";
+import { Box, FormControl, FormLabel } from "@chakra-ui/react";
+import { emitter } from "../../../service/emitter/emitter";
+import { Select } from "../../atoms/select/select";
+import { pointSystem } from "./pointSystem";
 
-interface IRoomConfig {
-  selectedConfig: (config: IOption) => void;
-}
-
-export const RoomConfig = ({ selectedConfig }: IRoomConfig) => {
-  const [selected, setSelected] = useState<IOption>();
-  // todo - change to api
-  const selectOptions: IOption[] = [
-    {
-      action: () => "SELECTED_FIBONACCI",
-      text: "Modified Fibonacci (0.5, 2, 30",
-      value: "fibonacci-modified",
-    },
-    {
-      action: () => "SELECTED_FIBONACCINORMAL",
-      text: " Fibonacci (0.5, 2, 30",
-      value: "fibonacci",
-    },
-  ];
-
+export const RoomConfig = () => {
   const handleSetSelected = (e: any) => {
-    const emitEvent = selectOptions.find(
-      (item) => e.target.value === item.value
-    ) || {
-      action: () => console.log("NO_ACTION"),
-      text: "",
-      value: "",
-    };
+    const findOption = pointSystem.find(
+      (option) => option.id === parseInt(e.target.value)
+    );
 
-    selectedConfig(emitEvent);
+    emitter.emit("SELECTED_CONFIGURATION", findOption);
 
-    emitEvent?.action();
-
-    setSelected(emitEvent);
-
-    return selected;
+    return e.target.value;
   };
 
   return (
     <Box width="100%" role="@dino-roomconfig">
-      <TitleSubtitle title="" subtitle="Room configuration" />
-      <Select options={selectOptions} onChange={(e) => handleSetSelected(e)} />
+      <FormControl>
+        <FormLabel>Room configuration</FormLabel>
+        <Select
+          selected={0}
+          options={pointSystem}
+          onChange={(e) => handleSetSelected(e)}
+        />
+      </FormControl>
     </Box>
   );
 };

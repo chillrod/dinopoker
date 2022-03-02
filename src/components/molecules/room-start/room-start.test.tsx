@@ -1,45 +1,45 @@
-import { fn } from "vitest";
-import { fireEvent, render, screen } from "../../../test/library";
+import { render, screen, userEvent } from "../../../test/library";
+import { SelectedCharacter } from "../selected-character/selected-character";
 import { RoomStart } from "./room-start";
 
 describe("Room Start", () => {
   it("should render room Start", () => {
-    render(<RoomStart onCreateRoom={() => null} />);
+    render(<RoomStart />);
 
-    expect(screen.getByRole("@dino-roomstart")).toBeDefined();
+    expect(screen.getByRole("@dino-roomstart")).toBeInTheDocument();
   });
 
-  it("should create a new room", () => {
-    const handleCreate = (x: any) => x;
+  it.todo("should create a new room", () => {});
 
-    const func = fn(handleCreate);
+  it.todo("should join a existing room", () => {});
 
-    render(<RoomStart onCreateRoom={func} />);
+  it.todo(
+    "should create a room with default character and point system if no selected",
+    () => {}
+  );
 
-    const btn = screen.getByRole("@dino-button");
+  it("should enable create room only if name is provided", () => {
+    render(
+      <div>
+        <SelectedCharacter />
+        <RoomStart />
+      </div>
+    );
 
-    fireEvent.click(btn);
+    const characterName = screen
+      .getByRole("@dino-selectchar")
+      .getElementsByTagName("input")[0];
 
-    expect(func).toHaveBeenCalledTimes(1);
-    expect(func).toHaveReturnedWith("CREATE_ROOM");
+    userEvent.type(characterName, "Dino");
+
+    const roomStart = screen
+      .getByRole("@dino-roomstart")
+      .getElementsByTagName("button")[1];
+
+    expect(roomStart).toBeEnabled();
+
+    userEvent.clear(characterName);
+
+    expect(roomStart).toBeDisabled();
   });
-
-  // it.skip("should join a existing room", () => {
-  //   const handleJoinRoom = (x: any) => x;
-
-  //   const func = fn(handleJoinRoom);
-
-  //   const screen = render(
-  //     <RoomStart onCreateRoom={() => null} onJoinRoom={func} />
-  //   );
-
-  //   const input = wrapper.getByRole("@dino-input");
-
-  //   userEvent.type(input, "123");
-
-  //   fireEvent.click(btn);
-
-  //   expect(func).toHaveBeenCalledTimes(1);
-  //   expect(func).toHaveReturnedWith("CREATE_ROOM");
-  // });
 });

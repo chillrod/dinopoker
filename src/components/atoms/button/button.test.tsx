@@ -2,10 +2,10 @@ import { render, screen } from "../../../test/library";
 import { fn } from "vitest";
 import { Button } from "./button";
 
-describe.only("Button Component", () => {
+describe("Button Component", () => {
   const renderElement = (text?: string) => render(<Button>{text}</Button>);
   const renderElementFn = (fn: () => void) =>
-    render(<Button onClick={() => fn()} />);
+    render(<Button onClick={() => fn()} loading={true} />);
 
   it("should render button component", () => {
     renderElement();
@@ -28,6 +28,6 @@ describe.only("Button Component", () => {
 
     btn.click();
 
-    expect(func).toHaveBeenCalledTimes(1);
+    expect(func).toHaveBeenCalledTimes(0);
   });
 });

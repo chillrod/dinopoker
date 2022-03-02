@@ -3,7 +3,7 @@ import { Box, Button, Img } from "@chakra-ui/react";
 import { character } from "./hooks";
 
 interface ICharacterCardProps {
-  character: character;
+  character?: character;
   disabled?: boolean;
   isSelected?: number;
   onClick?: React.MouseEventHandler;
@@ -33,7 +33,7 @@ export const CharacterCard = ({
       outline="none"
       onClick={onClick}
       bg={(isSelectedScreen && "dino.primary") || "dino.secondary"}
-      {...(isSelected === character.id ? selectedProps : {})}
+      {...(isSelected === character?.id ? selectedProps : {})}
       role="@dino-charactercard"
       disabled={disabled}
       size="lg"

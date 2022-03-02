@@ -10,7 +10,7 @@ describe("Icon Button Component", () => {
     expect(screen.getByRole("@dino-iconbutton")).toBeInTheDocument();
   });
 
-  it.only("should prevent click if loading", async () => {
+  it("should prevent click if loading", async () => {
     const fn2 = fn(() => "hello");
 
     const action = {

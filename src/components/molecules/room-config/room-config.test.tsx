@@ -1,27 +1,28 @@
 import { fn } from "vitest";
-import { fireEvent, render, screen } from "../../../test/library";
+import { fireEvent, render, screen, userEvent } from "../../../test/library";
 import { RoomConfig } from "./room-config";
 
-describe.only("Room config", () => {
+describe("Room config", () => {
   it("should render room config", () => {
-    render(<RoomConfig selectedConfig={() => null} />);
+    render(<RoomConfig />);
 
     expect(screen.getByRole("@dino-roomconfig")).toBeInTheDocument();
   });
 
   it("should push the selected config action", () => {
-    const handleChange = (x: any) => x;
-
-    const func = fn(handleChange);
-
-    render(<RoomConfig selectedConfig={(e) => func(e)} />);
+    // need to test this better. need to check if i can test mitt events
+    render(<RoomConfig />);
 
     const select = screen.getByRole("@dino-select");
+    const option = screen.getAllByRole("@dino-selectoption")[1];
+    const option2 = screen.getAllByRole("@dino-selectoption")[0];
 
-    fireEvent.change(select, { target: { value: "fibonacci" } });
+    userEvent.selectOptions(select, [option]);
 
-    expect(func).toHaveBeenCalledTimes(1);
+    expect(select).toHaveValue("1");
 
-    expect(func).toHaveReturned();
+    userEvent.selectOptions(select, [option2]);
+
+    expect(select).toHaveValue("0");
   });
 });

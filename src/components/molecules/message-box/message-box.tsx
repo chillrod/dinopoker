@@ -1,34 +1,78 @@
-import React from "react";
-import { Children, useEffect, useState, useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
-import { Flex, AlertDialog, Button } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  Flex,
+  Text,
+} from "@chakra-ui/react";
 
-interface ImessageBoxProps {
-  isOpen: boolean;
-  onClose: () => boolean;
-  children: React.ReactNode;
+import { Button } from "../../atoms/button/button";
+
+import { emitter } from "../../../service/emitter/emitter";
+
+interface FocusableElement {
+  focus(options?: FocusOptions): void;
 }
 
-const cancelRef = React.useRef();
+interface IMessageBox {
+  onConfirm?: () => void;
+  open?: boolean;
+}
 
-export const MessageBox = ({ children, isOpen, onClose }: ImessageBoxProps) => {
+export const MessageBox = ({ onConfirm, open = false }: IMessageBox) => {
+  const [isOpen, setIsOpen] = useState(open);
+
+  const [currentMessage, setCurrentMessage] = useState("");
+
+  const onClose = () => setIsOpen(false);
+
+  const cancelRef: RefObject<FocusableElement> = useRef(null);
+
+  useEffect(() => {
+    emitter.on("EMIT_MESSAGEBOX", (message) => {
+      setIsOpen(true);
+
+      setCurrentMessage(message);
+    });
+  }, []);
+
   return (
-    <>
-      <Flex>
-        <AlertDialog
-          isOpen={isOpen}
-          leastDestructiveRef={cancelRef}
-          onClose={onClose}
-        >
-          {children}
-          <Button onClick={() => action.fn()} action={action}>
-            Cancel
-          </Button>
-          <Button onClick={() => action.fn()} action={action}>
-            Confirm
-          </Button>
-        </AlertDialog>
-      </Flex>
-    </>
+    <AlertDialog
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      onClose={onClose}
+    >
+      <AlertDialogContent
+        boxShadow="xl"
+        role="@dino-dialogcontent"
+        bg="dino.base4"
+        borderRadius="lg"
+        p={2}
+        px={8}
+        maxWidth="fit-content"
+      >
+        <AlertDialogBody>
+          <Text textAlign="center" as="h2" color="dino.text" fontWeight={500}>
+            Are you sure you want to
+            <br /> {currentMessage.length ? currentMessage : "ACTION"} ?
+          </Text>
+        </AlertDialogBody>
+        <AlertDialogFooter justifyContent="center">
+          <Flex gap={2} justifyContent="center">
+            {process.env.NODE_ENV !== "test" && (
+              <Button onClick={onClose} ref={cancelRef}>
+                Cancel
+              </Button>
+            )}
+            <Button onClick={onConfirm} action="confirm">
+              Confirm
+            </Button>
+          </Flex>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
