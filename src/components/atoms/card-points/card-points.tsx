@@ -1,31 +1,27 @@
 import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 
-export const CardPoints = () => {
+interface ICardPoints {
+  point: number;
+  onClick?: (point: number) => void;
+}
+export const CardPoints = ({ point, onClick }: ICardPoints) => {
   return (
     <Button
+      role="@dino-cardpoint"
+      onClick={() => onClick && onClick(point)}
       _hover={{
         transform: "translateY(-2%)",
         backgroundColor: "dino.primary",
       }}
       size="sm"
       bg="dino.secondary"
-      minW="5em"
-      maxH="9em"
-      width={{
-        sm: "5em",
-        md: "5em",
-        lg: "7em",
-      }}
-      height={{
-        sm: "7em",
-        md: "7em",
-        lg: "9em",
-      }}
+      width="6em"
+      height="8em"
     >
-      <Grid>
+      <Grid gap={2}>
         <GridItem justifySelf="start">
           <Box>
-            <Text as="span">0.5</Text>
+            <Text as="span">{point}</Text>
           </Box>
         </GridItem>
         <GridItem>
@@ -44,7 +40,7 @@ export const CardPoints = () => {
               fontWeight={600}
               alignSelf="center"
             >
-              0.5
+              {point}
             </Text>
           </Box>
         </GridItem>
@@ -54,7 +50,7 @@ export const CardPoints = () => {
               transform: "rotate(-180deg)",
             }}
           >
-            <Text as="span">0.5</Text>
+            <Text as="span">{point}</Text>
           </Box>
         </GridItem>
       </Grid>

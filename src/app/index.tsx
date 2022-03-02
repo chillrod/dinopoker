@@ -1,52 +1,31 @@
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
-import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
-import { IMenu, Menu } from "../components/molecules/menu/menu";
-import { Home } from "../organisms/home";
-
 import {
-  EmailIcon,
-  LinkIcon,
-  RepeatIcon,
-  SettingsIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+  Box,
+  Center,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { CardPoints } from "../components/atoms/card-points/card-points";
-
-const actions: IMenu = {
-  menuItems: [
-    {
-      icon: <LinkIcon />,
-      label: "Share",
-    },
-    {
-      icon: <EmailIcon />,
-      label: "Messages",
-    },
-    {
-      icon: <RepeatIcon />,
-      label: "Restart",
-    },
-    {
-      icon: <SettingsIcon />,
-      label: "Settings",
-    },
-    {
-      icon: <SmallCloseIcon />,
-      label: "Close",
-    },
-  ],
-};
+import { CharacterVote } from "../components/atoms/character-vote/character-vote";
+import { DinoPoker } from "../components/atoms/dinopoker";
+import { InputNumber } from "../components/atoms/input-number/input-number";
+import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
+import { PokerTable } from "../components/molecules/poker-table/poker-table";
+import { Home } from "../organisms/home";
+import { Menu } from "../organisms/menu/menu";
+import { Round } from "../organisms/round";
 
 export const App = () => {
   return (
-    <>
-      <SimpleGrid p={1}>
-        <Flex gap={3}>
-          <Menu menuItems={actions.menuItems} />
-          <CardPoints />
-          {/* <Home /> */}
-        </Flex>
-      </SimpleGrid>
-    </>
+    <Flex justifyContent="center">
+      <Menu />
+      <Grid gridTemplateRows="auto 1fr">
+        <GridItem alignSelf="start" gridRow={2}>
+          <Round />
+        </GridItem>
+      </Grid>
+    </Flex>
   );
 };

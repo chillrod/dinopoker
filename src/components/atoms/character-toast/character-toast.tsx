@@ -41,6 +41,6 @@ export const emitCharacterToast = ({
         <Box width="100%" height="3px" bg="dino.primary"></Box>
       </SimpleGrid>
     ),
-    duration: 20000,
+    duration: 3000,
     status: "success",
   });

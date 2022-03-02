@@ -1,36 +1,30 @@
-import { SettingsIcon } from "@chakra-ui/icons";
+import { ChatIcon } from "@chakra-ui/icons";
 
 import {
-  FormControl,
-  FormLabel,
   Grid,
   GridItem,
   Popover,
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 
-import { Button } from "../../atoms/button/button";
+import { ChatMessage } from "../../atoms/chat-message/chat-message";
+import { EmptyData } from "../../atoms/empty-data/empty-data";
 import { IconButton } from "../../atoms/icon-button/icon-button";
-import { InputNumber } from "../../atoms/input-number/input-number";
-import { Input } from "../../atoms/input/input";
-import { Select } from "../../atoms/select/select";
 
-import { pointSystem } from "../room-config/pointSystem";
-
-export const MenuRoomConfig = () => {
+export const MenuMessages = () => {
   return (
     <Popover isLazy>
       <PopoverTrigger>
         <IconButton
           color="dino.base1"
-          ariaLabel="Room Settings"
-          icon={<SettingsIcon />}
+          ariaLabel="Messages"
+          icon={<ChatIcon />}
         />
       </PopoverTrigger>
       <PopoverContent
@@ -44,7 +38,7 @@ export const MenuRoomConfig = () => {
         <PopoverHeader border="none">
           <Grid alignItems="center">
             <Text color="dino.text" fontWeight={600}>
-              Configuration
+              Messages
             </Text>
             <PopoverCloseButton
               bg="dino.base2"
@@ -54,24 +48,23 @@ export const MenuRoomConfig = () => {
           </Grid>
         </PopoverHeader>
         <PopoverBody>
-          <FormControl>
-            <Grid gap={3}>
-              <GridItem>
-                <FormLabel>Point system</FormLabel>
-                <Select options={pointSystem} />
+          {true && (
+            <Grid gap={2}>
+              <GridItem maxH="150px" overflow="auto">
+                <Stack>
+                  <ChatMessage />
+                  <ChatMessage />
+                  <ChatMessage />
+                  <ChatMessage />
+                  <ChatMessage />
+                </Stack>
               </GridItem>
               <GridItem>
-                <FormLabel>Rounds</FormLabel>
-                <InputNumber value={3} />
+                <EmptyData data="messages" />
               </GridItem>
             </Grid>
-          </FormControl>
+          )}
         </PopoverBody>
-        <PopoverFooter border="none">
-          <Grid width="100%">
-            <Button action="confirm">Save</Button>
-          </Grid>
-        </PopoverFooter>
       </PopoverContent>
     </Popover>
   );

@@ -3,7 +3,7 @@ import { CheckIcon } from "@chakra-ui/icons";
 
 import { Box, FormControl, FormLabel, SimpleGrid } from "@chakra-ui/react";
 import { Button } from "../../atoms/button/button";
-import { InputIcon } from "../input-icon/input-icon";
+import { InputIcon } from "../../atoms/input-icon/input-icon";
 import { IOption } from "../../atoms/select/select";
 import { character } from "../../atoms/character-card/hooks";
 import { characters } from "../../../organisms/home/characters";
@@ -40,6 +40,7 @@ export const RoomStart = () => {
       name: roomConfiguration.name,
     });
 
+    
     return roomConfiguration;
   };
 

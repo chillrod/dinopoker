@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { Flex } from "@chakra-ui/react";
-import { IconButton } from "../../atoms/icon-button/icon-button";
-import { Input } from "../../atoms/input/input";
+import { IconButton } from "../icon-button/icon-button";
+import { Input } from "../input/input";
 
 interface IInputIconProps {
   placeholder?: string;

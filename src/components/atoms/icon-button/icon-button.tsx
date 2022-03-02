@@ -1,4 +1,4 @@
-import { IconButton as Btn } from "@chakra-ui/react";
+import { IconButton as Btn, Tooltip } from "@chakra-ui/react";
 
 interface IButtonProps {
   loading?: boolean;
@@ -20,16 +20,18 @@ export const IconButton = ({
   onClick,
 }: IButtonProps) => {
   return (
-    <Btn
-      aria-label={ariaLabel}
-      icon={icon}
-      bg={bg}
-      fontSize="22px"
-      color={color}
-      isDisabled={disabled}
-      role="@dino-iconbutton"
-      onClick={onClick}
-      isLoading={loading}
-    ></Btn>
+    <Tooltip label={ariaLabel}>
+      <Btn
+        aria-label={ariaLabel}
+        icon={icon}
+        bg={bg}
+        fontSize="22px"
+        color={color}
+        isDisabled={disabled}
+        role="@dino-iconbutton"
+        onClick={onClick}
+        isLoading={loading}
+      ></Btn>
+    </Tooltip>
   );
 };
