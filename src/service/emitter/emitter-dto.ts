@@ -13,7 +13,15 @@ export type Events = {
   CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
 
   CHANGE_ROOM_CONFIG: { point: string; rounds: number };
-  JOIN_ROOM: () => void;
+
+  JOIN_ROOM: {
+    room?: string;
+    id?: string;
+    character: { id: number };
+    vote?: number;
+    name?: string;
+  };
+
   DISCONNECT: () => void;
   LEAVE: () => void;
   SHARE: () => void;

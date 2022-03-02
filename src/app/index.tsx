@@ -20,10 +20,9 @@ import { Round } from "../organisms/round";
 export const App = () => {
   return (
     <Flex justifyContent="center">
-      <Menu />
       <Grid gridTemplateRows="auto 1fr">
         <GridItem alignSelf="start" gridRow={2}>
-          <Round />
+          <Home />
         </GridItem>
       </Grid>
     </Flex>

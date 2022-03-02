@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Tag, Text } from "@chakra-ui/react";
 
 export const DinoPoker = () => {
   return (
@@ -8,6 +8,7 @@ export const DinoPoker = () => {
         <Text as="span" color="dino.primary">
           planningpoker
         </Text>
+        <Tag mx={1} colorScheme="green">beta</Tag>
       </Heading>
     </>
   );

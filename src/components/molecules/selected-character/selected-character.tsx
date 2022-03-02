@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Box,
@@ -28,14 +28,11 @@ export const SelectedCharacter = () => {
     emitter.emit("CHARACTER_NAME", event.target.value);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     emitter.on("SELECTED_CHARACTER", (character) => {
-      if (character) {
-        setCharacter(character);
-      }
+      if (character) setCharacter(character);
     });
   }, []);
-
   return (
     <>
       <SimpleGrid spacing={3} role="@dino-selectchar">
