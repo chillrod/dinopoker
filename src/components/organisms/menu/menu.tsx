@@ -1,19 +1,24 @@
 import { useState } from "react";
 
-import { HamburgerIcon } from "@chakra-ui/icons";
-import { Box, Flex, Text, Grid } from "@chakra-ui/react";
+import { HamburgerIcon, LockIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text, Grid, Tooltip } from "@chakra-ui/react";
 
-import { BaseBox } from "../../components/atoms/base-box/base-box";
-import { IconButton } from "../../components/atoms/icon-button/icon-button";
+import { BaseBox } from "../../atoms/base-box/base-box";
+import { IconButton } from "../../atoms/icon-button/icon-button";
 
-import { MenuRoomConfig } from "../../components/molecules/menu-roomconfig/menu-roomconfig";
-import { MenuRestart } from "../../components/molecules/menu-restart/menu-restart";
-import { MenuShare } from "../../components/molecules/menu-share/menu-share";
-import { MenuRoomLeave } from "../../components/molecules/menu-roomleave/menu-roomleave";
-import { MenuMessages } from "../../components/molecules/menu-messages/menu-messages";
+import { MenuRoomConfig } from "../../molecules/menu-roomconfig/menu-roomconfig";
+import { MenuRestart } from "../../molecules/menu-restart/menu-restart";
+import { MenuShare } from "../../molecules/menu-share/menu-share";
+import { MenuRoomLeave } from "../../molecules/menu-roomleave/menu-roomleave";
+import { MenuMessages } from "../../molecules/menu-messages/menu-messages";
+import { emitter } from "../../../service/emitter/emitter";
 
 export const Menu = () => {
   const [closed, setClosed] = useState(true);
+
+  const resetPlayers = () => {
+    emitter.emit("RESET_ACTION", "RESET");
+  };
 
   return (
     <>
@@ -32,11 +37,20 @@ export const Menu = () => {
                 <MenuRestart />
                 <MenuRoomConfig />
                 <MenuRoomLeave />
+                <Tooltip label="Reset Players">
+                  <span>
+                    <IconButton
+                      icon={<LockIcon />}
+                      ariaLabel={"resetPlayers"}
+                      onClick={() => resetPlayers()}
+                    />
+                  </span>
+                </Tooltip>
               </>
             )}
           </Flex>
           <Box
-          py={6}
+            py={6}
             alignSelf="end"
             sx={{
               transform: "rotate(180deg)",

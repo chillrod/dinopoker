@@ -12,14 +12,25 @@ describe("Room Start", () => {
 
   it.todo("should create a new room", () => {});
 
-  it.only("should return the event to join a specific room", () => {
+  it("should return the event to join a specific room", () => {
     const returnRoom = (x: string) => x;
 
     const func = fn(returnRoom);
 
-    render(<RoomStart joinRoom={func} />);
+    render(
+      <div>
+        <SelectedCharacter />
+        <RoomStart joinRoom={func} />
+      </div>
+    );
 
-    userEvent.type(screen.getByRole("@dino-input"), "test");
+    const nameInput = screen.getAllByRole("@dino-input")[0];
+
+    userEvent.type(nameInput, "test");
+
+    const roomInput = screen.getAllByRole("@dino-input")[1];
+
+    userEvent.type(roomInput, "test");
 
     userEvent.click(screen.getByRole("@dino-iconbutton"));
 

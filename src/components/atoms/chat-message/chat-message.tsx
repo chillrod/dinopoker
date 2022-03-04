@@ -1,5 +1,5 @@
 import { Grid, GridItem, Img, Box, Text } from "@chakra-ui/react";
-import { characters } from "../../../organisms/home/characters";
+import { characters } from "../../organisms/home/characters";
 import { BaseBox } from "../base-box/base-box";
 
 export const ChatMessage = () => {

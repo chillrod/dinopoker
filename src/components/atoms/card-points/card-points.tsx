@@ -2,9 +2,10 @@ import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 
 interface ICardPoints {
   point: number;
+  selected: boolean;
   onClick?: (point: number) => void;
 }
-export const CardPoints = ({ point, onClick }: ICardPoints) => {
+export const CardPoints = ({ selected, point, onClick }: ICardPoints) => {
   return (
     <Button
       role="@dino-cardpoint"
@@ -14,7 +15,7 @@ export const CardPoints = ({ point, onClick }: ICardPoints) => {
         backgroundColor: "dino.primary",
       }}
       size="sm"
-      bg="dino.secondary"
+      bg={selected ? "dino.primary" : "dino.secondary"}
       width="6em"
       height="8em"
     >
