@@ -1,4 +1,4 @@
-import { Box, FormControl, FormLabel } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Tooltip } from "@chakra-ui/react";
 import { emitter } from "../../../service/emitter/emitter";
 import { Select } from "../../atoms/select/select";
 import { pointSystem } from "./pointSystem";
@@ -18,11 +18,16 @@ export const RoomConfig = () => {
     <Box width="100%" role="@dino-roomconfig">
       <FormControl>
         <FormLabel>Room configuration</FormLabel>
-        <Select
-          selected={0}
-          options={pointSystem}
-          onChange={(e) => handleSetSelected(e)}
-        />
+        <Tooltip label="Room configurations are disabled in beta">
+          <span>
+            <Select
+              disabled={process.env.NODE_ENV !== "test"}
+              selected={0}
+              options={pointSystem}
+              onChange={(e) => handleSetSelected(e)}
+            />
+          </span>
+        </Tooltip>
       </FormControl>
     </Box>
   );

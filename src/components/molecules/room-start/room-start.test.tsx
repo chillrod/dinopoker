@@ -1,3 +1,4 @@
+import { fn } from "vitest";
 import { render, screen, userEvent } from "../../../test/library";
 import { SelectedCharacter } from "../selected-character/selected-character";
 import { RoomStart } from "./room-start";
@@ -11,7 +12,21 @@ describe("Room Start", () => {
 
   it.todo("should create a new room", () => {});
 
-  it.todo("should join a existing room", () => {});
+  it.only("should return the event to join a specific room", () => {
+    const returnRoom = (x: string) => x;
+
+    const func = fn(returnRoom);
+
+    render(<RoomStart joinRoom={func} />);
+
+    userEvent.type(screen.getByRole("@dino-input"), "test");
+
+    userEvent.click(screen.getByRole("@dino-iconbutton"));
+
+    expect(func).toHaveBeenCalledTimes(1);
+
+    expect(func).toHaveReturnedWith("test");
+  });
 
   it.todo(
     "should create a room with default character and point system if no selected",

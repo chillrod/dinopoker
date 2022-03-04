@@ -9,6 +9,7 @@ import ChakraTheme from "./config/theme";
 
 import { ToastProvider } from "./service/toast-provider";
 import { MessageBox } from "./components/molecules/message-box/message-box";
+import { Playground } from "./app/playground";
 
 ReactDOM.render(
   <React.StrictMode>
