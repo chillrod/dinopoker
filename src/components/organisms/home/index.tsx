@@ -49,7 +49,9 @@ export const Home: React.FC = () => {
   useEffect(() => {
     emitter.on("CHARACTER_NAME", (name) => setCharacterName(name));
 
-    emitter.on("SELECTED_CHARACTER", (character) => setCharacter(character.id));
+    emitter.on("SELECTED_CHARACTER", (character) => {
+      if (character) setCharacter(character.id);
+    });
   }, []);
 
   return (

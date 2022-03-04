@@ -8,7 +8,7 @@ export type Events = {
   //
 
   CHARACTER_NAME: string;
-  SELECTED_CHARACTER: character;
+  SELECTED_CHARACTER?: character;
   SELECTED_CONFIGURATION?: IOption;
 
   CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
