@@ -4,7 +4,7 @@ import { CardPoints } from "./card-points";
 
 describe("Card points", () => {
   it("render the card point", () => {
-    render(<CardPoints point={5} />);
+    render(<CardPoints selected={false} point={5} />);
 
     const card = screen.getByRole("@dino-cardpoint");
 
@@ -16,7 +16,7 @@ describe("Card points", () => {
 
     const func = fn(getNumber);
 
-    render(<CardPoints point={5} onClick={func} />);
+    render(<CardPoints selected={false} point={5} onClick={func} />);
 
     const card = screen.getByRole("@dino-cardpoint");
 
