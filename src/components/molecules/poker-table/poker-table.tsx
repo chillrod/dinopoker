@@ -15,7 +15,6 @@ import { socket } from "../../../service/socket";
 
 export const PokerTable = () => {
   const [roomPlayers, setRoomPlayers] = useState<IPlayerData[]>([]);
-  const [revealed, setIsRevealed] = useState(false);
 
   const renderTableMargin = (index: number) => {
     if (index === 0 || index === 5) return "2em 0 2em 0";
@@ -23,13 +22,11 @@ export const PokerTable = () => {
   };
 
   const revealVote = () => {
-    setIsRevealed(true);
     emitter.emit("REVEAL_VOTE", "REVEAL");
   };
 
-  const restartVotes = () => {
-    setIsRevealed(false);
-    emitter.emit("RESTART_ACTION", "RESET");
+  const restartVote = () => {
+    emitter.emit("RESTART_ACTION", "RESTART");
   };
 
   useEffect(() => {
@@ -94,15 +91,15 @@ export const PokerTable = () => {
             zIndex: 3,
           }}
         >
-          {!revealed && (
+          {roomPlayers[0]?.voteStatus !== "REVEALED" && (
             <Button onClick={() => revealVote()} action="confirm">
               Reveal vote
             </Button>
           )}
 
-          {revealed && (
-            <Button onClick={() => restartVotes()} action="confirm">
-              Restart votes
+          {roomPlayers[0]?.voteStatus === "REVEALED" && (
+            <Button onClick={() => restartVote()} action="confirm">
+              Restart Votes
             </Button>
           )}
         </GridItem>

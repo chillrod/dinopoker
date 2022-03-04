@@ -58,7 +58,7 @@ export const Home: React.FC = () => {
     <Box
       p={2}
       maxWidth={{
-        lg: "800px",
+        lg: "1000px",
       }}
       sx={{
         margin: "0 auto",

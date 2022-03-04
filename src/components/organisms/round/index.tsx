@@ -18,20 +18,21 @@ export const Round = ({ currentPlayer }: IRound) => {
 
   const navigate = useNavigate();
 
+  const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
+
   const storagePlayer = localStorage.getItem("character");
   const cCurrentPlayer =
     currentPlayer || JSON.parse(storagePlayer ? storagePlayer : "{}");
 
-  const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
-
   const emitNewPoint = (point: number | null) => {
-    setSelectedPoint(point);
     const updatedVote = {
       ...cCurrentPlayer,
       vote: point,
     };
 
     socket.emit("changeVote", updatedVote);
+
+    socket.emit("currentData", updatedVote);
   };
 
   useEffect(() => {
@@ -39,6 +40,16 @@ export const Round = ({ currentPlayer }: IRound) => {
 
     socket.on("msgPlayerData", (data) => {
       emitter.emit("ROOM_PLAYERS", data);
+    });
+
+    socket.on("resetVotes", (data) => {
+      setSelectedPoint(null);
+      
+      emitter.emit("ROOM_PLAYERS", data);
+    });
+
+    socket.on("currentDataOfPlayer", (data) => {
+      setSelectedPoint(data.vote);
     });
 
     emitter.on("RESTART_ACTION", (data) => {
@@ -59,7 +70,7 @@ export const Round = ({ currentPlayer }: IRound) => {
   return (
     <Box
       maxWidth={{
-        lg: "800px",
+        lg: "1000px",
       }}
       sx={{
         margin: "0 auto",
