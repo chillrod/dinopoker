@@ -1,5 +1,6 @@
 import { character } from "../../components/atoms/character-card/hooks";
 import { IOption } from "../../components/atoms/select/select";
+import { IPlayerData } from "../../components/organisms/dto/playerdata";
 
 export type Events = {
   //this is just for test
@@ -12,15 +13,14 @@ export type Events = {
 
   CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
 
-  CHANGE_ROOM_CONFIG: { point: string; rounds: number };
+  ROOM_PLAYERS: IPlayerData[];
+  CURRENT_PLAYER: IPlayerData;
+  CHANGE_VOTE: number;
+  RESTART_ACTION: string;
+  RESET_ACTION: string;
+  REVEAL_VOTE: string;
 
-  JOIN_ROOM: {
-    room?: string;
-    id?: string;
-    character: { id: number };
-    vote?: number;
-    name?: string;
-  };
+  CHANGE_ROOM_CONFIG: { point: string; rounds: number };
 
   DISCONNECT: () => void;
   LEAVE: () => void;
@@ -36,9 +36,4 @@ export type Events = {
   ERROR: string;
   SUCCESS: string;
   LOADING: boolean;
-
-  VOTE_START: () => void;
-  VOTE_SELECT: (point: number) => void;
-  VOTE_REVEAL: () => void;
-  VOTE_END: () => void;
 };

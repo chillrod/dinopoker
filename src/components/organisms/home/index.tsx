@@ -1,54 +1,57 @@
-import { useEffect, useState } from "react";
-
-import { io } from "socket.io-client";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
+import { IPlayerData } from "../dto/playerdata";
 
-import { CharacterWrapper } from "../../components/molecules/character-wrapper/character-wrapper";
-import { SelectedCharacter } from "../../components/molecules/selected-character/selected-character";
-import { RoomConfig } from "../../components/molecules/room-config/room-config";
-import { RoomStart } from "../../components/molecules/room-start/room-start";
+import { CharacterWrapper } from "../../molecules/character-wrapper/character-wrapper";
+import { SelectedCharacter } from "../../molecules/selected-character/selected-character";
+import { RoomConfig } from "../../molecules/room-config/room-config";
+import { RoomStart } from "../../molecules/room-start/room-start";
 
 import { characters } from "./characters";
-import { emitter } from "../../service/emitter/emitter";
 
-import { TitleSubtitle } from "../../components/atoms/title-subtitle";
-import { DinoPoker } from "../../components/atoms/dinopoker";
-import { socket } from "../../service/socket";
+import { TitleSubtitle } from "../../atoms/title-subtitle";
+import { DinoPoker } from "../../atoms/dinopoker";
 
-interface IPlayerData {
-  id?: string;
-  name?: string;
-  character?: number;
-  vote?: number;
-  room?: string;
-}
+import { socket } from "../../../service/socket";
+import { emitter } from "../../../service/emitter/emitter";
+
+import { v4 } from "uuid";
 
 export const Home: React.FC = () => {
   const [characterName, setCharacterName] = useState("");
 
-  const [character, setCharacter] = useState<number | undefined>(
-    characters[0].id
-  );
+  const navigate = useNavigate();
+
+  const [character, setCharacter] = useState<number>(characters[0].id);
 
   const handleJoinRoom = (room: string) => {
     const data: IPlayerData = {
-      id: "",
+      id: v4(),
       name: characterName,
       character: character,
-      vote: 0,
+      vote: null,
       room,
     };
 
+    emitter.emit("CURRENT_PLAYER", data);
+
     socket.emit("joinRoom", data);
+
+    socket.on("msgCurrentPlayerData", (data) => {
+      if (data === "Error") return;
+
+      if (data === "Joined Room") return navigate(`/room/${room}`);
+    });
   };
 
   useEffect(() => {
     emitter.on("CHARACTER_NAME", (name) => setCharacterName(name));
 
-    emitter.on("SELECTED_CHARACTER", (character) =>
-      setCharacter(character?.id)
-    );
+    emitter.on("SELECTED_CHARACTER", (character) => {
+      if (character) setCharacter(character.id);
+    });
   }, []);
 
   return (
@@ -63,7 +66,7 @@ export const Home: React.FC = () => {
     >
       <DinoPoker />
       <Box py={1} px={1}>
-        <TitleSubtitle title="to start" subtitle="Select a character" />
+        <TitleSubtitle title="to start" subtitle="Choose a color mood" />
       </Box>
       <SimpleGrid columns={2} spacing={6}>
         <Container m={0} p={0}>

@@ -8,7 +8,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
-import { characters } from "../../../organisms/home/characters";
+import { characters } from "../../organisms/home/characters";
 import { CharacterCard } from "../../atoms/character-card/character-card";
 import { character } from "../../atoms/character-card/hooks";
 import { Input } from "../../atoms/input/input";

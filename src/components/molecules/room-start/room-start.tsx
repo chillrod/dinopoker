@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+
 import { CheckIcon } from "@chakra-ui/icons";
 
 import {
@@ -11,8 +12,6 @@ import {
 
 import { Button } from "../../atoms/button/button";
 import { InputIcon } from "../../atoms/input-icon/input-icon";
-import { IOption } from "../../atoms/select/select";
-import { character } from "../../atoms/character-card/hooks";
 
 import { emitter } from "../../../service/emitter/emitter";
 
@@ -21,15 +20,15 @@ interface IRoomStart {
 }
 
 export const RoomStart = ({ joinRoom }: IRoomStart) => {
-  const [canCreateRoom, setCanCreateRoom] = useState(false);
+  const [canHandleRoom, setCanHandleRoom] = useState(false);
 
   useMemo(() => {
     emitter.on("CHARACTER_NAME", (name) => {
       if (name.length) {
-        return setCanCreateRoom(true);
+        return setCanHandleRoom(true);
       }
 
-      return setCanCreateRoom(false);
+      return setCanHandleRoom(false);
     });
   }, []);
 
@@ -39,6 +38,7 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
         <FormControl>
           <FormLabel>Or join a room</FormLabel>
           <InputIcon
+            disabled={!canHandleRoom}
             confirm={(e) => (joinRoom ? joinRoom(e) : null)}
             ariaLabel="Confirm"
             icon={<CheckIcon />}
@@ -48,7 +48,7 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
           <Tooltip label="New rooms are disabled in beta">
             <span>
               <Button
-                disabled={process.env.NODE_ENV !== "test" || !canCreateRoom}
+                disabled={process.env.NODE_ENV !== "test" || !canHandleRoom}
                 onClick={() => null}
                 action="confirm"
               >
