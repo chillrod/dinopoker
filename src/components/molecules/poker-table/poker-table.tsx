@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Center, SimpleGrid } from "@chakra-ui/react";
 import { Text, Grid, GridItem, Img } from "@chakra-ui/react";
 
 import { Button } from "../../atoms/button/button";
@@ -17,8 +17,12 @@ export const PokerTable = () => {
   const [roomPlayers, setRoomPlayers] = useState<IPlayerData[]>([]);
 
   const renderTableMargin = (index: number) => {
-    if (index === 0 || index === 5) return "2em 0 2em 0";
-    if (index === 6 || index === 11) return "-2em 0 -2em 0";
+    if (index === 0 || index === 5) return "2.5em 0 2.5em 0";
+    if (index === 6 || index === 11) return "-2.5em 0 -2.5em 0";
+  };
+
+  const assertGridColumn = (index: number): string => {
+    return index.toString();
   };
 
   const revealVote = () => {
@@ -35,10 +39,24 @@ export const PokerTable = () => {
 
   return (
     <>
+      <Center>
+        {roomPlayers[0]?.voteStatus !== "REVEALED" && (
+          <Button onClick={() => revealVote()} action="confirm">
+            Reveal vote
+          </Button>
+        )}
+
+        {roomPlayers[0]?.voteStatus === "REVEALED" && (
+          <Button onClick={() => restartVote()} action="confirm">
+            Restart Votes
+          </Button>
+        )}
+      </Center>
       <Grid templateColumns="1fr">
         <GridItem
           gridRow={1}
           gridColumn={1}
+          alignSelf="start"
           justifySelf="center"
           sx={{
             zIndex: 2,
@@ -60,8 +78,27 @@ export const PokerTable = () => {
               </Box>
             </SimpleGrid>
           )} */}
-          {roomPlayers.length && (
-            <SimpleGrid gap={6} columns={6}>
+          {roomPlayers?.length && (
+            // <SimpleGrid gap={2}>
+            //   {roomPlayers.map((player, index) => (
+            //     <Box
+            //       w="8ch"
+            //       h="11ch"
+            //       key={player.id}
+            //       sx={{
+            //         margin: renderTableMargin(index),
+            //       }}
+            //     >
+            //       <CharacterVote
+            //         character={player.character}
+            //         name={player.name}
+            //         vote={player.vote}
+            //         voteStatus={player.voteStatus}
+            //       />
+            //     </Box>
+            //   ))}
+            //   </SimpleGrid>
+            <SimpleGrid gap={2} columns={6} mt={3}>
               {roomPlayers.map((player, index) => (
                 <Box
                   w="8ch"
@@ -90,19 +127,7 @@ export const PokerTable = () => {
           sx={{
             zIndex: 3,
           }}
-        >
-          {roomPlayers[0]?.voteStatus !== "REVEALED" && (
-            <Button onClick={() => revealVote()} action="confirm">
-              Reveal vote
-            </Button>
-          )}
-
-          {roomPlayers[0]?.voteStatus === "REVEALED" && (
-            <Button onClick={() => restartVote()} action="confirm">
-              Restart Votes
-            </Button>
-          )}
-        </GridItem>
+        ></GridItem>
         <GridItem
           gridRow={1}
           gridColumn={1}
@@ -112,7 +137,7 @@ export const PokerTable = () => {
           }}
         >
           <Box
-            bg="dino.secondary"
+            bg="dino.base3"
             width="100%"
             minHeight="250px"
             height="100%"

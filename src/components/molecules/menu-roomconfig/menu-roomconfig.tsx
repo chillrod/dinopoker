@@ -28,6 +28,7 @@ export const MenuRoomConfig = () => {
     <Popover isLazy>
       <PopoverTrigger>
         <IconButton
+          disabled
           color="dino.base1"
           ariaLabel="Room Settings"
           icon={<SettingsIcon />}

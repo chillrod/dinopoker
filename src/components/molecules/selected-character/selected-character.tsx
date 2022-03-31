@@ -46,7 +46,7 @@ export const SelectedCharacter = () => {
               onChange={(e) => handleSelectedName(e)}
               required
               disabled={!character?.src?.length}
-              placeholder="Patrinho"
+              placeholder="Choosen name"
             />
           </FormControl>
         </Box>
