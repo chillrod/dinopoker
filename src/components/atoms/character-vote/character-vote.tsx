@@ -46,7 +46,9 @@ export const CharacterVote = ({
 
   return (
     <Button
+      role="@dino-charactevote"
       size="xs"
+      title={parseVoteStatusBackground(voteStatus ? voteStatus : "THINKING")}
       bg={parseVoteStatusBackground(voteStatus ? voteStatus : "THINKING")}
       // outline={raiseHand ? "2px  goldenrod solid" : ""}
       width="100%"
@@ -89,6 +91,7 @@ export const CharacterVote = ({
                   top: "50%",
                   transform: "translateY(-50%)",
                 }}
+                title={parseToolTip(voteStatus, vote)}
                 fontSize="lg"
               >
                 {voteStatus === "THINKING" && "-"}
