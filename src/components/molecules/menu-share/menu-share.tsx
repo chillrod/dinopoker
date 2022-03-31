@@ -3,6 +3,11 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 
 export const MenuShare = () => {
   return (
-    <IconButton color="dino.base1" ariaLabel="Share Room" icon={<LinkIcon />} />
+    <IconButton
+      disabled
+      color="dino.base1"
+      ariaLabel="Share Room"
+      icon={<LinkIcon />}
+    />
   );
 };

@@ -12,9 +12,9 @@ interface IGameRoom {
 export const GameRoom = ({ currentPlayer }: IGameRoom) => {
   return (
     <Flex justifyContent="center">
-      <Menu />
-      <Grid gridTemplateRows="auto 1fr" gap={3}>
-        <GridItem alignSelf="start" gridRow={1}>
+      <Grid gridTemplateRows="auto 1fr" gap={2}>
+        <GridItem alignSelf="start" gridRow={2}>
+          <Menu />
           <Round currentPlayer={currentPlayer} />
         </GridItem>
       </Grid>

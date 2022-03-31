@@ -8,7 +8,9 @@ export const DinoPoker = () => {
         <Text as="span" color="dino.primary">
           planningpoker
         </Text>
-        <Tag mx={1} colorScheme="green">beta</Tag>
+        <Tag mx={1} colorScheme="green">
+          beta 0.0.2
+        </Tag>
       </Heading>
     </>
   );

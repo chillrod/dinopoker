@@ -56,21 +56,21 @@ export const Home: React.FC = () => {
 
   return (
     <Box
-      p={2}
+      p={6}
       maxWidth={{
-        lg: "1000px",
+        lg: "900px",
       }}
       sx={{
         margin: "0 auto",
       }}
     >
       <DinoPoker />
-      <Box py={1} px={1}>
+      <Box py={0} px={1}>
         <TitleSubtitle title="to start" subtitle="Choose a color mood" />
       </Box>
       <SimpleGrid columns={2} spacing={6}>
         <Container m={0} p={0}>
-          <SimpleGrid columns={1} spacing={12}>
+          <SimpleGrid columns={1} spacing={6}>
             <CharacterWrapper characters={characters} />
             <Box>
               <RoomConfig />

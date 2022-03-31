@@ -13,8 +13,8 @@ export const Router = () => {
   useEffect(() => {
     emitter.on("CURRENT_PLAYER", (data) => {
       setCurrentPlayer(data);
+
       localStorage.setItem("character", JSON.stringify(data));
-      
     });
   }, []);
 

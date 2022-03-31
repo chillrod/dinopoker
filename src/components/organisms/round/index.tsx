@@ -44,7 +44,7 @@ export const Round = ({ currentPlayer }: IRound) => {
 
     socket.on("resetVotes", (data) => {
       setSelectedPoint(null);
-      
+
       emitter.emit("ROOM_PLAYERS", data);
     });
 
@@ -68,28 +68,30 @@ export const Round = ({ currentPlayer }: IRound) => {
   }, []);
 
   return (
-    <Box
-      maxWidth={{
-        lg: "1000px",
-      }}
-      sx={{
-        margin: "0 auto",
-      }}
-    >
-      <Grid templateColumns="auto 1fr" alignItems="center" gap={3}>
-        <GridItem alignSelf="center" gridColumn={2} gridRow={1}>
-          <PokerTable />
-        </GridItem>
+    <Box>
+      <Grid
+        templateColumns="auto 1fr"
+        alignItems="center"
+        justifyContent="center"
+        gap={1}
+      >
         <GridItem
-          gridRow={2}
+          alignSelf="center"
           gridColumn={2}
-          w="100%"
-          justifySelf="center"
+          gridRow={1}
+          maxH={{
+            sm: "20ch",
+            md: "300px",
+            lg: "500px",
+          }}
           overflow="auto"
         >
+          <PokerTable />
+        </GridItem>
+        <GridItem gridRow={2} gridColumn={2} overflow="auto">
           <Flex gap={2}>
             {pointSystem[0].value.map((item) => (
-              <Box width="100%">
+              <Box width="100%" mx={1}>
                 <CardPoints
                   selected={selectedPoint === item}
                   onClick={(e) => emitNewPoint(e)}

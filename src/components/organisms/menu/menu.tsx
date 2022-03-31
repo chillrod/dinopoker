@@ -22,9 +22,9 @@ export const Menu = () => {
 
   return (
     <>
-      <BaseBox>
-        <Grid h="100%" templateRows="auto 1fr" justifyItems="center">
-          <Flex flexDirection="column" gap={1}>
+      <Grid templateColumns="auto 1fr" p={1} alignItems="center">
+        <Flex gap={1}>
+          <Box mx={2}>
             <IconButton
               onClick={() => setClosed(!closed)}
               ariaLabel={closed ? "Open Menu" : "Close Menu"}
@@ -37,46 +37,30 @@ export const Menu = () => {
                 <MenuRestart />
                 <MenuRoomConfig />
                 <MenuRoomLeave />
-                <Tooltip label="Reset Players">
-                  <span>
-                    <IconButton
-                      icon={<LockIcon />}
-                      ariaLabel={"resetPlayers"}
-                      onClick={() => resetPlayers()}
-                    />
-                  </span>
-                </Tooltip>
+                <IconButton
+                  icon={<LockIcon />}
+                  ariaLabel={"DANGEROUS - RESET PLAYERS"}
+                  onClick={() => resetPlayers()}
+                />
               </>
             )}
-          </Flex>
-          <Box
-            py={6}
-            alignSelf="end"
-            sx={{
-              transform: "rotate(180deg)",
-            }}
-          >
+          </Box>
+        </Flex>
+        <Box py={2} alignSelf="end">
+          <Text fontSize="sm">
+            dino
             <Text
-              fontSize="xl"
+              fontWeight={800}
+              as="span"
               sx={{
-                writingMode: "vertical-lr",
-                textOrientation: "mixed",
+                color: "dino.primary",
               }}
             >
-              dino
-              <Text
-                fontWeight={800}
-                as="span"
-                sx={{
-                  color: "dino.primary",
-                }}
-              >
-                poker.app
-              </Text>
+              poker.app
             </Text>
-          </Box>
-        </Grid>
-      </BaseBox>
+          </Text>
+        </Box>
+      </Grid>
     </>
   );
 };

@@ -22,6 +22,7 @@ export const MenuMessages = () => {
     <Popover isLazy>
       <PopoverTrigger>
         <IconButton
+          disabled
           color="dino.base1"
           ariaLabel="Messages"
           icon={<ChatIcon />}
