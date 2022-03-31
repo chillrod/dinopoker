@@ -4,8 +4,12 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 
 export const MenuRoomLeave = () => {
   const handleLeaveRoom = () => [
-    emitter.emit("EMIT_MESSAGEBOX", "Leave the room"),
+    emitter.emit("EMIT_MESSAGEBOX", {
+      message: "Leave the room",
+      func: "LEAVE_ACTION",
+    }),
   ];
+
   return (
     <IconButton
       onClick={() => handleLeaveRoom()}

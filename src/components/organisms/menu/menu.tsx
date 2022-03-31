@@ -24,7 +24,7 @@ export const Menu = () => {
     <>
       <Grid templateColumns="auto 1fr" p={1} alignItems="center">
         <Flex gap={1}>
-          <Box mx={2}>
+          <Box mx={3}>
             <IconButton
               onClick={() => setClosed(!closed)}
               ariaLabel={closed ? "Open Menu" : "Close Menu"}

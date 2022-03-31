@@ -13,31 +13,44 @@ import { Button } from "../../atoms/button/button";
 
 import { emitter } from "../../../service/emitter/emitter";
 
+import { Events } from "../../../service/emitter/emitter-dto";
+
 interface FocusableElement {
   focus(options?: FocusOptions): void;
 }
 
 interface IMessageBox {
-  onConfirm?: () => void;
   open?: boolean;
 }
 
-export const MessageBox = ({ onConfirm, open = false }: IMessageBox) => {
+export const MessageBox = ({ open = false }: IMessageBox) => {
   const [isOpen, setIsOpen] = useState(open);
 
   const [currentMessage, setCurrentMessage] = useState("");
+
+  const [currentFunc, setCurrentFunc] = useState<keyof Events>("SUCCESS");
 
   const onClose = () => setIsOpen(false);
 
   const cancelRef: RefObject<FocusableElement> = useRef(null);
 
   useEffect(() => {
-    emitter.on("EMIT_MESSAGEBOX", (message) => {
+    emitter.on("EMIT_MESSAGEBOX", ({ message, func }) => {
       setIsOpen(true);
+
+      setCurrentFunc(func);
 
       setCurrentMessage(message);
     });
   }, []);
+
+  const handleActionConfirm = () => {
+    if (currentFunc) {
+      emitter.emit(currentFunc);
+    }
+
+    onClose();
+  };
 
   return (
     <AlertDialog
@@ -67,7 +80,7 @@ export const MessageBox = ({ onConfirm, open = false }: IMessageBox) => {
                 Cancel
               </Button>
             )}
-            <Button onClick={onConfirm} action="confirm">
+            <Button onClick={() => handleActionConfirm()} action="confirm">
               Confirm
             </Button>
           </Flex>

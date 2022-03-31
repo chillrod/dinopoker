@@ -19,14 +19,15 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 
 export const MenuMessages = () => {
   return (
-    <Popover isLazy>
+    <Popover isLazy placement="bottom">
       <PopoverTrigger>
-        <IconButton
-          disabled
-          color="dino.base1"
-          ariaLabel="Messages"
-          icon={<ChatIcon />}
-        />
+        <span>
+          <IconButton
+            color="dino.base1"
+            ariaLabel="Messages"
+            icon={<ChatIcon />}
+          />
+        </span>
       </PopoverTrigger>
       <PopoverContent
         maxW="15em"
@@ -53,11 +54,8 @@ export const MenuMessages = () => {
             <Grid gap={2}>
               <GridItem maxH="150px" overflow="auto">
                 <Stack>
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
+                  {/* TODO */}
+                  {/* <ChatMessage /> */}
                 </Stack>
               </GridItem>
               <GridItem>
