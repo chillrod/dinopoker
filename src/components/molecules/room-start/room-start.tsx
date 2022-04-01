@@ -43,7 +43,7 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
           <InputIcon
             disabled={!canHandleRoom}
             confirm={(e) => (joinRoom ? joinRoom(e) : null)}
-            ariaLabel="Confirm"
+            ariaLabel={t("components.confirm-action")}
             placeholder={t("home.room-name")}
             icon={<CheckIcon />}
           />

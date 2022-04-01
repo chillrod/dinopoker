@@ -16,6 +16,8 @@ const resources = {
         "confirm-action": "Confirm",
         "cancel-action": "Cancel",
         "are-you-sure-you-want-to": "Are you sure you want to",
+        next: "Next",
+        previous: "Previous",
       },
       round: {
         "reveal-vote": "Reveal Vote",
@@ -52,6 +54,8 @@ const resources = {
         "confirm-action": "Confirmar",
         "cancel-action": "Cancelar",
         "are-you-sure-you-want-to": "Você tem certeza que deseja",
+        next: "Próximo",
+        previous: "Anterior",
       },
 
       round: {
@@ -91,6 +95,8 @@ const resources = {
         "confirm-action": "确认",
         "cancel-action": "取消",
         "are-you-sure-you-want-to": "你确定你想要",
+        next: "下一个",
+        previous: "上一个",
       },
       round: {
         "reveal-vote": "揭晓投票",
@@ -127,6 +133,8 @@ const resources = {
         "confirm-action": "Confirmar",
         "cancel-action": "Cancelar",
         "are-you-sure-you-want-to": "¿Estás seguro que quieres",
+        next: "Siguiente",
+        previous: "Anterior",
       },
       round: {
         "reveal-vote": "Revelar voto",

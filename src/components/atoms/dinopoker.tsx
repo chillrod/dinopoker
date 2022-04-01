@@ -1,8 +1,8 @@
 import { AtSignIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Tag, Text } from "@chakra-ui/react";
 import { MenuChangeLanguage } from "../molecules/menu-changelanguage/menu-changelanguage";
-import { IconButton } from "./icon-button/icon-button";
 
+import { IconButton } from "./icon-button/icon-button";
 interface IDinoPoker {
   justify: string;
 }

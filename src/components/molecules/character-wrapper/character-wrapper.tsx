@@ -9,11 +9,14 @@ import { character } from "../../atoms/character-card/hooks";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { emitter } from "../../../service/emitter/emitter";
 
+import { useTranslation } from "react-i18next";
+
 interface ICharacterWrapper {
   characters: character[];
 }
 
 export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState(0);
 
   const handleSelect = (id: number) => {
@@ -64,12 +67,12 @@ export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
           <Flex justifyContent="space-around">
             <IconButton
               onClick={() => handleArrowBack(selected)}
-              ariaLabel="Previous"
+              ariaLabel={t("components.previous")}
               icon={<ChevronLeftIcon />}
             />
             <IconButton
               onClick={() => handleArrowNext(selected)}
-              ariaLabel="Next"
+              ariaLabel={t("components.next")}
               icon={<ChevronRightIcon />}
             />
           </Flex>

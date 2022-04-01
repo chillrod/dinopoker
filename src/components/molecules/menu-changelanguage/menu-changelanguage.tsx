@@ -35,7 +35,7 @@ export const MenuChangeLanguage = () => {
     language: ChangeEvent<HTMLSelectElement>
   ) => {
     localStorage.setItem("i18nextLng", language.target.value);
-    
+
     setCurrentLanguage(language.target.value);
   };
 
@@ -49,7 +49,7 @@ export const MenuChangeLanguage = () => {
         <span>
           <IconButton
             icon={<AtSignIcon />}
-            ariaLabel="Change language"
+            ariaLabel={t("components.change-language")}
           ></IconButton>
         </span>
       </PopoverTrigger>
