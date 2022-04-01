@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import { Box, Center, SimpleGrid } from "@chakra-ui/react";
-import { Text, Grid, GridItem, Img } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 
 import { Button } from "../../atoms/button/button";
 import { CharacterVote } from "../../atoms/character-vote/character-vote";
 
-import { characters } from "../../organisms/home/characters";
-
 import { IPlayerData } from "../../organisms/dto/playerdata";
 import { emitter } from "../../../service/emitter/emitter";
-import { socket } from "../../../service/socket";
+
+import { useTranslation } from "react-i18next";
 
 export const PokerTable = () => {
+  const { t } = useTranslation();
+
   const [roomPlayers, setRoomPlayers] = useState<IPlayerData[]>([]);
 
   const renderTableMargin = (index: number) => {
     if (index === 0 || index === 5) return "2.5em 0 2.5em 0";
     if (index === 6 || index === 11) return "-2.5em 0 -2.5em 0";
-  };
-
-  const assertGridColumn = (index: number): string => {
-    return index.toString();
   };
 
   const revealVote = () => {
@@ -42,13 +38,13 @@ export const PokerTable = () => {
       <Center>
         {roomPlayers[0]?.voteStatus !== "REVEALED" && (
           <Button onClick={() => revealVote()} action="confirm">
-            Reveal vote
+            {t("round.reveal-vote")}
           </Button>
         )}
 
         {roomPlayers[0]?.voteStatus === "REVEALED" && (
           <Button onClick={() => restartVote()} action="confirm">
-            Restart Votes
+            {t("round.restart-votes")}
           </Button>
         )}
       </Center>

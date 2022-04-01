@@ -8,6 +8,7 @@ import { MessageBox } from "./components/molecules/message-box/message-box";
 import { Router } from "./app/routes";
 
 import ChakraTheme from "./config/theme";
+import "./config/locale/";
 
 import "./dino.css";
 

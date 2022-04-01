@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { useTranslation } from "react-i18next";
 
 import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
 import { IPlayerData } from "../dto/playerdata";
@@ -20,6 +22,8 @@ import { emitter } from "../../../service/emitter/emitter";
 import { v4 } from "uuid";
 
 export const Home: React.FC = () => {
+  const { t } = useTranslation();
+
   const [characterName, setCharacterName] = useState("");
 
   const navigate = useNavigate();
@@ -64,12 +68,15 @@ export const Home: React.FC = () => {
         margin: "0 auto",
       }}
     >
-      <DinoPoker />
+      <DinoPoker justify="center" />
       <Box py={0} px={1}>
-        <TitleSubtitle title="to start" subtitle="Choose a color mood" />
+        <TitleSubtitle
+          title={t("home.to-start")}
+          subtitle={t("home.choose-color-mood")}
+        />
       </Box>
       <SimpleGrid columns={2} spacing={6}>
-        <Container m={0} p={0}>
+        <Container m={1} p={0}>
           <SimpleGrid columns={1} spacing={6}>
             <CharacterWrapper characters={characters} />
             <Box>

@@ -9,6 +9,8 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
+import { useTranslation } from "react-i18next";
+
 import { IPlayerData } from "../../organisms/dto/playerdata";
 
 import { characters } from "../../organisms/home/characters";
@@ -26,12 +28,13 @@ export const CharacterVote = ({
   vote,
   voteStatus,
 }: IPlayerData) => {
+  const { t } = useTranslation();
   const parseToolTip = (voteStatus?: string, vote?: number | null) => {
     if (voteStatus === "REVELEAD") return `${vote}`;
 
-    if (voteStatus === "THINKING") return "Not voted yet";
+    if (voteStatus === "THINKING") return t("round.not-voted-yet");
 
-    if (voteStatus === "SECRET") return "Voted! But is a secret";
+    if (voteStatus === "SECRET") return t("round.voted-but-is-a-secret");
   };
 
   const parseVoteStatusBackground = (voteStatus: string) => {
@@ -46,7 +49,9 @@ export const CharacterVote = ({
 
   return (
     <Button
+      role="@dino-charactevote"
       size="xs"
+      title={parseVoteStatusBackground(voteStatus ? voteStatus : "THINKING")}
       bg={parseVoteStatusBackground(voteStatus ? voteStatus : "THINKING")}
       // outline={raiseHand ? "2px  goldenrod solid" : ""}
       width="100%"
@@ -89,6 +94,7 @@ export const CharacterVote = ({
                   top: "50%",
                   transform: "translateY(-50%)",
                 }}
+                title={parseToolTip(voteStatus, vote)}
                 fontSize="lg"
               >
                 {voteStatus === "THINKING" && "-"}

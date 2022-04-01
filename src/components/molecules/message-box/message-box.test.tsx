@@ -15,21 +15,21 @@ describe("Message Box", () => {
     expect(dialog).toHaveTextContent("Are you sure you want to ACTION");
   });
 
-  it("should return the action with onConfirm", () => {
-    const returnMessage = (message: string) => message;
+  // it("should return the action with onConfirm", () => {
+  //   const returnMessage = (message: string) => message;
 
-    const func = fn(returnMessage);
-    render(
-      <>
-        <MessageBox open={true} onConfirm={() => func("hello")} />
-      </>
-    );
+  //   const func = fn(returnMessage);
+  //   render(
+  //     <>
+  //       <MessageBox open={true} onConfirm={() => func("hello")} />
+  //     </>
+  //   );
 
-    const confirmBtn = screen.getByRole("@dino-button");
+  //   const confirmBtn = screen.getByRole("@dino-button");
 
-    confirmBtn.click();
+  //   confirmBtn.click();
 
-    expect(func).toHaveBeenCalledTimes(1);
-    expect(func).toHaveReturnedWith("hello");
-  });
+  //   expect(func).toHaveBeenCalledTimes(1);
+  //   expect(func).toHaveReturnedWith("hello");
+  // });
 });

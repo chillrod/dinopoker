@@ -14,10 +14,14 @@ export type Events = {
   CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
 
   ROOM_PLAYERS: IPlayerData[];
+
   CURRENT_PLAYER: IPlayerData;
+
   CHANGE_VOTE: number;
   RESTART_ACTION: string;
   RESET_ACTION: string;
+  LEAVE_ACTION: string;
+
   REVEAL_VOTE: string;
 
   CHANGE_ROOM_CONFIG: { point: string; rounds: number };
@@ -30,7 +34,7 @@ export type Events = {
   CANCEL_ACTION: () => void;
   EMIT_TOAST: string;
   EMIT_CHARACTER_TOAST: { message: string; characterSrc?: string };
-  EMIT_MESSAGEBOX: string;
+  EMIT_MESSAGEBOX: { message: string; func: keyof Events };
   EMIT_CHATMESSAGE: string;
 
   ERROR: string;

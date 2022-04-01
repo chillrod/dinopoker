@@ -1,5 +1,7 @@
 import { ChatIcon } from "@chakra-ui/icons";
 
+import { useTranslation } from "react-i18next";
+
 import {
   Grid,
   GridItem,
@@ -18,15 +20,17 @@ import { EmptyData } from "../../atoms/empty-data/empty-data";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 
 export const MenuMessages = () => {
+  const { t } = useTranslation();
   return (
-    <Popover isLazy>
+    <Popover isLazy placement="bottom">
       <PopoverTrigger>
-        <IconButton
-          disabled
-          color="dino.base1"
-          ariaLabel="Messages"
-          icon={<ChatIcon />}
-        />
+        <span>
+          <IconButton
+            color="dino.base1"
+            ariaLabel={t("components.messages")}
+            icon={<ChatIcon />}
+          />
+        </span>
       </PopoverTrigger>
       <PopoverContent
         maxW="15em"
@@ -39,7 +43,7 @@ export const MenuMessages = () => {
         <PopoverHeader border="none">
           <Grid alignItems="center">
             <Text color="dino.text" fontWeight={600}>
-              Messages
+              {t("components.messages")}
             </Text>
             <PopoverCloseButton
               bg="dino.base2"
@@ -53,11 +57,8 @@ export const MenuMessages = () => {
             <Grid gap={2}>
               <GridItem maxH="150px" overflow="auto">
                 <Stack>
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
-                  <ChatMessage />
+                  {/* TODO */}
+                  {/* <ChatMessage /> */}
                 </Stack>
               </GridItem>
               <GridItem>

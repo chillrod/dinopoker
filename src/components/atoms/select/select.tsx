@@ -3,7 +3,7 @@ import { useState } from "react";
 import { chakra, Select as Sl } from "@chakra-ui/react";
 
 export type IOption = {
-  id: number;
+  id: number | string;
   text: string;
   value: number[];
 };
@@ -12,7 +12,7 @@ interface ISelect {
   options: IOption[];
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   disabled?: boolean;
-  selected?: number;
+  selected?: number | string;
 }
 
 const Option = chakra("option", {});
