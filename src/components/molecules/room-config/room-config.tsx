@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export const RoomConfig = () => {
   const { t } = useTranslation();
+
   const handleSetSelected = (e: any) => {
     const findOption = pointSystem.find(
       (option) => option.id === parseInt(e.target.value)
@@ -21,7 +22,7 @@ export const RoomConfig = () => {
     <Box width="100%" role="@dino-roomconfig">
       <FormControl>
         <FormLabel>{t("home.room-configuration")}</FormLabel>
-        <Tooltip label="Room configurations are disabled in beta">
+        <Tooltip label={t("home.disable-room-config")}>
           <span>
             <Select
               disabled={process.env.NODE_ENV !== "test"}

@@ -9,6 +9,8 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
+import { useTranslation } from "react-i18next";
+
 import { IPlayerData } from "../../organisms/dto/playerdata";
 
 import { characters } from "../../organisms/home/characters";
@@ -26,12 +28,13 @@ export const CharacterVote = ({
   vote,
   voteStatus,
 }: IPlayerData) => {
+  const { t } = useTranslation();
   const parseToolTip = (voteStatus?: string, vote?: number | null) => {
     if (voteStatus === "REVELEAD") return `${vote}`;
 
-    if (voteStatus === "THINKING") return "Not voted yet";
+    if (voteStatus === "THINKING") return t("round.not-voted-yet");
 
-    if (voteStatus === "SECRET") return "Voted! But is a secret";
+    if (voteStatus === "SECRET") return t("round.voted-but-is-a-secret");
   };
 
   const parseVoteStatusBackground = (voteStatus: string) => {

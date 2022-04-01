@@ -14,9 +14,12 @@ import { character } from "../../atoms/character-card/hooks";
 import { Input } from "../../atoms/input/input";
 
 import { emitter } from "../../../service/emitter/emitter";
+import { useTranslation } from "react-i18next";
 
 export const SelectedCharacter = () => {
   const [name, setName] = useState("");
+
+  const { t } = useTranslation();
 
   const [character, setCharacter] = useState<character | undefined>(
     characters[0]
@@ -35,18 +38,18 @@ export const SelectedCharacter = () => {
   }, []);
   return (
     <>
-      <SimpleGrid spacing={3} role="@dino-selectchar">
+      <SimpleGrid spacing={0} role="@dino-selectchar">
         <Center>
           <CharacterCard isSelectedScreen character={character} />
         </Center>
         <Box>
           <FormControl isInvalid={!name.length}>
-            <FormLabel>Nome</FormLabel>
+            <FormLabel>{t("home.name")}</FormLabel>
             <Input
               onChange={(e) => handleSelectedName(e)}
               required
               disabled={!character?.src?.length}
-              placeholder="Choosen name"
+              placeholder={t("home.type-your-name")}
             />
           </FormControl>
         </Box>
