@@ -9,6 +9,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { useTranslation } from "react-i18next";
+
 import { Button } from "../../atoms/button/button";
 
 import { emitter } from "../../../service/emitter/emitter";
@@ -24,6 +26,8 @@ interface IMessageBox {
 }
 
 export const MessageBox = ({ open = false }: IMessageBox) => {
+  const { t } = useTranslation();
+
   const [isOpen, setIsOpen] = useState(open);
 
   const [currentMessage, setCurrentMessage] = useState("");
@@ -69,7 +73,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       >
         <AlertDialogBody>
           <Text textAlign="center" as="h2" color="dino.text" fontWeight={500}>
-            Are you sure you want to
+            {t("components.are-you-sure-you-want-to")}
             <br /> {currentMessage.length ? currentMessage : "ACTION"} ?
           </Text>
         </AlertDialogBody>
@@ -77,11 +81,11 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
           <Flex gap={2} justifyContent="center">
             {process.env.NODE_ENV !== "test" && (
               <Button onClick={onClose} ref={cancelRef}>
-                Cancel
+                {t("components.cancel-action")}
               </Button>
             )}
             <Button onClick={() => handleActionConfirm()} action="confirm">
-              Confirm
+              {t("components.confirm-action")}
             </Button>
           </Flex>
         </AlertDialogFooter>

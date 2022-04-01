@@ -12,12 +12,20 @@ import { MenuShare } from "../../molecules/menu-share/menu-share";
 import { MenuRoomLeave } from "../../molecules/menu-roomleave/menu-roomleave";
 import { MenuMessages } from "../../molecules/menu-messages/menu-messages";
 import { emitter } from "../../../service/emitter/emitter";
+import { DinoPoker } from "../../atoms/dinopoker";
+
+import { useTranslation } from "react-i18next";
 
 export const Menu = () => {
   const [closed, setClosed] = useState(true);
 
+  const { t } = useTranslation();
+
   const resetPlayers = () => {
-    emitter.emit("RESET_ACTION", "RESET");
+    emitter.emit("EMIT_MESSAGEBOX", {
+      message: t("round.danger-reset-players"),
+      func: "RESET_ACTION",
+    });
   };
 
   return (
@@ -27,7 +35,7 @@ export const Menu = () => {
           <Box mx={3}>
             <IconButton
               onClick={() => setClosed(!closed)}
-              ariaLabel={closed ? "Open Menu" : "Close Menu"}
+              ariaLabel={closed ? t("components.open-menu") : t("components.close-menu")}
               icon={<HamburgerIcon />}
             />
             {!closed && (
@@ -39,7 +47,7 @@ export const Menu = () => {
                 <MenuRoomLeave />
                 <IconButton
                   icon={<LockIcon />}
-                  ariaLabel={"DANGEROUS - RESET PLAYERS"}
+                  ariaLabel={t("round.danger-reset-players")}
                   onClick={() => resetPlayers()}
                 />
               </>
@@ -47,18 +55,7 @@ export const Menu = () => {
           </Box>
         </Flex>
         <Box py={2} alignSelf="end">
-          <Text fontSize="sm">
-            dino
-            <Text
-              fontWeight={800}
-              as="span"
-              sx={{
-                color: "dino.primary",
-              }}
-            >
-              poker.app
-            </Text>
-          </Text>
+          <DinoPoker justify="start" />
         </Box>
       </Grid>
     </>

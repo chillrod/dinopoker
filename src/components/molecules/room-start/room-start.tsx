@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { CheckIcon } from "@chakra-ui/icons";
 
 import {
@@ -20,6 +22,7 @@ interface IRoomStart {
 }
 
 export const RoomStart = ({ joinRoom }: IRoomStart) => {
+  const { t } = useTranslation();
   const [canHandleRoom, setCanHandleRoom] = useState(false);
 
   useMemo(() => {
@@ -36,23 +39,24 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
     <Box role="@dino-roomstart">
       <SimpleGrid columns={2} gap={6} p={0} m={0}>
         <FormControl>
-          <FormLabel>Or join a room</FormLabel>
+          <FormLabel>{t("home.or-join-a-room")}</FormLabel>
           <InputIcon
             disabled={!canHandleRoom}
             confirm={(e) => (joinRoom ? joinRoom(e) : null)}
             ariaLabel="Confirm"
+            placeholder={t("home.room-name")}
             icon={<CheckIcon />}
           />
         </FormControl>
         <Box gridColumn={2} alignSelf="end" justifySelf="end">
-          <Tooltip label="New rooms are disabled in beta">
+          <Tooltip label={t("home.disable-room-config")}>
             <span>
               <Button
                 disabled={process.env.NODE_ENV !== "test" || !canHandleRoom}
                 onClick={() => null}
                 action="confirm"
               >
-                Create a room
+                {t("home.create-room")}
               </Button>
             </span>
           </Tooltip>

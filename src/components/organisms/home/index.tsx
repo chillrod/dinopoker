@@ -68,7 +68,7 @@ export const Home: React.FC = () => {
         margin: "0 auto",
       }}
     >
-      <DinoPoker />
+      <DinoPoker justify="center" />
       <Box py={0} px={1}>
         <TitleSubtitle
           title={t("home.to-start")}
@@ -76,7 +76,7 @@ export const Home: React.FC = () => {
         />
       </Box>
       <SimpleGrid columns={2} spacing={6}>
-        <Container m={0} p={0}>
+        <Container m={1} p={0}>
           <SimpleGrid columns={1} spacing={6}>
             <CharacterWrapper characters={characters} />
             <Box>
