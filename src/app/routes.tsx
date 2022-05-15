@@ -6,8 +6,10 @@ import { GameRoom } from "./gameroom";
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/:id" element={<GameRoom />} />
+      <Route path="/" element={<App />}></Route>
+      <Route path="room">
+        <Route path=":id" element={<GameRoom />} />
+      </Route>
     </Routes>
   );
 };
