@@ -7,6 +7,6 @@ describe("EmptyData", () => {
 
     expect(screen.getByText("🤔")).toBeInTheDocument();
 
-    expect(screen.getByText("No DinoPoker to display")).toBeInTheDocument();
+    // expect(screen.getByText("Are you sure you want to ACTION")).toBeInTheDocument();
   });
 });

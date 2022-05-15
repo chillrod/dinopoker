@@ -37,7 +37,7 @@ export const CharacterCard = ({
       role="@dino-charactercard"
       disabled={disabled}
       size="lg"
-      p={0}
+      p={6}
       width={{
         sm: "5em",
         md: "5em",

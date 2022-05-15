@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Box,
@@ -15,6 +15,7 @@ import { Input } from "../../atoms/input/input";
 
 import { emitter } from "../../../service/emitter/emitter";
 import { useTranslation } from "react-i18next";
+import { PlayerService } from "../../../service/player/player.service";
 
 export const SelectedCharacter = () => {
   const [name, setName] = useState("");
@@ -28,7 +29,7 @@ export const SelectedCharacter = () => {
   const handleSelectedName = (event: any) => {
     setName(event.target.value);
 
-    emitter.emit("CHARACTER_NAME", event.target.value);
+    PlayerService.setCharacterName(event.target.value);
   };
 
   useMemo(() => {
@@ -47,7 +48,6 @@ export const SelectedCharacter = () => {
             <FormLabel>{t("home.name")}</FormLabel>
             <Input
               onChange={(e) => handleSelectedName(e)}
-              required
               disabled={!character?.src?.length}
               placeholder={t("home.type-your-name")}
             />

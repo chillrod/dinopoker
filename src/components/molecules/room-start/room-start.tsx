@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { CheckIcon } from "@chakra-ui/icons";
-
 import {
   Box,
   FormControl,
@@ -16,13 +14,16 @@ import { Button } from "../../atoms/button/button";
 import { InputIcon } from "../../atoms/input-icon/input-icon";
 
 import { emitter } from "../../../service/emitter/emitter";
+import { Check } from "react-feather";
 
 interface IRoomStart {
   joinRoom?: (room: string) => void;
+  createRoom?: () => void;
 }
 
-export const RoomStart = ({ joinRoom }: IRoomStart) => {
+export const RoomStart = ({ joinRoom, createRoom }: IRoomStart) => {
   const { t } = useTranslation();
+
   const [canHandleRoom, setCanHandleRoom] = useState(false);
 
   useMemo(() => {
@@ -37,7 +38,7 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
 
   return (
     <Box role="@dino-roomstart">
-      <SimpleGrid columns={2} gap={6} p={0} m={0}>
+      <SimpleGrid columns={2}>
         <FormControl>
           <FormLabel>{t("home.or-join-a-room")}</FormLabel>
           <InputIcon
@@ -45,21 +46,17 @@ export const RoomStart = ({ joinRoom }: IRoomStart) => {
             confirm={(e) => (joinRoom ? joinRoom(e) : null)}
             ariaLabel={t("components.confirm-action")}
             placeholder={t("home.room-name")}
-            icon={<CheckIcon />}
+            icon={<Check />}
           />
         </FormControl>
         <Box gridColumn={2} alignSelf="end" justifySelf="end">
-          <Tooltip label={t("home.disable-room-config")}>
-            <span>
-              <Button
-                disabled={process.env.NODE_ENV !== "test" || !canHandleRoom}
-                onClick={() => null}
-                action="confirm"
-              >
-                {t("home.create-room")}
-              </Button>
-            </span>
-          </Tooltip>
+          <Button
+            disabled={!canHandleRoom}
+            onClick={() => (createRoom ? createRoom() : null)}
+            action="confirm"
+          >
+            {t("home.create-room")}
+          </Button>
         </Box>
       </SimpleGrid>
     </Box>

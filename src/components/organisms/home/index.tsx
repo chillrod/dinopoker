@@ -1,53 +1,47 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
-import { Box, Container, Flex, SimpleGrid } from "@chakra-ui/react";
-import { IPlayerData } from "../dto/playerdata";
+import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
 
 import { CharacterWrapper } from "../../molecules/character-wrapper/character-wrapper";
 import { SelectedCharacter } from "../../molecules/selected-character/selected-character";
-import { RoomConfig } from "../../molecules/room-config/room-config";
 import { RoomStart } from "../../molecules/room-start/room-start";
 
 import { characters } from "./characters";
 
-import { TitleSubtitle } from "../../atoms/title-subtitle";
-import { DinoPoker } from "../../atoms/dinopoker";
-
-import { socket } from "../../../service/socket";
 import { emitter } from "../../../service/emitter/emitter";
+import { PlayerService } from "../../../service/player/player.service";
 
-import { v4 } from "uuid";
+import { generate } from "short-uuid";
 
 export const Home: React.FC = () => {
   const { t } = useTranslation();
 
   const [characterName, setCharacterName] = useState("");
 
-  const navigate = useNavigate();
-
   const [character, setCharacter] = useState<number>(characters[0].id);
 
-  const handleJoinRoom = (room: string) => {
-    const data: IPlayerData = {
-      id: v4(),
+  const handleJoinRoom = async (name: string) => {
+    const PlayerData = {
       name: characterName,
-      character: character,
-      vote: null,
-      room,
+      character,
+      vote: 0,
+      room: name,
     };
 
-    emitter.emit("CURRENT_PLAYER", data);
+    PlayerService.JoinRoom(PlayerData);
+  };
 
-    socket.emit("joinRoom", data);
+  const handleCreateRoom = async () => {
+    const PlayerData = {
+      name: characterName,
+      character,
+      vote: 0,
+      room: generate(),
+    };
 
-    socket.on("msgCurrentPlayerData", (data) => {
-      if (data === "Error") return;
-
-      if (data === "Joined Room") return navigate(`/room/${room}`);
-    });
+    PlayerService.CreateRoom(PlayerData);
   };
 
   useEffect(() => {
@@ -59,40 +53,23 @@ export const Home: React.FC = () => {
   }, []);
 
   return (
-    <Box
-      p={6}
-      maxWidth={{
-        lg: "900px",
-      }}
-      sx={{
-        margin: "0 auto",
-      }}
-    >
-      <DinoPoker justify="center" />
-      <Box py={0} px={1}>
-        <TitleSubtitle
-          title={t("home.to-start")}
-          subtitle={t("home.choose-color-mood")}
+    <SimpleGrid columns={2} gap={4} p={3}>
+      <Flex direction="column" justifyContent="space-between" height="100%">
+        <Box />
+        <CharacterWrapper characters={characters} />
+      </Flex>
+      <Flex
+        gap={3}
+        direction="column"
+        justifyContent="space-between"
+        height="100%"
+      >
+        <SelectedCharacter />
+        <RoomStart
+          joinRoom={(e) => handleJoinRoom(e)}
+          createRoom={() => handleCreateRoom()}
         />
-      </Box>
-      <SimpleGrid columns={2} spacing={6}>
-        <Container m={1} p={0}>
-          <SimpleGrid columns={1} spacing={6}>
-            <CharacterWrapper characters={characters} />
-            <Box>
-              <RoomConfig />
-            </Box>
-          </SimpleGrid>
-        </Container>
-        <Container m={0} p={0}>
-          <Flex direction="column" justifyContent="space-between" height="100%">
-            <SelectedCharacter />
-            <Box mt="auto">
-              <RoomStart joinRoom={handleJoinRoom} />
-            </Box>
-          </Flex>
-        </Container>
-      </SimpleGrid>
-    </Box>
+      </Flex>
+    </SimpleGrid>
   );
 };

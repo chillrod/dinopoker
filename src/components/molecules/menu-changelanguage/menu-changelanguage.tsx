@@ -15,8 +15,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { AtSignIcon } from "@chakra-ui/icons";
-
 import languages from "../../../config/locale/languages";
 
 import { Button } from "../../atoms/button/button";
@@ -25,6 +23,8 @@ import { Select } from "../../atoms/select/select";
 
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
+
+import { Globe } from "react-feather";
 
 export const MenuChangeLanguage = () => {
   const { t } = useTranslation();
@@ -48,7 +48,8 @@ export const MenuChangeLanguage = () => {
       <PopoverTrigger>
         <span>
           <IconButton
-            icon={<AtSignIcon />}
+            color="dino.base1"
+            icon={<Globe />}
             ariaLabel={t("components.change-language")}
           ></IconButton>
         </span>

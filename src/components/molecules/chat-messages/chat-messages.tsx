@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { emitter } from "../../../service/emitter/emitter";
 import { chatMessages } from "../../../service/messages";
+import { NotificationsService } from "../../../service/notifications/notifications.service";
 import { Button } from "../../atoms/button/button";
 
 export const ChatMessages = () => {

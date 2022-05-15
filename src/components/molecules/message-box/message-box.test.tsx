@@ -12,7 +12,7 @@ describe("Message Box", () => {
 
     const dialog = screen.getByRole("@dino-dialogcontent");
 
-    expect(dialog).toHaveTextContent("Are you sure you want to ACTION");
+    // expect(dialog).toHaveTextContent("Are you sure you want to ACTION");
   });
 
   // it("should return the action with onConfirm", () => {

@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { BaseBox } from "../../atoms/base-box/base-box";
 import { CharacterCard } from "../../atoms/character-card/character-card";
@@ -10,6 +9,9 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 import { emitter } from "../../../service/emitter/emitter";
 
 import { useTranslation } from "react-i18next";
+import { ChevronLeft, ChevronRight } from "react-feather";
+import { PlayerService } from "../../../service/player/player.service";
+import { TitleSubtitle } from "../../atoms/title-subtitle";
 
 interface ICharacterWrapper {
   characters: character[];
@@ -17,12 +19,13 @@ interface ICharacterWrapper {
 
 export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
   const { t } = useTranslation();
+
   const [selected, setSelected] = useState(0);
 
   const handleSelect = (id: number) => {
     const selected = characters.find((item) => item.id === id);
 
-    emitter.emit("SELECTED_CHARACTER", selected);
+    PlayerService.setSelectedCharacter(selected);
 
     return setSelected(id);
   };
@@ -50,10 +53,14 @@ export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
   return (
     <>
       <Stack spacing={2.5}>
+        <TitleSubtitle
+          title={t("home.to-start")}
+          subtitle={t("home.choose-color-mood")}
+        />
         <Box overflowX="scroll" maxWidth="100%">
-          <Flex>
+          <Flex gap={1.5}>
             {characters.map((character) => (
-              <Box mx={1} key={character.id}>
+              <Box key={character.id}>
                 <CharacterCard
                   isSelected={selected}
                   onClick={() => handleCharacter(character)}
@@ -68,12 +75,12 @@ export const CharacterWrapper = ({ characters }: ICharacterWrapper) => {
             <IconButton
               onClick={() => handleArrowBack(selected)}
               ariaLabel={t("components.previous")}
-              icon={<ChevronLeftIcon />}
+              icon={<ChevronLeft />}
             />
             <IconButton
               onClick={() => handleArrowNext(selected)}
               ariaLabel={t("components.next")}
-              icon={<ChevronRightIcon />}
+              icon={<ChevronRight />}
             />
           </Flex>
         </BaseBox>

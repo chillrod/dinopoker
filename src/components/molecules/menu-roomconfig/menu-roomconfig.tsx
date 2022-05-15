@@ -1,5 +1,3 @@
-import { SettingsIcon } from "@chakra-ui/icons";
-
 import {
   FormControl,
   FormLabel,
@@ -14,6 +12,7 @@ import {
   PopoverTrigger,
   Text,
 } from "@chakra-ui/react";
+import { Settings } from "react-feather";
 
 import { Button } from "../../atoms/button/button";
 import { IconButton } from "../../atoms/icon-button/icon-button";
@@ -27,12 +26,13 @@ export const MenuRoomConfig = () => {
   return (
     <Popover isLazy>
       <PopoverTrigger>
-        <IconButton
-          disabled
-          color="dino.base1"
-          ariaLabel="Room Settings"
-          icon={<SettingsIcon />}
-        />
+        <span>
+          <IconButton
+            color="dino.base1"
+            ariaLabel="Room Settings"
+            icon={<Settings />}
+          />
+        </span>
       </PopoverTrigger>
       <PopoverContent
         maxW="15em"

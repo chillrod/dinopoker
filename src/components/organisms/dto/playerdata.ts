@@ -1,8 +1,8 @@
 export interface IPlayerData {
-  id?: string;
-  name?: string;
+  clientId?: string;
+  raiseHand?: boolean;
   character: number;
-  vote?: number | null;
-  room?: string;
-  voteStatus?: string;
+  name: string;
+  vote: number;
+  room: string;
 }

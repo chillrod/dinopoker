@@ -1,4 +1,3 @@
-import { ChatIcon } from "@chakra-ui/icons";
 
 import { useTranslation } from "react-i18next";
 
@@ -18,6 +17,7 @@ import {
 import { ChatMessage } from "../../atoms/chat-message/chat-message";
 import { EmptyData } from "../../atoms/empty-data/empty-data";
 import { IconButton } from "../../atoms/icon-button/icon-button";
+import { MessageCircle } from "react-feather";
 
 export const MenuMessages = () => {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export const MenuMessages = () => {
           <IconButton
             color="dino.base1"
             ariaLabel={t("components.messages")}
-            icon={<ChatIcon />}
+            icon={<MessageCircle />}
           />
         </span>
       </PopoverTrigger>

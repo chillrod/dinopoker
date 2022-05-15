@@ -16,7 +16,7 @@ export const ToastProvider = () => {
   // }, []);
 
   useEffect(() => {
-    socket.on("alertToClient", (data) => {
+    emitter.on("EMIT_TOAST", (data) => {
       emitToast({ message: data });
     });
   }, []);

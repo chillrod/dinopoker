@@ -8,6 +8,7 @@ import { CharacterVote } from "../../atoms/character-vote/character-vote";
 
 import { IPlayerData } from "../../organisms/dto/playerdata";
 import { emitter } from "../../../service/emitter/emitter";
+import { RoomService } from "../../../service/room/room.service";
 
 import { useTranslation } from "react-i18next";
 
@@ -22,11 +23,11 @@ export const PokerTable = () => {
   };
 
   const revealVote = () => {
-    emitter.emit("REVEAL_VOTE", "REVEAL");
+    RoomService.setRevealVote("reveal");
   };
 
   const restartVote = () => {
-    emitter.emit("RESTART_ACTION", "RESTART");
+    RoomService.setRestartAction("restart");
   };
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { Select } from "../../atoms/select/select";
 import { pointSystem } from "./pointSystem";
 
 import { useTranslation } from "react-i18next";
+import { RoomService } from "../../../service/room/room.service";
 
 export const RoomConfig = () => {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ export const RoomConfig = () => {
       (option) => option.id === parseInt(e.target.value)
     );
 
-    emitter.emit("SELECTED_CONFIGURATION", findOption);
+    RoomService.setSelectedConfiguration(findOption);
 
     return e.target.value;
   };
@@ -22,16 +23,11 @@ export const RoomConfig = () => {
     <Box width="100%" role="@dino-roomconfig">
       <FormControl>
         <FormLabel>{t("home.room-configuration")}</FormLabel>
-        <Tooltip label={t("home.disable-room-config")}>
-          <span>
-            <Select
-              disabled={process.env.NODE_ENV !== "test"}
-              selected={0}
-              options={pointSystem}
-              onChange={(e) => handleSetSelected(e)}
-            />
-          </span>
-        </Tooltip>
+        <Select
+          selected={0}
+          options={pointSystem}
+          onChange={(e) => handleSetSelected(e)}
+        />
       </FormControl>
     </Box>
   );

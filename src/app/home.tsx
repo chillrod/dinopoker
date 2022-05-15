@@ -1,15 +1,23 @@
-import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 
 import { Home } from "../components/organisms/home";
+import { Menu } from "../components/organisms/menu/menu";
 
 export const App = () => {
   return (
-    <Flex justifyContent="center">
-      <Grid gridTemplateRows="auto 1fr">
-        <GridItem alignSelf="start" gridRow={2}>
-          <Home />
-        </GridItem>
-      </Grid>
-    </Flex>
+    <Grid placeItems="center" p={3}>
+      <Box>
+        <Menu />
+      </Box>
+      <Box
+        p={{
+          md: 8,
+          sm: 2,
+          xl: 12,
+        }}
+      >
+        <Home />
+      </Box>
+    </Grid>
   );
 };

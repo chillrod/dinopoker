@@ -35,38 +35,6 @@ export const Round = ({ currentPlayer }: IRound) => {
     socket.emit("currentData", updatedVote);
   };
 
-  useEffect(() => {
-    socket.emit("getCurrentPlayers", id);
-
-    socket.on("msgPlayerData", (data) => {
-      emitter.emit("ROOM_PLAYERS", data);
-    });
-
-    socket.on("resetVotes", (data) => {
-      setSelectedPoint(null);
-
-      emitter.emit("ROOM_PLAYERS", data);
-    });
-
-    socket.on("currentDataOfPlayer", (data) => {
-      setSelectedPoint(data.vote);
-    });
-
-    emitter.on("RESTART_ACTION", (data) => {
-      socket.emit("resetVotes", cCurrentPlayer);
-    });
-
-    emitter.on("RESET_ACTION", () => {
-      socket.emit("resetPlayers", cCurrentPlayer);
-
-      navigate("/");
-    });
-
-    emitter.on("REVEAL_VOTE", () => {
-      socket.emit("revealVotes", cCurrentPlayer);
-    });
-  }, []);
-
   return (
     <Box>
       <Grid
