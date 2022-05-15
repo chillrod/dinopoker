@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { useTranslation } from "react-i18next";
-
 import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
 
 import { CharacterWrapper } from "../../molecules/character-wrapper/character-wrapper";
@@ -16,8 +14,6 @@ import { PlayerService } from "../../../service/player/player.service";
 import { generate } from "short-uuid";
 
 export const Home: React.FC = () => {
-  const { t } = useTranslation();
-
   const [characterName, setCharacterName] = useState("");
 
   const [character, setCharacter] = useState<number>(characters[0].id);

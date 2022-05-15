@@ -34,7 +34,7 @@ const resources = {
         "room-configuration": "Room configuration",
         name: "Name",
         "type-your-name": "Type your name",
-        "or-join-a-room": "Or join a room",
+        "or-join-a-room": "Join a room",
         "room-name": "Room name",
         "create-room": "Create room",
         "disable-room-config": "Room configurations are disabled in Beta",
@@ -74,7 +74,7 @@ const resources = {
         "room-configuration": "Configuração da sala",
         "type-your-name": "Digite seu nome",
         name: "Nome",
-        "or-join-a-room": "Ou entre em uma sala",
+        "or-join-a-room": "Entre em uma sala",
         "room-name": "Nome da sala",
         "create-room": "Criar sala",
         "disable-room-config":
@@ -151,7 +151,7 @@ const resources = {
         "room-configuration": "Configuración de la sala",
         "type-your-name": "Escriba su nombre",
         name: "Nombre",
-        "or-join-a-room": "Ó unirse a una sala",
+        "or-join-a-room": "Unirse a una sala",
         "room-name": "Nombre de la sala",
         "create-room": "Crear sala",
         "disable-room-config":

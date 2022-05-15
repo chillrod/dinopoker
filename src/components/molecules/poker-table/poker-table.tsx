@@ -36,7 +36,7 @@ export const PokerTable = () => {
 
   return (
     <>
-      <Center>
+      {/* <Center>
         {roomPlayers[0]?.voteStatus !== "REVEALED" && (
           <Button onClick={() => revealVote()} action="confirm">
             {t("round.reveal-vote")}
@@ -48,7 +48,7 @@ export const PokerTable = () => {
             {t("round.restart-votes")}
           </Button>
         )}
-      </Center>
+      </Center> */}
       <Grid templateColumns="1fr">
         <GridItem
           gridRow={1}
@@ -100,7 +100,7 @@ export const PokerTable = () => {
                 <Box
                   w="8ch"
                   h="11ch"
-                  key={player.id}
+                  key={player.clientId}
                   sx={{
                     margin: renderTableMargin(index),
                   }}
@@ -109,7 +109,7 @@ export const PokerTable = () => {
                     character={player.character}
                     name={player.name}
                     vote={player.vote}
-                    voteStatus={player.voteStatus}
+                    room={player.room}
                   />
                 </Box>
               ))}
