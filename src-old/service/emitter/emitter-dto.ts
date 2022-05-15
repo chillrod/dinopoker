@@ -12,6 +12,7 @@ export type Events = {
   SELECTED_CONFIGURATION?: IOption;
 
   CREATE_ROOM: { name?: string; pointSystem?: number[]; character?: character };
+  CHANGE_ROUTE: { event: string; path: string };
 
   ROOM_PLAYERS: IPlayerData[];
 

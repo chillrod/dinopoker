@@ -90,7 +90,7 @@ export const MenuChangeLanguage = () => {
         </PopoverBody>
         <PopoverFooter border="none">
           <Grid width="100%">
-            <Button onClick={() => handleChangeLanguage()} bg="dino.primary">
+            <Button onClick={() => handleChangeLanguage()} action="confirm">
               {t("components.save-action")}
             </Button>
           </Grid>
