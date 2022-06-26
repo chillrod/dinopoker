@@ -33,9 +33,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={ChakraTheme}>
       <BrowserRouter>
+        <Router />
         <MessageBox />
         <ToastProvider />
-        <Router />
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,

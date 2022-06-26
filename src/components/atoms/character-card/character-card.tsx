@@ -9,6 +9,7 @@ export type character = {
 interface ICharacterCardProps {
   characterId?: number;
   disabled?: boolean;
+  size?: string;
   isSelected?: number;
   onClick?: React.MouseEventHandler;
 }
@@ -18,6 +19,7 @@ export const CharacterCard = ({
   disabled,
   isSelected,
   onClick,
+  size = "lg",
 }: ICharacterCardProps) => {
   const selectedProps = {
     border: "4px",
@@ -44,7 +46,7 @@ export const CharacterCard = ({
       {...(isSelected === characterId ? selectedProps : {})}
       role="@dino-charactercard"
       disabled={disabled}
-      size="lg"
+      size={size}
       p={2}
       width={{
         sm: "5em",
