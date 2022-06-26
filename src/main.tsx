@@ -16,14 +16,14 @@ import { ToastProvider } from "./services/toast-provider";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC5OZzYbBmxvnGxTj-m3U98S1o6S0GQk0Y",
-  authDomain: "dinopokerapp.firebaseapp.com",
-  databaseURL: "https://dinopokerapp-default-rtdb.firebaseio.com/",
-  projectId: "dinopokerapp",
-  storageBucket: "dinopokerapp.appspot.com",
-  messagingSenderId: "524389525362",
-  appId: "1:524389525362:web:31e72c281474b411b9dfeb",
-  measurementId: "G-0ERBZRHF15",
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  databaseURL: import.meta.env.VITE_databaseURL,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
+  measurementId: import.meta.env.VITE_measurementId,
 };
 
 export const app = initializeApp(firebaseConfig);

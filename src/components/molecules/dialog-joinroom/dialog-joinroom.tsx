@@ -11,7 +11,7 @@ import { IPlayerData } from "../../../model/PlayerData";
 export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
   const navigate = useNavigate();
 
-  const [roomId, setRoomId] = useState("743260fd-72b2-415c-a5d9-8ec4c9f8cdaa");
+  const [roomId, setRoomId] = useState("");
 
   const handleJoinRoom = async ({
     playerData,
@@ -54,7 +54,6 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
       </Text>
       <FormControl isInvalid={!roomId.length}>
         <Input
-          value="743260fd-72b2-415c-a5d9-8ec4c9f8cdaa"
           onChange={(e) => setRoomId(e.target.value)}
           placeholder="ex: 35e26693-7659-493a-b6f1-a930b9a3ddfc"
         />
