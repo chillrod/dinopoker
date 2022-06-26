@@ -5,7 +5,7 @@ import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
 export const Nav = () => {
   return (
     <Box as="nav">
-      <Flex justifyContent="center" alignItems="center">
+      <Flex justifyContent="space-around" alignItems="center">
         <DinoPoker />
         <MenuChangeLanguage />
       </Flex>

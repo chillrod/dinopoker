@@ -17,7 +17,7 @@ export const SelectCharacter = () => {
   const handleSelected = (id: number): number => {
     setSelected(id);
 
-    PlayerService.PLAYER_CHARACTER(selected);
+    PlayerService.PLAYER_CHARACTER(id);
 
     return selected;
   };
