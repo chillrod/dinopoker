@@ -11,6 +11,7 @@ export const dino = {
   base2: "#555555",
   base3: "#212121",
   base4: "#2B2B2B",
+  base5: "#111111",
   text: "#DDDDDD",
 };
 

@@ -2,14 +2,14 @@ import { Grid, GridItem, Img, Box, Text } from "@chakra-ui/react";
 import { CharacterList } from "../../../config/characters";
 
 interface IChatMessage {
-  character: number;
+  character?: number;
   name?: string;
   message?: string;
 }
 
-export const ChatMessage = ({ message, name }: IChatMessage) => {
+export const ChatMessage = ({ message, name, character }: IChatMessage) => {
   return (
-    <Box bg="dino.secondary">
+    <Box bg="dino.secondary" borderRadius="md">
       <Grid
         role="@dino-chatmessage"
         p={2}
@@ -19,7 +19,10 @@ export const ChatMessage = ({ message, name }: IChatMessage) => {
       >
         <GridItem>
           <Box bg="dino.base2" w="3em" h="3em" borderRadius="full">
-            <Img src={CharacterList[0].src} boxSize="100%" />
+            <Img
+              src={CharacterList[character ? character : 0].src}
+              boxSize="100%"
+            />
           </Box>
         </GridItem>
         <GridItem>

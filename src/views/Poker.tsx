@@ -10,25 +10,15 @@ import {
   onValue,
   ref,
 } from "firebase/database";
-
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
+
 import { CharacterCard } from "../components/atoms/character-card/character-card";
-import {
-  Grid,
-  GridItem,
-  Box,
-  Container,
-  SimpleGrid,
-  Flex,
-  Text,
-} from "@chakra-ui/react";
-import { DinoPoker } from "../components/atoms/dinopoker";
-import { Nav } from "../components/molecules/nav/nav";
+import { Grid, GridItem, Box, Flex } from "@chakra-ui/react";
+
 import { CardPoints } from "../components/atoms/card-points/card-points";
-import { IconButton } from "../components/atoms/icon-button/icon-button";
-import { Power, Settings, Share, Tool } from "react-feather";
-import { ChatMessage } from "../components/atoms/chat-message/chat-message";
+import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
+import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
 
 interface IPlayerState {
   player: IPlayerData;
@@ -40,23 +30,17 @@ export const Poker = () => {
 
   const state = location.state as IPlayerState;
 
-  const [loading, setLoading] = useState(false);
-
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
 
-  const checkIfRoomExists = async () => {
-    setLoading(true);
+  const retrievePlayerFromRouting = async () => {
+    const getCurrentPlayer = JSON.parse(
+      localStorage.getItem("character") || ""
+    );
 
     try {
-      const { players } = await RoomsService.checkIfRoomExists(id);
-
-      if (players) {
-        setCurrentPlayers({ ...players });
-      }
+      await RoomsService.updatePlayersFromRoom(getCurrentPlayer.player);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -70,27 +54,14 @@ export const Poker = () => {
 
   const db = getDatabase(app);
 
-  const getCurrentPlayer = JSON.parse(localStorage.getItem("character") || "");
-
-  useEffect(() => {
-    if (getCurrentPlayer.player) {
-      const updatePlayer = async () =>
-        await RoomsService.updatePlayersFromRoom(getCurrentPlayer.player);
-
-      updatePlayer();
-    }
-
-    checkIfRoomExists();
-
-    return () => {};
-  }, []);
-
   useEffect(() => {
     const roomDbRef = child(ref(db), "dinopoker-room/" + id + "/players");
 
     const unsubRoomDbRef = onValue(roomDbRef, (data) => {
       setCurrentPlayers({ ...data.val() });
     });
+
+    retrievePlayerFromRouting();
 
     return () => {
       unsubRoomDbRef();
@@ -104,47 +75,24 @@ export const Poker = () => {
     );
 
     onDisconnect(dbRef).remove();
+
+    return () => {};
   }, []);
 
   return (
     <>
       <Box as="section">
         <Grid
+          templateColumns="auto 3fr auto"
           height="100vh"
-          templateColumns="5% 75% 20%"
           justifyContent="center"
         >
-          <GridItem
-            gridRow="1"
-            gridColumn={1}
-            w="100%"
-            h="100%"
-            bg="dino.base4"
-          >
-            <Flex gap={3} direction="column" p={3} justifyContent="center">
-              <IconButton
-                bg="dino.secondary"
-                ariaLabel="Share"
-                icon={<Share />}
-              />
-              <IconButton
-                bg="dino.secondary"
-                ariaLabel="Room Settings"
-                icon={<Tool />}
-              />
-              <IconButton
-                bg="dino.secondary"
-                ariaLabel="Room off"
-                icon={<Power />}
-              />
-            </Flex>
+          <GridItem gridRow="1" gridColumn="1" w="100%" h="100%">
+            <PokerMenu />
           </GridItem>
-          <GridItem gridColumn="2">
+          <GridItem gridColumn="2" bg="dino.primary">
             <Box w="100%" h="100%">
               <Grid templateRows="10vh 70vh 20vh">
-                <GridItem gridRow="1" alignSelf="start">
-                  <DinoPoker />
-                </GridItem>
                 <GridItem
                   gridColumn="1 / -1"
                   gridRow="2"
@@ -169,15 +117,8 @@ export const Poker = () => {
                   alignSelf="center"
                   justifySelf="center"
                 >
-                  <Flex
-                    borderColor="dino.primary"
-                    borderWidth="4px"
-                    borderRadius="full"
-                    bg="dino.secondary"
-                    w="650px"
-                    h="300px"
-                  >
-                    <div><p></p></div>
+                  <Flex bg="tomato" borderRadius="full" w="20%" h="400px">
+                    <div></div>
                   </Flex>
                 </GridItem>
                 <GridItem alignSelf="start" gridRow="3" justifySelf="center">
@@ -192,17 +133,8 @@ export const Poker = () => {
               </Grid>
             </Box>
           </GridItem>
-          <GridItem
-            gridRow="1"
-            gridColumn={3}
-            w="100%"
-            h="100%"
-            bg="dino.base4"
-          >
-            <Flex gap={3} direction="column" p={3} justifyContent="center">
-              <Text align="center">Chat messages</Text>
-              <ChatMessage character={0} />
-            </Flex>
+          <GridItem gridRow="1" gridColumn={3}>
+            <ChatMessages />
           </GridItem>
         </Grid>
       </Box>

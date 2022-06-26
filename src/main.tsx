@@ -11,8 +11,6 @@ import ChakraTheme from "./config/theme";
 import "./dino.css";
 
 import { initializeApp } from "firebase/app";
-import { MessageBox } from "./components/molecules/message-box/message-box";
-import { ToastProvider } from "./services/toast-provider";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -34,8 +32,6 @@ ReactDOM.render(
     <ChakraProvider theme={ChakraTheme}>
       <BrowserRouter>
         <Router />
-        <MessageBox />
-        <ToastProvider />
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,

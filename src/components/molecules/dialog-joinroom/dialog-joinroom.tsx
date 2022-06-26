@@ -25,11 +25,13 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
     try {
       const data = await RoomsService.joinRoom({ playerData, roomId });
 
-      navigate("room/" + roomId, {
-        state: {
-          player: data,
-        },
-      });
+      if (data) {
+        navigate("room/" + roomId, {
+          state: {
+            player: data,
+          },
+        });
+      }
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
