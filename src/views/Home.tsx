@@ -30,6 +30,7 @@ export const Home = () => {
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
     character: 0,
+    id: "",
   });
 
   const [loading, setLoading] = useState(false);
