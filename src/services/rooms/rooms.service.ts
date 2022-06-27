@@ -53,6 +53,8 @@ export const RoomsService = {
   },
 
   async updatePlayersFromRoom(player: IPlayerData) {
+    if (!player) return;
+
     const db = getDatabase(app);
 
     const roomData = await get(
@@ -66,11 +68,27 @@ export const RoomsService = {
   },
 
   async updateRoomStatus(roomId?: string, roomStatus?: string) {
+    if (!roomId) return;
+
     const db = getDatabase(app);
 
     await set(
       child(ref(db), "dinopoker-room/" + roomId + "/roomStatus"),
       roomStatus
+    );
+  },
+
+  async updatePlayerRaiseHand(player: IPlayerData, raiseHand: boolean) {
+    if (!player) return;
+
+    const db = getDatabase(app);
+
+    await set(
+      child(
+        ref(db),
+        "dinopoker-room/" + player.room + "/players/" + player.id + "/raiseHand"
+      ),
+      raiseHand
     );
   },
 
@@ -81,6 +99,8 @@ export const RoomsService = {
     playerData: IPlayerData;
     roomId: string;
   }) {
+    if (!roomId) return;
+
     const db = getDatabase(app);
 
     const preparedPlayer = {
@@ -118,6 +138,8 @@ export const RoomsService = {
   },
 
   async checkIfRoomExists(roomId?: string) {
+    if (!roomId) return;
+
     const db = getDatabase(app);
 
     try {

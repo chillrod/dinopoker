@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
 
@@ -9,6 +9,7 @@ import {
   onDisconnect,
   onValue,
   ref,
+  remove,
 } from "firebase/database";
 
 import { app } from "../main";
@@ -40,9 +41,12 @@ interface IPlayerState {
 export const Poker = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const state = location.state as IPlayerState;
-  const getCurrentPlayer = JSON.parse(localStorage.getItem("character") || "");
+  const getCurrentPlayer = JSON.parse(
+    localStorage.getItem("character") || "{}"
+  );
 
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
   const [roomLoading, setRoomLoading] = useState(false);
@@ -71,7 +75,7 @@ export const Poker = () => {
   };
 
   const pickCurrentPlayer = () => {
-    const player = currentPlayers[state.player.id];
+    const player = currentPlayers[state?.player?.id];
 
     return player;
   };
@@ -159,7 +163,7 @@ export const Poker = () => {
   useEffect(() => {
     const dbRef = child(
       ref(db),
-      "dinopoker-room/" + id + "/players/" + state.player.id
+      "dinopoker-room/" + id + "/players/" + state?.player?.id
     );
 
     onDisconnect(dbRef).remove();
@@ -167,6 +171,13 @@ export const Poker = () => {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (!getCurrentPlayer.player) {
+      navigate("/");
+    }
+
+    return () => {};
+  }, []);
   const shadows = {
     boxShadow:
       "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
@@ -203,16 +214,10 @@ export const Poker = () => {
           height="100vh"
           justifyContent="center"
         >
-          <GridItem
-            bg="purple.800"
-            gridRow="1"
-            gridColumn="1"
-            w="100%"
-            h="100%"
-          >
+          <GridItem bg="gray.900" gridRow="1" gridColumn="1" w="100%" h="100%">
             <PokerMenu />
           </GridItem>
-          <GridItem gridColumn="2">
+          <GridItem gridColumn="2" bg="purple.900">
             <Box w="100%" h="100%">
               <Grid templateRows="10vh 70vh 20vh">
                 <DinoPoker />
@@ -252,7 +257,7 @@ export const Poker = () => {
                   <Flex
                     {...shadows}
                     margin="0 auto"
-                    bg="purple.800"
+                    bg="purple.500"
                     borderRadius="full"
                     w="80%"
                     h="50vh"

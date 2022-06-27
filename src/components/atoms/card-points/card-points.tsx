@@ -15,7 +15,7 @@ export const CardPoints = ({ selected, point, onClick }: ICardPoints) => {
         backgroundColor: "dino.primary",
       }}
       size="sm"
-      bg={selected ? "dino.primary" : "dino.secondary"}
+      bg={selected ? "purple.600" : "purple.800"}
       width="6em"
       height="8em"
     >
