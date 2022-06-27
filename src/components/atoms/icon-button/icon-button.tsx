@@ -22,6 +22,7 @@ export const IconButton = ({
   return (
     <Tooltip label={ariaLabel}>
       <Btn
+        _hover={{}}
         aria-label={ariaLabel}
         icon={icon}
         bg={bg}

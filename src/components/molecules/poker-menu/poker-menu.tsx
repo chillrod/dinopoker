@@ -11,10 +11,9 @@ import { DinoPoker } from "../../atoms/dinopoker";
 import { useTranslation } from "react-i18next";
 import { MenuShare } from "../../atoms/menu-share/menu-share";
 import { MenuRestart } from "../../atoms/menu-restart/menu-restart";
+import { MenuRaiseHand } from "../../atoms/menu-raisehand/menu-raisehand";
 
 export const PokerMenu = () => {
-  const [closed, setClosed] = useState(true);
-
   const { t } = useTranslation();
 
   return (
@@ -28,7 +27,7 @@ export const PokerMenu = () => {
       >
         <GridItem alignSelf="start">
           <Flex gap={4} direction="column">
-            {[<MenuShare />, <MenuRestart />].map((Component, id) => (
+            {[<MenuRaiseHand />].map((Component, id) => (
               <Box key={id}>{Component}</Box>
             ))}
           </Flex>

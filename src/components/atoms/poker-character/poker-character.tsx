@@ -32,7 +32,6 @@ export const PokerCharacter = ({
         <Tooltip label={character.vote ? "Voted... hmmm" : "Not voted"}>
           <Button
             borderColor={character.raiseHand ? "yellow.500" : ""}
-            // bg={character?.vote > 0 ? "dino.primary" : ""}
             borderWidth="2px"
             as="div"
             borderRadius="full"
@@ -65,11 +64,11 @@ export const PokerCharacter = ({
           </Button>
         </Tooltip>
         {character.vote ? (
-          <Tag colorScheme="purple" fontSize="xl">
+          <Tag colorScheme="purple" fontSize="2xl">
             Vote: {handleVoteFunction(status, character.vote)}
           </Tag>
         ) : (
-          <Tag colorScheme="purple" fontSize="xl">
+          <Tag colorScheme="purple" fontSize="2xl">
             Vote: -
           </Tag>
         )}
