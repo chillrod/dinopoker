@@ -1,22 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { Router } from "./views/routes";
 
-import { ChakraProvider } from "@chakra-ui/react";
-import { ToastProvider } from "./service/toast-provider";
-import { MessageBox } from "./components/molecules/message-box/message-box";
-import { Router } from "./app/routes";
-
-import ChakraTheme from "./config/theme";
 import "./config/locale/";
 
+import { ChakraProvider } from "@chakra-ui/react";
+import ChakraTheme from "./config/theme";
+
 import "./dino.css";
+
+import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  databaseURL: import.meta.env.VITE_databaseURL,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
+  measurementId: import.meta.env.VITE_measurementId,
+};
+
+export const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={ChakraTheme}>
-      <ToastProvider />
-      <MessageBox />
       <BrowserRouter>
         <Router />
       </BrowserRouter>

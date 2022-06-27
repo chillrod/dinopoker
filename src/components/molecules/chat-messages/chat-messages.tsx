@@ -1,20 +1,43 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { emitter } from "../../../service/emitter/emitter";
-import { chatMessages } from "../../../service/messages";
-import { Button } from "../../atoms/button/button";
+import { useState } from "react";
+import { Grid, GridItem, Stack, Text, Box, Flex } from "@chakra-ui/react";
+import { ChatMessage } from "../../atoms/chat-message/chat-message";
+import { EmptyData } from "../../atoms/empty-data/empty-data";
+import { IconButton } from "../../atoms/icon-button/icon-button";
+import { MessageCircle } from "react-feather";
+import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
+import { motion } from "framer-motion";
 
 export const ChatMessages = () => {
-  const emitMessage = (message: string) => {
-    emitter.emit("EMIT_CHATMESSAGE", message);
-  };
+  const [messages, setMessages] = useState([]);
+  const [closed, setClosed] = useState(true);
 
   return (
-    <Box width="100%">
-      <Flex gap={1}>
-        {chatMessages.map((messages) => (
-          <Button onClick={() => emitMessage(messages)}>{messages}</Button>
-        ))}
+    <Grid gap={6} p={4}>
+      <Flex direction="column" justifySelf="center" gap={1}>
+        <IconButton
+          color="dino.base1"
+          onClick={() => setClosed(!closed)}
+          ariaLabel="Messages"
+          icon={<MessageCircle />}
+        />
+        <MenuChangeLanguage />
       </Flex>
-    </Box>
+      {!closed && (
+        <GridItem
+          bg="dino.secondary"
+          borderRadius="md"
+          maxH="150px"
+          overflow="auto"
+          fontSize="md"
+          p={3}
+        >
+          <Text fontSize="sm" fontWeight={500}>
+            Messages
+          </Text>
+          <Stack>{messages.length && <ChatMessage character={0} />}</Stack>
+          <EmptyData data="messages yet" />
+        </GridItem>
+      )}
+    </Grid>
   );
 };

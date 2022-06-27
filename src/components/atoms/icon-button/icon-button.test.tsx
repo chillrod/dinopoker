@@ -1,7 +1,7 @@
 import { render, screen } from "../../../test/library";
 import { fn } from "vitest";
 import { IconButton } from "./icon-button";
-import { ChevronLeftIcon } from "@chakra-ui/icons";
+import { ChevronLeft } from "react-feather";
 
 describe("Icon Button Component", () => {
   it("should render button component", () => {
@@ -14,7 +14,7 @@ describe("Icon Button Component", () => {
     const fn2 = fn(() => "hello");
 
     const action = {
-      icon: <ChevronLeftIcon />,
+      icon: <ChevronLeft />,
       type: "confirm",
       fn: fn2,
     };

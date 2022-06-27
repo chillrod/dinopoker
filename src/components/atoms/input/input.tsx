@@ -15,7 +15,7 @@ export const Input = ({
   disabled,
   required,
   invalid,
-  size = "md",
+  size = "lg",
   onChange,
   value,
 }: IInputProps) => {

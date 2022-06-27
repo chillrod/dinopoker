@@ -1,21 +1,25 @@
 import { Box, Button, Img } from "@chakra-ui/react";
 
-import { character } from "./hooks";
+import { CharacterList } from "../../../config/characters";
+
+export type character = {
+  id: number;
+};
 
 interface ICharacterCardProps {
-  character?: character;
+  characterId?: number;
   disabled?: boolean;
+  size?: string;
   isSelected?: number;
   onClick?: React.MouseEventHandler;
-  isSelectedScreen?: boolean;
 }
 
 export const CharacterCard = ({
-  character,
+  characterId = 0,
   disabled,
   isSelected,
   onClick,
-  isSelectedScreen,
+  size = "lg",
 }: ICharacterCardProps) => {
   const selectedProps = {
     border: "4px",
@@ -23,21 +27,27 @@ export const CharacterCard = ({
     borderColor: "dino.primary",
   };
 
+  const shadows = {
+    boxShadow:
+      "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
+  };
+
   return (
     <Button
       _focus={{
-        borderWidth: "2px",
+        border: "4px",
+        borderStyle: "dotted",
         borderColor: "dino.primary",
       }}
-      borderRadius="xl"
+      {...shadows}
+      borderRadius="full"
       outline="none"
       onClick={onClick}
-      bg={(isSelectedScreen && "dino.primary") || "dino.secondary"}
-      {...(isSelected === character?.id ? selectedProps : {})}
+      {...(isSelected === characterId ? selectedProps : {})}
       role="@dino-charactercard"
       disabled={disabled}
-      size="lg"
-      p={0}
+      size={size}
+      p={2}
       width={{
         sm: "5em",
         md: "5em",
@@ -52,7 +62,7 @@ export const CharacterCard = ({
       <Box w="100%" h="100%">
         <Img
           role="@dino-characterimg"
-          src={character?.src || ""}
+          src={CharacterList[characterId].src}
           w="100%"
           h="100%"
           objectFit="cover"
