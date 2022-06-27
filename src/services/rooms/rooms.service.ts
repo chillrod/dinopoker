@@ -24,6 +24,7 @@ export const RoomsService = {
       id: uuidv4(),
       vote: 0,
       room: roomId,
+      raiseHand: false,
     };
 
     try {
@@ -64,6 +65,15 @@ export const RoomsService = {
     });
   },
 
+  async updateRoomStatus(roomId?: string, roomStatus?: string) {
+    const db = getDatabase(app);
+
+    await set(
+      child(ref(db), "dinopoker-room/" + roomId + "/roomStatus"),
+      roomStatus
+    );
+  },
+
   async joinRoom({
     playerData,
     roomId,
@@ -79,6 +89,7 @@ export const RoomsService = {
       id: uuidv4(),
       vote: 0,
       room: roomId,
+      raiseHand: false,
     };
 
     try {

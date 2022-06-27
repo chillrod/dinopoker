@@ -13,7 +13,7 @@ export const ChatMessages = () => {
 
   return (
     <Grid gap={6} p={4}>
-      <Flex justifySelf="center" gap={1}>
+      <Flex direction="column" justifySelf="center" gap={1}>
         <IconButton
           color="dino.base1"
           onClick={() => setClosed(!closed)}
