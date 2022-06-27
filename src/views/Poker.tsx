@@ -135,6 +135,28 @@ export const Poker = () => {
     }
   };
 
+  const resetPlayerVote = async () => {
+    const player = {
+      ...getCurrentPlayer.player,
+      vote: 0,
+    };
+
+    localStorage.setItem(
+      "character",
+      JSON.stringify({ player, room: player.room })
+    );
+
+    try {
+      setVoteLoading(true);
+
+      await RoomsService.updatePlayersFromRoom(player);
+    } catch (err: any) {
+      NotificationsService.emitToast(err.message);
+    } finally {
+      setVoteLoading(false);
+    }
+  };
+
   const db = getDatabase(app);
 
   useEffect(() => {
@@ -150,6 +172,10 @@ export const Poker = () => {
 
     const unsubRoomStatus = onValue(roomStatus, (data) => {
       setCurrentRoomStatus(data.val());
+
+      if (data.val() === "PENDING") {
+        resetPlayerVote();
+      }
     });
 
     retrievePlayerFromRouting();

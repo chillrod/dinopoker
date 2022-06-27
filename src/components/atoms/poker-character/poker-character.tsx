@@ -31,6 +31,7 @@ export const PokerCharacter = ({
         </Text>
         <Tooltip label={character.vote ? "Voted... hmmm" : "Not voted"}>
           <Button
+            bg={character.vote ? "purple.800" : "dino.primary"}
             borderColor={character.raiseHand ? "yellow.500" : ""}
             borderWidth="2px"
             as="div"
