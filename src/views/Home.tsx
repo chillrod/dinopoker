@@ -23,8 +23,6 @@ import { JoinRoomDialog } from "../components/molecules/dialog-joinroom/dialog-j
 import { RoomsService } from "../services/rooms/rooms.service";
 import { useNavigate } from "react-router-dom";
 import { IPlayerData } from "../model/PlayerData";
-import { child, getDatabase, ref } from "firebase/database";
-import { app } from "../main";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -47,6 +45,8 @@ export const Home = () => {
         playerData
       );
 
+      localStorage.setItem("createdCharacter", JSON.stringify(playerData));
+
       navigate("room/" + roomId, {
         state: {
           player: preparedPlayer,
@@ -65,6 +65,8 @@ export const Home = () => {
       func: "SET_JOIN_ROOM",
       children: <JoinRoomDialog playerData={playerData} />,
     });
+
+    localStorage.setItem("createdCharacter", JSON.stringify(playerData));
   };
 
   useEffect(() => {
@@ -82,6 +84,16 @@ export const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const createdCharacter = JSON.parse(
+      localStorage.getItem("createdCharacter") || "{}"
+    );
+
+    if (createdCharacter.name) {
+      setPlayerData(createdCharacter);
+    }
+  }, []);
+
   return (
     <Container as="section">
       <Grid templateRows="1fr 1fr 2fr" gap={8} justifyContent="center">
@@ -94,13 +106,14 @@ export const Home = () => {
           </Heading>
         </GridItem>
         <GridItem alignSelf="center" justifySelf="center">
-          <SelectCharacter />
+          <SelectCharacter character={playerData?.character} />
         </GridItem>
         <GridItem alignSelf="center">
           <Grid gap={6}>
             <Box w="50%" margin="0 auto">
               <FormControl isInvalid={nameNotFilled}>
                 <Input
+                  value={playerData?.name}
                   onChange={(event) =>
                     PlayerService.PLAYER_NAME(event.target.value)
                   }

@@ -15,7 +15,7 @@ export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
         </Text>
       </Heading>
       <Tag mx={1} colorScheme="purple">
-        beta 2.2.0
+        beta 2.5.0
       </Tag>
     </Flex>
   );
