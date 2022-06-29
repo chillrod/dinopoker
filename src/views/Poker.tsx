@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
@@ -9,21 +9,12 @@ import {
   onDisconnect,
   onValue,
   ref,
-  remove,
 } from "firebase/database";
 
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import {
-  Grid,
-  GridItem,
-  Box,
-  Flex,
-  Text,
-  Spinner,
-  Img,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex, Text, Img, Tag } from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
@@ -38,20 +29,25 @@ interface IPlayerState {
   player: IPlayerData;
 }
 
+const getCurrentPlayer = JSON.parse(localStorage.getItem("character") || "{}");
+
 export const Poker = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
   const state = location.state as IPlayerState;
+
   const getCurrentPlayer = JSON.parse(
     localStorage.getItem("character") || "{}"
   );
 
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
+  const [currentPlayerPositions, setCurrentPlayerPositions] = useState<any>({});
   const [roomLoading, setRoomLoading] = useState(false);
   const [voteLoading, setVoteLoading] = useState(false);
   const [roomStatus, setCurrentRoomStatus] = useState("");
+  const [totalMd, setTotalMd] = useState();
 
   const parseSecretVoteBasedOnRoomStatus = (status: string, vote: number) => {
     const states: { [status: string]: string | number } = {
@@ -63,6 +59,10 @@ export const Poker = () => {
   };
 
   const retrievePlayerFromRouting = async () => {
+    const player = {
+      ...getCurrentPlayer.player,
+    };
+
     try {
       setRoomLoading(true);
 
@@ -86,11 +86,6 @@ export const Poker = () => {
       vote: vote,
     };
 
-    localStorage.setItem(
-      "character",
-      JSON.stringify({ player, room: player.room })
-    );
-
     try {
       setRoomLoading(true);
 
@@ -102,13 +97,24 @@ export const Poker = () => {
     }
   };
 
-  const renderPlayers = () => {
-    const players = Object.keys(currentPlayers).map((key) => {
-      return { ...currentPlayers[key] };
+  useMemo(() => {
+    const players = Object.keys(currentPlayers).map((player) => {
+      return {
+        ...currentPlayers[player],
+      };
     });
 
-    return players;
-  };
+    setCurrentPlayerPositions({
+      ["top"]: [...players.slice(1, 3), ...players.slice(5, 7)],
+      ["bottom"]: [
+        ...players.slice(0, 1),
+        ...players.slice(7, 10),
+        ...players.slice(14),
+      ],
+      ["left"]: [...players.slice(3, 5), ...players.slice(10, 11)],
+      ["right"]: players.slice(11, 14),
+    });
+  }, [currentPlayers, roomStatus]);
 
   const parseActionsAndTextBasedOnStatus = (roomStatus: string) => {
     const states: { [status: string]: string } = {
@@ -127,6 +133,7 @@ export const Poker = () => {
 
     try {
       setVoteLoading(true);
+
       await RoomsService.updateRoomStatus(id, states[roomStatus]);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
@@ -135,21 +142,14 @@ export const Poker = () => {
     }
   };
 
-  const resetPlayerVote = async () => {
-    const player = {
-      ...getCurrentPlayer.player,
-      vote: 0,
-    };
-
-    localStorage.setItem(
-      "character",
-      JSON.stringify({ player, room: player.room })
-    );
-
+  const resetPlayerVote = async (getCurrentPlayer: IPlayerData) => {
     try {
       setVoteLoading(true);
 
-      await RoomsService.updatePlayersFromRoom(player);
+      await RoomsService.resetPlayerVote({
+        ...getCurrentPlayer,
+        vote: 0,
+      });
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -157,42 +157,95 @@ export const Poker = () => {
     }
   };
 
+  const calculateMd = (state: string) => {
+    const states: { [status: string]: () => any } = {
+      frontend: () => {
+        const frontEndMd = Object.keys(currentPlayers)
+          .filter((player) => currentPlayers[player].team === 1)
+          .map((player) => currentPlayers[player].vote);
+
+        return frontEndMd.reduce((acc, prev) => acc + prev, 0);
+      },
+      backend: () => {
+        const backendMd = Object.keys(currentPlayers)
+          .filter((player) => currentPlayers[player].team === 2)
+          .map((player) => currentPlayers[player].vote);
+
+        return backendMd.reduce((acc, prev) => acc + prev, 0);
+      },
+    };
+
+    return states[state]();
+  };
+
+  // const test = (e: number, b: number) => {
+  //   if (e > 0 && b > 0) {
+  //     return e + b / 2;
+  //   }
+
+  //   return e + b;
+  // };
+
   const db = getDatabase(app);
 
-  useEffect(() => {
-    const roomPlayersDbRef = child(
-      ref(db),
-      "dinopoker-room/" + id + "/players"
-    );
-    const roomStatus = child(ref(db), "dinopoker-room/" + id + "/roomStatus");
+  const roomPlayersDbRef = child(ref(db), "dinopoker-room/" + id + "/players");
+  const roomPlayerDbRef = child(
+    ref(db),
+    "dinopoker-room/" + id + "/players/" + state?.player?.id
+  );
 
+  const roomStatusDbRef = child(
+    ref(db),
+    "dinopoker-room/" + id + "/roomStatus"
+  );
+
+  useEffect(() => {
     const unsubRoomDbRef = onValue(roomPlayersDbRef, (data) => {
       setCurrentPlayers({ ...data.val() });
     });
 
-    const unsubRoomStatus = onValue(roomStatus, (data) => {
+    const unsubRoomPlayerDbRef = onValue(roomPlayerDbRef, (data) => {
+      localStorage.setItem(
+        "character",
+        JSON.stringify({
+          player: { ...data.val(), team: data.val().team },
+          room: id,
+        })
+      );
+    });
+
+    const unsubRoomStatus = onValue(roomStatusDbRef, (data) => {
       setCurrentRoomStatus(data.val());
 
+      const player = {
+        ...getCurrentPlayer.player,
+      };
+
+      localStorage.setItem(
+        "character",
+        JSON.stringify({ player, room: player.room })
+      );
+
       if (data.val() === "PENDING") {
-        resetPlayerVote();
+        resetPlayerVote(getCurrentPlayer.player);
       }
     });
 
     retrievePlayerFromRouting();
-
     return () => {
       unsubRoomDbRef();
       unsubRoomStatus();
+      unsubRoomPlayerDbRef();
     };
   }, []);
 
-  useEffect(() => {
-    const dbRef = child(
-      ref(db),
-      "dinopoker-room/" + id + "/players/" + state?.player?.id
-    );
+  const onDisconnectDbRef = child(
+    ref(db),
+    "dinopoker-room/" + id + "/players/" + state?.player?.id
+  );
 
-    onDisconnect(dbRef).remove();
+  useEffect(() => {
+    onDisconnect(onDisconnectDbRef).remove();
 
     return () => {};
   }, []);
@@ -204,10 +257,6 @@ export const Poker = () => {
 
     return () => {};
   }, []);
-  const shadows = {
-    boxShadow:
-      "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
-  };
 
   return (
     <>
@@ -240,54 +289,107 @@ export const Poker = () => {
           height="100vh"
           justifyContent="center"
         >
-          <GridItem bg="gray.900" gridRow="1" gridColumn="1" w="100%" h="100%">
+          <GridItem gridRow="1" gridColumn="1" w="100%" h="100%">
             <PokerMenu />
           </GridItem>
-          <GridItem gridColumn="2" bg="purple.900">
+          <GridItem gridColumn="2" bg="rgba(0,0,0,0.3)">
             <Box w="100%" h="100%">
               <Grid templateRows="10vh 70vh 20vh">
                 <DinoPoker />
-                <GridItem justifySelf="center" gridRow="2" gridColumn="1">
-                  <Button
-                    loading={voteLoading}
-                    onClick={() => updateRoomStatus(roomStatus)}
-                  >
-                    {parseActionsAndTextBasedOnStatus(roomStatus)}
-                  </Button>
-                </GridItem>
                 <GridItem
-                  gridColumn="1 / -1"
-                  alignSelf="center"
+                  justifySelf="center"
                   gridRow="2"
-                  zIndex={2}
-                >
-                  <Flex
-                    wrap="wrap"
+                  gridColumn="1"
+                ></GridItem>
+                <GridItem gridColumn="1 / -1" alignSelf="center" gridRow="2">
+                  <Grid
+                    minH="30em"
                     justifyContent="center"
-                    gap={8}
-                    maxW="60%"
-                    margin="0 auto"
+                    alignItems="center"
+                    gridTemplateColumns="8em 50% 8em"
+                    gridTemplateRows="auto auto auto"
+                    gridTemplateAreas={`
+                       "left top right"
+                       "left table right"
+                       "left bottom right"
+                       `}
                   >
-                    {[...renderPlayers()].map((player: IPlayerData) => (
-                      <Flex direction="column" alignItems="center">
-                        <PokerCharacter
-                          character={player}
-                          status={roomStatus}
-                          handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
-                        />
+                    <GridItem
+                      justifySelf="center"
+                      w="100%"
+                      bg="gray.700"
+                      height="100%"
+                      borderRadius="full"
+                      area="table"
+                      minH="150px"
+                    >
+                      <Flex
+                        h="100%"
+                        gap={2}
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Button
+                          loading={voteLoading}
+                          onClick={() => updateRoomStatus(roomStatus)}
+                        >
+                          {parseActionsAndTextBasedOnStatus(roomStatus) ||
+                            "Loading..."}
+                        </Button>
+                        {roomStatus === "REVEALED" && (
+                          <Flex mt={2}>
+                            <Tag color="yellow.400" fontSize="lg" mx={2}>
+                              Total Frontend: {calculateMd("frontend")}
+                            </Tag>
+                            <Tag color="red.400" fontSize="lg" mx={2}>
+                              Total Backend: {calculateMd("backend")}
+                            </Tag>
+                            {/* <Text fontSize="lg">
+                              Média Total:{" "}
+                              {test(
+                                calculateMd("frontend"),
+                                calculateMd("backend")
+                              )}
+                            </Text> */}
+                          </Flex>
+                        )}
                       </Flex>
-                    ))}
-                  </Flex>
-                </GridItem>
-                <GridItem gridRow="2" gridColumn="1 / -1" alignSelf="center">
-                  <Flex
-                    {...shadows}
-                    margin="0 auto"
-                    bg="purple.500"
-                    borderRadius="full"
-                    w="80%"
-                    h="50vh"
-                  ></Flex>
+                    </GridItem>
+                    {Object.keys(currentPlayerPositions).map(
+                      (playerPosition) => (
+                        <GridItem
+                          justifySelf="center"
+                          key={playerPosition}
+                          area={playerPosition}
+                        >
+                          <Flex
+                            gap={4}
+                            direction={
+                              playerPosition === "left" ||
+                              playerPosition === "right"
+                                ? "column"
+                                : "row"
+                            }
+                          >
+                            {currentPlayerPositions[playerPosition].map(
+                              (player: IPlayerData) => (
+                                <div key={player.id}>
+                                  <PokerCharacter
+                                    character={player}
+                                    status={roomStatus}
+                                    handleVoteFunction={
+                                      parseSecretVoteBasedOnRoomStatus
+                                    }
+                                  />
+                                </div>
+                              )
+                            )}
+                          </Flex>
+                        </GridItem>
+                      )
+                    )}
+                  </Grid>
                 </GridItem>
                 <GridItem alignSelf="start" gridRow="3" justifySelf="center">
                   <Flex gap={2}>
@@ -295,6 +397,7 @@ export const Poker = () => {
                       (number) => (
                         <div key={number}>
                           <CardPoints
+                            disabled={roomStatus !== "PENDING"}
                             onClick={(vote) => handlePlayerVote(vote)}
                             selected={number === pickCurrentPlayer()?.vote}
                             point={number}

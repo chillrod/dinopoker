@@ -22,7 +22,7 @@ export const MenuRaiseHand = () => {
         !isRaisingHand
       );
     } catch (err: any) {
-      NotificationsService.emitToast(err.message)
+      NotificationsService.emitToast(err.message);
     }
   };
 

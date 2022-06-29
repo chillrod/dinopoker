@@ -23,15 +23,30 @@ export const PokerCharacter = ({
   handleVoteFunction,
   status,
 }: ICharacterCardProps) => {
+  const parseCharacterTeam = (team: number) => {
+    const arrayState = ["-", "(frontend)", "(backend)", "(sem time)"];
+
+    return arrayState[team];
+  };
+
+  const parseCharacterTeamColor = (team: number) => {
+    const arrayState = ["", "yellow.400", "red.400", ""];
+
+    return arrayState[team];
+  };
   return (
     <>
-      <Flex direction="column" alignItems="center" gap={1}>
-        <Text fontSize="xl">
-          {character.raiseHand ? `${character.name} 🤚` : character.name}
-        </Text>
+      <Flex direction="column" alignItems="center" gap={2}>
+        <Tag
+          fontSize="xl"
+          color={character?.team ? parseCharacterTeamColor(character.team) : ""}
+        >
+          {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
+          {character?.team ? parseCharacterTeam(character.team) : "-"}
+        </Tag>
         <Tooltip label={character.vote ? "Voted... hmmm" : "Not voted"}>
           <Button
-            bg={character.vote ? "purple.800" : "dino.primary"}
+            bg={character.vote ? "dino.primary" : ""}
             borderColor={character.raiseHand ? "yellow.500" : ""}
             borderWidth="2px"
             as="div"
@@ -65,11 +80,11 @@ export const PokerCharacter = ({
           </Button>
         </Tooltip>
         {character.vote ? (
-          <Tag colorScheme="purple" fontSize="2xl">
+          <Tag colorScheme="purple" fontSize="xl">
             Vote: {handleVoteFunction(status, character.vote)}
           </Tag>
         ) : (
-          <Tag colorScheme="purple" fontSize="2xl">
+          <Tag colorScheme="purple" fontSize="xl">
             Vote: -
           </Tag>
         )}
