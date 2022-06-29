@@ -8,7 +8,7 @@ import {
   update,
 } from "firebase/database";
 import { app } from "../../main";
-import { uuid } from "short-uuid";
+import { generate as uuid } from "short-uuid";
 import { uuidv4 } from "@firebase/util";
 import { IPlayerData, PlayerDataTeam } from "../../model/PlayerData";
 
@@ -40,12 +40,9 @@ export const RoomsService = {
       await set(ref(db, "dinopoker-room/" + roomId), {
         id: roomId,
         roomStatus: "PENDING",
-        players: {
-          [preparedPlayer.id]: {
-            ...preparedPlayer,
-          },
-        },
       });
+
+      await RoomsService.joinPlayerToRoom(preparedPlayer);
 
       return { roomId, preparedPlayer };
     } catch (err: any) {
@@ -63,6 +60,17 @@ export const RoomsService = {
       {
         ...player,
       }
+    );
+  },
+
+  async joinPlayerToRoom(player: IPlayerData) {
+    if (!player) return;
+
+    const db = getDatabase(app);
+
+    await set(
+      child(ref(db), "dinopoker-room/" + player.room + /players/ + player.id),
+      player
     );
   },
 
@@ -152,7 +160,7 @@ export const RoomsService = {
       await get(child(ref(db), "dinopoker-room/" + roomId)).then(
         async (res) => {
           if (res.exists()) {
-            await RoomsService.updatePlayersFromRoom(preparedPlayer);
+            await RoomsService.joinPlayerToRoom(preparedPlayer);
           }
 
           if (!res.exists()) throw new Error("Room does not exist");

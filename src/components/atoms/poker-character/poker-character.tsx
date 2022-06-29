@@ -30,7 +30,7 @@ export const PokerCharacter = ({
   };
 
   const parseCharacterTeamColor = (team: number) => {
-    const arrayState = ["", "yellow.400", "red.400", ""];
+    const arrayState = ["", "yellow.400", "blue.300", ""];
 
     return arrayState[team];
   };
@@ -38,7 +38,7 @@ export const PokerCharacter = ({
     <>
       <Flex direction="column" alignItems="center" gap={2}>
         <Tag
-          fontSize="xl"
+          fontSize="md"
           color={character?.team ? parseCharacterTeamColor(character.team) : ""}
         >
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
