@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
@@ -14,22 +14,20 @@ import {
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import { Grid, GridItem, Box, Flex, Text, Img, Tag } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex, Text, Img } from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
-import { PokerCharacter } from "../components/atoms/poker-character/poker-character";
 import { DinoPoker } from "../components/atoms/dinopoker";
 import { VoteSystemOptions } from "../config/vote-system/vote-system";
-import { Button } from "../components/atoms/button/button";
-import { CharacterList } from "../config/characters";
+import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
 import { AnimatePresence, motion } from "framer-motion";
+import { CharacterList } from "../config/characters";
+import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
 
 interface IPlayerState {
   player: IPlayerData;
 }
-
-const getCurrentPlayer = JSON.parse(localStorage.getItem("character") || "{}");
 
 export const Poker = () => {
   const { id } = useParams();
@@ -43,26 +41,11 @@ export const Poker = () => {
   );
 
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
-  const [currentPlayerPositions, setCurrentPlayerPositions] = useState<any>({});
   const [roomLoading, setRoomLoading] = useState(false);
   const [voteLoading, setVoteLoading] = useState(false);
   const [roomStatus, setCurrentRoomStatus] = useState("");
-  const [totalMd, setTotalMd] = useState();
-
-  const parseSecretVoteBasedOnRoomStatus = (status: string, vote: number) => {
-    const states: { [status: string]: string | number } = {
-      PENDING: "-",
-      REVEALED: vote,
-    };
-
-    return states[status];
-  };
 
   const retrievePlayerFromRouting = async () => {
-    const player = {
-      ...getCurrentPlayer.player,
-    };
-
     try {
       setRoomLoading(true);
 
@@ -97,34 +80,6 @@ export const Poker = () => {
     }
   };
 
-  useMemo(() => {
-    const players = Object.keys(currentPlayers).map((player) => {
-      return {
-        ...currentPlayers[player],
-      };
-    });
-
-    setCurrentPlayerPositions({
-      ["top"]: [...players.slice(1, 3), ...players.slice(5, 7)],
-      ["bottom"]: [
-        ...players.slice(0, 1),
-        ...players.slice(7, 10),
-        ...players.slice(14),
-      ],
-      ["left"]: [...players.slice(3, 5), ...players.slice(10, 11)],
-      ["right"]: players.slice(11, 14),
-    });
-  }, [currentPlayers, roomStatus]);
-
-  const parseActionsAndTextBasedOnStatus = (roomStatus: string) => {
-    const states: { [status: string]: string } = {
-      PENDING: "Reveal votes",
-      REVEALED: "Restart",
-    };
-
-    return states[roomStatus];
-  };
-
   const updateRoomStatus = async (roomStatus: string) => {
     const states: { [status: string]: string } = {
       PENDING: "REVEALED",
@@ -156,35 +111,6 @@ export const Poker = () => {
       setVoteLoading(false);
     }
   };
-
-  const calculateMd = (state: string) => {
-    const states: { [status: string]: () => any } = {
-      frontend: () => {
-        const frontEndMd = Object.keys(currentPlayers)
-          .filter((player) => currentPlayers[player].team === 1)
-          .map((player) => currentPlayers[player].vote);
-
-        return frontEndMd.reduce((acc, prev) => acc + prev, 0);
-      },
-      backend: () => {
-        const backendMd = Object.keys(currentPlayers)
-          .filter((player) => currentPlayers[player].team === 2)
-          .map((player) => currentPlayers[player].vote);
-
-        return backendMd.reduce((acc, prev) => acc + prev, 0);
-      },
-    };
-
-    return states[state]();
-  };
-
-  // const test = (e: number, b: number) => {
-  //   if (e > 0 && b > 0) {
-  //     return e + b / 2;
-  //   }
-
-  //   return e + b;
-  // };
 
   const db = getDatabase(app);
 
@@ -232,6 +158,7 @@ export const Poker = () => {
     });
 
     retrievePlayerFromRouting();
+
     return () => {
       unsubRoomDbRef();
       unsubRoomStatus();
@@ -258,6 +185,39 @@ export const Poker = () => {
     return () => {};
   }, []);
 
+  const calculateMd = (state: string) => {
+    const states: { [status: string]: () => any } = {
+      frontend: () => {
+        const frontEndMd = Object.keys(currentPlayers)
+          .filter((player) => currentPlayers[player].team === 1)
+          .map((player) => currentPlayers[player].vote);
+
+        if (!frontEndMd.length) return "";
+
+        return Math.max(...frontEndMd);
+      },
+      backend: () => {
+        const backendMd = Object.keys(currentPlayers)
+          .filter((player) => currentPlayers[player].team === 2)
+          .map((player) => currentPlayers[player].vote);
+
+        if (!backendMd.length) return "";
+
+        return Math.max(...backendMd);
+      },
+    };
+
+    return states[state]();
+  };
+
+  const calculateAverage = (team1Value: number, team2Value: number) => {
+    if (team1Value > 0 && team2Value > 0) {
+      return team1Value + team2Value / 2;
+    }
+
+    return team1Value + team2Value;
+  };
+
   return (
     <>
       <AnimatePresence presenceAffectsLayout={true}>
@@ -273,146 +233,76 @@ export const Poker = () => {
               gap={2}
               sx={{
                 position: "absolute",
-                right: 10,
+                left: 10,
                 bottom: 50,
               }}
             >
-              <Img w="50%" src={CharacterList[0].src} />
-              <Text>Loading...</Text>
+              <Img w="50%" src={CharacterList[2].src} />
+              <Text>Carregando...</Text>
             </Flex>
           </motion.div>
         )}
       </AnimatePresence>
       <Box as="section">
         <Grid
-          templateColumns="auto 3fr auto"
-          height="100vh"
-          justifyContent="center"
+          gridTemplateAreas={`
+        "poker poker nav"
+        "poker poker nav"
+        "poker poker nav"
+        `}
+          h="100vh"
+          gridTemplateColumns="2fr 2fr auto"
         >
-          <GridItem gridRow="1" gridColumn="1" w="100%" h="100%">
+          <GridItem gridArea={"nav"} bg="dino.secondary">
             <PokerMenu />
           </GridItem>
-          <GridItem gridColumn="2" bg="rgba(0,0,0,0.3)">
-            <Box w="100%" h="100%">
-              <Grid templateRows="10vh 70vh 20vh">
-                <DinoPoker />
-                <GridItem
-                  justifySelf="center"
-                  gridRow="2"
-                  gridColumn="1"
-                ></GridItem>
-                <GridItem gridColumn="1 / -1" alignSelf="center" gridRow="2">
-                  <Grid
-                    minH="30em"
-                    justifyContent="center"
-                    alignItems="center"
-                    gridTemplateColumns="8em 50% 8em"
-                    gridTemplateRows="auto auto auto"
-                    gridTemplateAreas={`
-                       "left top right"
-                       "left table right"
-                       "left bottom right"
-                       `}
-                  >
-                    <GridItem
-                      justifySelf="center"
-                      w="100%"
-                      bg="gray.700"
-                      height="100%"
-                      borderRadius="full"
-                      area="table"
-                      minH="150px"
-                    >
-                      <Flex
-                        h="100%"
-                        gap={2}
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <Button
-                          loading={voteLoading}
-                          onClick={() => updateRoomStatus(roomStatus)}
-                        >
-                          {parseActionsAndTextBasedOnStatus(roomStatus) ||
-                            "Loading..."}
-                        </Button>
-                        {roomStatus === "REVEALED" && (
-                          <Flex mt={2}>
-                            <Tag color="yellow.400" fontSize="lg" mx={2}>
-                              Total Frontend: {calculateMd("frontend")}
-                            </Tag>
-                            <Tag color="red.400" fontSize="lg" mx={2}>
-                              Total Backend: {calculateMd("backend")}
-                            </Tag>
-                            {/* <Text fontSize="lg">
-                              Média Total:{" "}
-                              {test(
-                                calculateMd("frontend"),
-                                calculateMd("backend")
-                              )}
-                            </Text> */}
-                          </Flex>
-                        )}
-                      </Flex>
-                    </GridItem>
-                    {Object.keys(currentPlayerPositions).map(
-                      (playerPosition) => (
-                        <GridItem
-                          justifySelf="center"
-                          key={playerPosition}
-                          area={playerPosition}
-                        >
-                          <Flex
-                            gap={4}
-                            direction={
-                              playerPosition === "left" ||
-                              playerPosition === "right"
-                                ? "column"
-                                : "row"
-                            }
-                          >
-                            {currentPlayerPositions[playerPosition].map(
-                              (player: IPlayerData) => (
-                                <div key={player.id}>
-                                  <PokerCharacter
-                                    character={player}
-                                    status={roomStatus}
-                                    handleVoteFunction={
-                                      parseSecretVoteBasedOnRoomStatus
-                                    }
-                                  />
-                                </div>
-                              )
-                            )}
-                          </Flex>
-                        </GridItem>
-                      )
-                    )}
-                  </Grid>
-                </GridItem>
-                <GridItem alignSelf="start" gridRow="3" justifySelf="center">
-                  <Flex gap={2}>
-                    {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
-                      (number) => (
-                        <div key={number}>
-                          <CardPoints
-                            disabled={roomStatus !== "PENDING"}
-                            onClick={(vote) => handlePlayerVote(vote)}
-                            selected={number === pickCurrentPlayer()?.vote}
-                            point={number}
-                          />
-                        </div>
-                      )
-                    )}
-                  </Flex>
-                </GridItem>
-              </Grid>
-            </Box>
+          <GridItem gridArea="poker" justifyContent="center">
+            <Grid
+              w="100%"
+              h="100vh"
+              gridTemplateAreas={`
+                    "logo"
+                    "game"
+                    "vote"
+                    `}
+              gridTemplateColumns="1fr"
+              gridTemplateRows="0.5fr auto 0.5fr"
+              p={4}
+            >
+              <GridItem
+                gridArea="logo"
+                alignSelf="center"
+                p={2}
+                bg="dino.secondary"
+              >
+                <DinoPoker small />
+              </GridItem>
+              <GridItem gridArea="game" alignSelf="center">
+                <PokerRoundData
+                  voteLoading={voteLoading}
+                  roomStatus={roomStatus}
+                  updateRoomStatus={updateRoomStatus}
+                  currentPlayers={currentPlayers}
+                />
+              </GridItem>
+              <GridItem gridArea="vote" justifySelf="center" alignSelf="end">
+                <Flex gap={2}>
+                  {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
+                    (number) => (
+                      <div key={number}>
+                        <CardPoints
+                          disabled={roomStatus !== "PENDING"}
+                          onClick={(vote) => handlePlayerVote(vote)}
+                          selected={number === pickCurrentPlayer()?.vote}
+                          point={number}
+                        />
+                      </div>
+                    )
+                  )}
+                </Flex>
+              </GridItem>
+            </Grid>
           </GridItem>
-          {/* <GridItem gridRow="1" gridColumn={3} bg="dino.base5">
-            <ChatMessages />
-          </GridItem> */}
         </Grid>
       </Box>
     </>

@@ -1,10 +1,11 @@
 html,
 body,
 #root {
+  background: rgb(38, 36, 73);
   background: radial-gradient(
-    58.4% 58.4% at 50% 85.7%,
-    rgba(43, 35, 83, 0.69) 0%,
-    rgb(41, 41, 41) 100%
+    circle,
+    rgba(38, 36, 73, 1) 0%,
+    rgba(38, 35, 38, 1) 100%
   );
 
   background-size: 400% 400%;

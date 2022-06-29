@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Box,
@@ -23,6 +23,8 @@ import { JoinRoomDialog } from "../components/molecules/dialog-joinroom/dialog-j
 import { RoomsService } from "../services/rooms/rooms.service";
 import { useNavigate } from "react-router-dom";
 import { IPlayerData } from "../model/PlayerData";
+import { child, getDatabase, ref } from "firebase/database";
+import { app } from "../main";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -73,8 +75,6 @@ export const Home = () => {
     emitter.on("PLAYER_NAME", (data) => {
       setPlayerData((playerData) => ({ ...playerData, name: data }));
     });
-
-    localStorage.removeItem("character");
 
     return () => {
       emitter.off("PLAYER_CHARACTER");

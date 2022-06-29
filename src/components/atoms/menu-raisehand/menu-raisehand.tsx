@@ -1,6 +1,7 @@
+import { Flex, Text } from "@chakra-ui/react";
 import { child, getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
-import { ThumbsUp } from "react-feather";
+import { Speaker } from "react-feather";
 import { app } from "../../../main";
 import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { RoomsService } from "../../../services/rooms/rooms.service";
@@ -46,24 +47,28 @@ export const MenuRaiseHand = () => {
   }, []);
 
   const returnBg = () => {
-    if (!isRaisingHand) return "dino.secondary";
+    if (!isRaisingHand) return "purple.500";
 
-    return "dino.primary";
+    return "purple.300";
   };
 
   const returnColor = () => {
-    if (!isRaisingHand) return "dino.primary";
-
     return "dino.base4";
   };
 
   return (
-    <IconButton
-      onClick={() => handleRaiseHand()}
-      color={returnColor()}
-      bg={returnBg()}
-      ariaLabel="Raise hand"
-      icon={<ThumbsUp />}
-    />
+    <>
+      <Flex direction="column" w="100%" alignItems="center" gap={2}>
+        <Text fontSize="sm">Atenção</Text>
+
+        <IconButton
+          onClick={() => handleRaiseHand()}
+          color={returnColor()}
+          bg={returnBg()}
+          ariaLabel="Levantar a mão"
+          icon={<Speaker />}
+        />
+      </Flex>
+    </>
   );
 };

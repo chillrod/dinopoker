@@ -18,10 +18,7 @@ export const MenuTeam = () => {
 
   const handleTeamChange = async (team: number) => {
     try {
-      await RoomsService.updatePlayerTeam(
-        getCurrentPlayer.player,
-        currentTeam === 2 || currentTeam === 1 ? 3 : team
-      );
+      await RoomsService.updatePlayerTeam(getCurrentPlayer.player, team);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     }
@@ -48,26 +45,24 @@ export const MenuTeam = () => {
 
   const returnBg = (team: number) => {
     const state: { [key: number]: string } = {
-      1: "dino.primary",
-      2: "dino.primary",
-      3: "dino.secondary",
+      1: "purple.300",
+      2: "purple.300",
+      3: "purple.500",
     };
 
     if (team === currentTeam) return state[currentTeam];
 
-    return "dino.secondary";
+    return "purple.500";
   };
 
   const returnColor = (team: number) => {
-    if (team === currentTeam) return "dino.base4";
-
-    return "dino.primary";
+    return "dino.base4";
   };
 
   return (
     <>
-      <Flex mt={5} direction="column" gap={2}>
-        <Text>Equipe</Text>
+      <Flex direction="column" w="100%" alignItems="center" gap={2}>
+        <Text fontSize="sm">Equipe</Text>
         <IconButton
           onClick={() => handleTeamChange(2)}
           color={returnColor(2)}
