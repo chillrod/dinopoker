@@ -50,14 +50,14 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
   }, [roomId]);
 
   return (
-    <SimpleGrid gap={5}>
+    <SimpleGrid gap={2}>
       <Text textAlign="center" as="h2" color="dino.text" fontWeight={500}>
-        Type the room id
+        Digite o ID da sala
       </Text>
       <FormControl isInvalid={!roomId.length}>
         <Input
           onChange={(e) => setRoomId(e.target.value)}
-          placeholder="ex: 35e26693-7659-493a-b6f1-a930b9a3ddfc"
+          placeholder="6MEanqDk42g4hVSziP7q2L"
         />
       </FormControl>
     </SimpleGrid>

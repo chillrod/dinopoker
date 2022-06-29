@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight } from "react-feather";
@@ -9,10 +9,10 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 import { useTranslation } from "react-i18next";
 import { PlayerService } from "../../../services/player/player.service";
 
-export const SelectCharacter = () => {
+export const SelectCharacter = ({ character }: { character?: number }) => {
   const { t } = useTranslation();
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(character || 0);
 
   const handleSelected = (id: number): number => {
     setSelected(id);
@@ -37,6 +37,10 @@ export const SelectCharacter = () => {
 
     return handleSelected(id - 1);
   };
+
+  useEffect(() => {
+    setSelected(character || 0);
+  }, [character]);
 
   return (
     <Box>
