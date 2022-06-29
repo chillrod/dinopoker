@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { MenuShare } from "../../atoms/menu-share/menu-share";
 import { MenuRestart } from "../../atoms/menu-restart/menu-restart";
 import { MenuRaiseHand } from "../../atoms/menu-raisehand/menu-raisehand";
+import { MenuTeam } from "../../atoms/menu-team/menu-team";
 
 export const PokerMenu = () => {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export const PokerMenu = () => {
       >
         <GridItem alignSelf="start">
           <Flex gap={4} direction="column">
-            {[<MenuRaiseHand />].map((Component, id) => (
+            {[<MenuRaiseHand />, <MenuTeam />].map((Component, id) => (
               <Box key={id}>{Component}</Box>
             ))}
           </Flex>

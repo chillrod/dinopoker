@@ -10,7 +10,7 @@ import {
 import { app } from "../../main";
 import { uuid } from "short-uuid";
 import { uuidv4 } from "@firebase/util";
-import { IPlayerData } from "../../model/PlayerData";
+import { IPlayerData, PlayerDataTeam } from "../../model/PlayerData";
 
 export const RoomsService = {
   async createRoom({ name, character }: IPlayerData) {
@@ -25,6 +25,7 @@ export const RoomsService = {
       vote: 0,
       room: roomId,
       raiseHand: false,
+      team: PlayerDataTeam.UNKNOWN,
     };
 
     try {
@@ -57,14 +58,26 @@ export const RoomsService = {
 
     const db = getDatabase(app);
 
-    const roomData = await get(
-      child(ref(db), "dinopoker-room/" + player.room)
-    ).then((res) => res.val());
+    await set(
+      child(ref(db), "dinopoker-room/" + player.room + "/players/" + player.id),
+      {
+        ...player,
+      }
+    );
+  },
 
-    await update(child(ref(db), "dinopoker-room/" + player.room), {
-      ...roomData,
-      players: { ...roomData.players, [player.id]: { ...player } },
-    });
+  async resetPlayerVote(player: IPlayerData) {
+    if (!player) return;
+
+    const db = getDatabase(app);
+
+    await set(
+      child(
+        ref(db),
+        "dinopoker-room/" + player.room + "/players/" + player.id + "/vote"
+      ),
+      0
+    );
   },
 
   async updateRoomStatus(roomId?: string, roomStatus?: string) {
@@ -92,6 +105,20 @@ export const RoomsService = {
     );
   },
 
+  async updatePlayerTeam(player: IPlayerData, team: number) {
+    if (!player) return;
+
+    const db = getDatabase(app);
+
+    await set(
+      child(
+        ref(db),
+        "dinopoker-room/" + player.room + "/players/" + player.id + "/team"
+      ),
+      team
+    );
+  },
+
   async joinRoom({
     playerData,
     roomId,
@@ -110,6 +137,7 @@ export const RoomsService = {
       vote: 0,
       room: roomId,
       raiseHand: false,
+      team: PlayerDataTeam.UNKNOWN,
     };
 
     try {

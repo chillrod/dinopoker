@@ -4,10 +4,17 @@ interface ICardPoints {
   point: number;
   selected: boolean;
   onClick?: (point: number) => void;
+  disabled?: boolean;
 }
-export const CardPoints = ({ selected, point, onClick }: ICardPoints) => {
+export const CardPoints = ({
+  selected,
+  point,
+  onClick,
+  disabled,
+}: ICardPoints) => {
   return (
     <Button
+      disabled={disabled}
       role="@dino-cardpoint"
       onClick={() => onClick && onClick(point)}
       _hover={{
@@ -15,7 +22,7 @@ export const CardPoints = ({ selected, point, onClick }: ICardPoints) => {
         backgroundColor: "dino.primary",
       }}
       size="sm"
-      bg={selected ? "purple.600" : "purple.800"}
+      bg={selected ? "dino.primary" : "gray.700"}
       width="6em"
       height="8em"
     >
@@ -30,7 +37,7 @@ export const CardPoints = ({ selected, point, onClick }: ICardPoints) => {
             sx={{
               display: "grid",
             }}
-            bg="dino.base1"
+            bg="gray.400"
             width="6ch"
             h="6ch"
             borderRadius="full"

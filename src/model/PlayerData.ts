@@ -5,4 +5,11 @@ export interface IPlayerData {
   name?: string;
   vote?: number;
   room?: string;
+  team?: PlayerDataTeam;
+}
+
+export enum PlayerDataTeam {
+  FRONTEND = 1,
+  BACKEND = 2,
+  UNKNOWN = 3,
 }

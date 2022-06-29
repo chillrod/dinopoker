@@ -74,6 +74,8 @@ export const Home = () => {
       setPlayerData((playerData) => ({ ...playerData, name: data }));
     });
 
+    localStorage.removeItem("character");
+
     return () => {
       emitter.off("PLAYER_CHARACTER");
       emitter.off("PLAYER_NAME");
