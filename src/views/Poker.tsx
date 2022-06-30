@@ -185,39 +185,6 @@ export const Poker = () => {
     return () => {};
   }, []);
 
-  const calculateMd = (state: string) => {
-    const states: { [status: string]: () => any } = {
-      frontend: () => {
-        const frontEndMd = Object.keys(currentPlayers)
-          .filter((player) => currentPlayers[player].team === 1)
-          .map((player) => currentPlayers[player].vote);
-
-        if (!frontEndMd.length) return "";
-
-        return Math.max(...frontEndMd);
-      },
-      backend: () => {
-        const backendMd = Object.keys(currentPlayers)
-          .filter((player) => currentPlayers[player].team === 2)
-          .map((player) => currentPlayers[player].vote);
-
-        if (!backendMd.length) return "";
-
-        return Math.max(...backendMd);
-      },
-    };
-
-    return states[state]();
-  };
-
-  const calculateAverage = (team1Value: number, team2Value: number) => {
-    if (team1Value > 0 && team2Value > 0) {
-      return team1Value + team2Value / 2;
-    }
-
-    return team1Value + team2Value;
-  };
-
   return (
     <>
       <AnimatePresence presenceAffectsLayout={true}>
@@ -271,7 +238,7 @@ export const Poker = () => {
             >
               <GridItem
                 gridArea="logo"
-                alignSelf="center"
+                alignSelf="start"
                 p={2}
                 bg="dino.secondary"
               >
