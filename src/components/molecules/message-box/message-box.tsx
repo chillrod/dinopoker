@@ -56,6 +56,10 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       setLoading(data);
     });
 
+    emitter.on("EMIT_MESSAGEBOX_CLOSE", () => {
+      setIsOpen(false);
+    });
+
     return () => {
       emitter.off("EMIT_MESSAGEBOX");
       emitter.off("EMIT_MESSAGEBOX_LOADING");
@@ -65,7 +69,6 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const handleActionConfirm = () => {
     if (currentFunc) {
       NotificationsService.emitConfirm({ func: currentFunc });
-      setIsOpen(false);
     }
   };
 
@@ -100,7 +103,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
                 loading={loading}
                 bg="dino.secondary"
                 onClick={onClose}
-                ref={cancelRef}
+                forwardRef={cancelRef}
               >
                 {t("components.cancel-action")}
               </Button>

@@ -1,6 +1,7 @@
-import { Flex, Grid, GridItem, Tag, Text } from "@chakra-ui/react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { Flex, Grid, GridItem, Img, Tag, Text } from "@chakra-ui/react";
+import React, { useEffect, useMemo, useState } from "react";
+
+import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
 import { Button } from "../../atoms/button/button";
 import { PokerCharacter } from "../../atoms/poker-character/poker-character";
@@ -22,11 +23,16 @@ export const PokerRoundData = ({
     [key: string]: IPlayerData[];
   }>({});
 
+  const [revealingTimeout, setRevealingTimeout] = useState(3);
+  const [isRevealed, setIsRevealed] = useState(false);
+
   const parseSecretVoteBasedOnRoomStatus = (status: string, vote: number) => {
     const states: { [status: string]: string | number } = {
       PENDING: "-",
       REVEALED: vote,
     };
+
+    if (status === "REVEALED" && !isRevealed) return "-";
 
     return states[status];
   };
@@ -73,6 +79,68 @@ export const PokerRoundData = ({
     return team1Value + team2Value;
   };
 
+  const renderTableStatus = (roomStatus: string, isRevealed: boolean) => {
+    const stateHandler: { [key: string]: () => React.ReactElement } = {
+      PENDING: () => {
+        return (
+          <Button
+            loading={voteLoading}
+            onClick={() => updateRoomStatus(roomStatus)}
+          >
+            {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
+          </Button>
+        );
+      },
+
+      REVEALING: () => {
+        return (
+          <Flex direction="column" justifyContent="center">
+            <Tag fontSize="lg" colorScheme="purple" fontWeight={600}>
+              Revelando {revealingTimeout}
+            </Tag>
+            <Img src={CharacterList[2].src} w="50%" margin="0 auto" />
+          </Flex>
+        );
+      },
+
+      REVEALED: () => {
+        return (
+          <>
+            <Button
+              loading={voteLoading}
+              onClick={() => updateRoomStatus(roomStatus)}
+            >
+              {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
+            </Button>
+
+            <Flex mt={2}>
+              <Tag color="yellow.300" fontSize="lg" mx={2}>
+                Nota Frontend: {calculateMd("frontend")}
+              </Tag>
+              <Tag color="blue.200" fontSize="lg" mx={2}>
+                Nota Backend: {calculateMd("backend")}
+              </Tag>
+            </Flex>
+            <Text fontSize="lg">
+              Média Total:{" "}
+              {calculateAverage(
+                calculateMd("frontend"),
+                calculateMd("backend")
+              )}
+            </Text>
+          </>
+        );
+      },
+    };
+
+    if (!roomStatus) return;
+
+    if (revealingTimeout > 0 && roomStatus === "REVEALED")
+      return stateHandler["REVEALING"]();
+
+    return stateHandler[roomStatus]();
+  };
+
   useMemo(() => {
     const players = Object.keys(currentPlayers).map((player) => {
       return {
@@ -87,6 +155,25 @@ export const PokerRoundData = ({
       ["right"]: [...players.slice(12, 16)],
     });
   }, [currentPlayers]);
+
+  useEffect(() => {
+    if (roomStatus === "PENDING")
+      [setIsRevealed(false), setRevealingTimeout(3)];
+
+    if (revealingTimeout === 0) {
+      setIsRevealed(true);
+
+      return;
+    }
+
+    if (roomStatus === "REVEALED") {
+      const countInterval = setInterval(() => {
+        setRevealingTimeout(revealingTimeout - 1);
+      }, 800);
+
+      return () => clearInterval(countInterval);
+    }
+  }, [roomStatus, revealingTimeout]);
 
   return (
     <Grid
@@ -105,7 +192,7 @@ export const PokerRoundData = ({
         justifySelf="center"
         w="100%"
         bg="gray.700"
-        height="100%"
+        height="12em"
         borderRadius="full"
         area="table"
       >
@@ -116,31 +203,7 @@ export const PokerRoundData = ({
           justifyContent="center"
           alignItems="center"
         >
-          <Button
-            loading={voteLoading}
-            onClick={() => updateRoomStatus(roomStatus)}
-          >
-            {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
-          </Button>
-          {roomStatus === "REVEALED" && (
-            <>
-              <Flex mt={2}>
-                <Tag color="yellow.300" fontSize="lg" mx={2}>
-                  Nota Frontend: {calculateMd("frontend")}
-                </Tag>
-                <Tag color="blue.200" fontSize="lg" mx={2}>
-                  Nota Backend: {calculateMd("backend")}
-                </Tag>
-              </Flex>
-              <Text fontSize="lg">
-                Média Total:{" "}
-                {calculateAverage(
-                  calculateMd("frontend"),
-                  calculateMd("backend")
-                )}
-              </Text>
-            </>
-          )}
+          {renderTableStatus(roomStatus, isRevealed)}
         </Flex>
       </GridItem>
       {Object.keys(currentPlayerPositions).map((playerPosition) => (

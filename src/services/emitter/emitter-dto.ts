@@ -12,6 +12,8 @@ export type Events = {
     children?: React.ReactElement;
   };
 
+  EMIT_MESSAGEBOX_CLOSE: boolean;
+
   EMIT_MESSAGEBOX_LOADING: boolean;
 
   EMIT_TOAST: string;

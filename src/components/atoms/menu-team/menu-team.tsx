@@ -1,8 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { child, getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
 import { Codepen, Server } from "react-feather";
 import { app } from "../../../main";
+
 import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { RoomsService } from "../../../services/rooms/rooms.service";
 import { IconButton } from "../../atoms/icon-button/icon-button";
@@ -61,8 +62,7 @@ export const MenuTeam = () => {
 
   return (
     <>
-      <Flex direction="column" w="100%" alignItems="center" gap={2}>
-        <Text fontSize="sm">Equipe</Text>
+      <Flex gap={2}>
         <IconButton
           onClick={() => handleTeamChange(2)}
           color={returnColor(2)}

@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
 
 import {
   child,
   getDatabase,
-  onChildAdded,
-  onChildChanged,
   onChildRemoved,
   onDisconnect,
   onValue,
@@ -17,15 +15,13 @@ import {
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import { Grid, GridItem, Box, Flex, Text, Img } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex } from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
 import { DinoPoker } from "../components/atoms/dinopoker";
 import { VoteSystemOptions } from "../config/vote-system/vote-system";
 import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
-import { AnimatePresence, motion } from "framer-motion";
-import { CharacterList } from "../config/characters";
 import { getLocalStorage } from "../services/local-storage/handler";
 
 export const Poker = () => {
@@ -184,16 +180,13 @@ export const Poker = () => {
     <Box as="section">
       <Grid
         gridTemplateAreas={`
-        "poker poker nav"
-        "poker poker nav"
-        "poker poker nav"
+        "poker poker"
+        "poker poker"
+        "poker poker"
         `}
         h="100vh"
         gridTemplateColumns="2fr 2fr auto"
       >
-        <GridItem gridArea={"nav"} bg="dino.secondary">
-          <PokerMenu />
-        </GridItem>
         <GridItem gridArea="poker" justifyContent="center">
           <Grid
             w="100%"
@@ -208,12 +201,15 @@ export const Poker = () => {
             p={4}
           >
             <GridItem
+              bg="dino.secondary"
+              p={2}
               gridArea="logo"
               alignSelf="start"
-              p={2}
-              bg="dino.secondary"
             >
-              <DinoPoker small />
+              <Flex alignItems="center" justifyContent="space-between">
+                <DinoPoker small />
+                <PokerMenu />
+              </Flex>
             </GridItem>
             <GridItem gridArea="game" alignSelf="center">
               <PokerRoundData

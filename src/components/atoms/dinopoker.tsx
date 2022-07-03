@@ -8,15 +8,18 @@ interface IDinoPoker {
 export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
   return (
     <Flex justifyContent={justify} alignItems="center">
-      <Heading p={1} textAlign="center" size={small ? "md" : "lg"}>
+      <Heading
+        fontWeight={600}
+        p={1}
+        textAlign="center"
+        size={small ? "md" : "xl"}
+      >
         dino
-        <Text as="span" color="dino.primary">
+        <Text fontWeight={300} as="span" color="dino.primary">
           poker.app
         </Text>
       </Heading>
-      <Tag mx={1} colorScheme="purple">
-        beta 2.5.0
-      </Tag>
+      <Tag colorScheme="purple">beta 3.0.0</Tag>
     </Flex>
   );
 };
