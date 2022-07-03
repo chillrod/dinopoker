@@ -22,16 +22,27 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
   }) => {
     NotificationsService.emitMessageBoxLoading(true);
 
-    try {
-      const data = await RoomsService.joinRoom({ playerData, roomId });
+    if (!roomId.length) {
+      NotificationsService.emitMessageBoxLoading(false);
 
-      if (data) {
-        navigate("room/" + roomId, {
-          state: {
-            player: data,
-          },
-        });
-      }
+      return NotificationsService.emitToast("Digite um id válido");
+    }
+
+    const player: IPlayerData = {
+      ...playerData,
+      room: roomId,
+    };
+
+    try {
+      const data = await RoomsService.joinPlayerToRoom(player);
+
+      NotificationsService.emitMessageBoxClose();
+
+      navigate(`room/${roomId}`, {
+        state: {
+          player: data,
+        },
+      });
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {

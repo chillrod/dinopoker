@@ -2,7 +2,7 @@ import { Box, createStandaloneToast, SimpleGrid, Text } from "@chakra-ui/react";
 
 import theme from "../../../config/theme";
 
-const toast = createStandaloneToast({ theme: theme });
+const { toast } = createStandaloneToast({ theme: theme });
 
 //TODO - Make button of closable toast
 

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
 
 import {
   child,
   getDatabase,
+  onChildRemoved,
   onDisconnect,
   onValue,
   ref,
@@ -14,42 +15,49 @@ import {
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import { Grid, GridItem, Box, Flex, Text, Img } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex, Img, Text } from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
 import { DinoPoker } from "../components/atoms/dinopoker";
 import { VoteSystemOptions } from "../config/vote-system/vote-system";
 import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
+import { getLocalStorage } from "../services/local-storage/handler";
 import { AnimatePresence, motion } from "framer-motion";
 import { CharacterList } from "../config/characters";
-import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
-
-interface IPlayerState {
-  player: IPlayerData;
-}
 
 export const Poker = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const state = location.state as IPlayerState;
-
-  const getCurrentPlayer = JSON.parse(
-    localStorage.getItem("character") || "{}"
-  );
-
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
+  const [test, setTest] = useState({});
   const [roomLoading, setRoomLoading] = useState(false);
   const [voteLoading, setVoteLoading] = useState(false);
   const [roomStatus, setCurrentRoomStatus] = useState("");
 
-  const retrievePlayerFromRouting = async () => {
+  const handleAddPlayerNode = (players: any) => {
+    setCurrentPlayers({ ...players });
+    setTest({ ...test, ...players });
+  };
+
+  const pickCurrentPlayerVote = () => {
+    const playerId = getLocalStorage("character").player?.id;
+
+    const player = currentPlayers[playerId];
+
+    if (player) {
+      return player.vote;
+    }
+
+    return "";
+  };
+
+  const setCharacterToRoom = async (player: IPlayerData) => {
     try {
       setRoomLoading(true);
 
-      await RoomsService.updatePlayersFromRoom(getCurrentPlayer.player);
+      await RoomsService.setCharacterToRoom(player);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -57,22 +65,16 @@ export const Poker = () => {
     }
   };
 
-  const pickCurrentPlayer = () => {
-    const player = currentPlayers[state?.player?.id];
-
-    return player;
-  };
-
   const handlePlayerVote = async (vote: number) => {
     const player = {
-      ...getCurrentPlayer.player,
+      ...getLocalStorage("character").player,
       vote: vote,
     };
 
     try {
       setRoomLoading(true);
 
-      await RoomsService.updatePlayersFromRoom(player);
+      await RoomsService.changePlayerVote(player);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -112,73 +114,51 @@ export const Poker = () => {
     }
   };
 
-  const db = getDatabase(app);
-
-  const roomPlayersDbRef = child(ref(db), "dinopoker-room/" + id + "/players");
-  const roomPlayerDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/players/" + state?.player?.id
-  );
-
-  const roomStatusDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/roomStatus"
-  );
-
   useEffect(() => {
-    const unsubRoomDbRef = onValue(roomPlayersDbRef, (data) => {
-      setCurrentPlayers({ ...data.val() });
+    const db = getDatabase(app);
+
+    const playerListValues = child(ref(db), `dinopoker-room/${id}/players`);
+    const statusValues = child(ref(db), `dinopoker-room/${id}/roomStatus`);
+
+    const subscribedPlayers = onValue(playerListValues, (data) => {
+      handleAddPlayerNode(data.val());
     });
 
-    const unsubRoomPlayerDbRef = onValue(roomPlayerDbRef, (data) => {
-      localStorage.setItem(
-        "character",
-        JSON.stringify({
-          player: { ...data.val(), team: data.val().team },
-          room: id,
-        })
-      );
-    });
-
-    const unsubRoomStatus = onValue(roomStatusDbRef, (data) => {
+    const subscribedRoomStatus = onValue(statusValues, (data) => {
       setCurrentRoomStatus(data.val());
 
-      const player = {
-        ...getCurrentPlayer.player,
-      };
-
-      localStorage.setItem(
-        "character",
-        JSON.stringify({ player, room: player.room })
-      );
-
       if (data.val() === "PENDING") {
-        resetPlayerVote(getCurrentPlayer.player);
+        resetPlayerVote(getLocalStorage("character").player);
       }
     });
 
-    retrievePlayerFromRouting();
-
     return () => {
-      unsubRoomDbRef();
-      unsubRoomStatus();
-      unsubRoomPlayerDbRef();
+      subscribedPlayers();
+      subscribedRoomStatus();
     };
   }, []);
 
-  const onDisconnectDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/players/" + state?.player?.id
-  );
-
   useEffect(() => {
-    onDisconnect(onDisconnectDbRef).remove();
+    const db = getDatabase(app);
+
+    const currentPlayerNode = child(
+      ref(db),
+      `dinopoker-room/${id}/players/${getLocalStorage("character").player.id}`
+    );
+
+    onDisconnect(currentPlayerNode).remove();
 
     return () => {};
   }, []);
 
   useEffect(() => {
-    if (!getCurrentPlayer.player) {
+    if (getLocalStorage("character").player) {
+      setCharacterToRoom(getLocalStorage("character").player);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!getLocalStorage("character").player) {
       navigate("/");
     }
 
@@ -213,16 +193,13 @@ export const Poker = () => {
       <Box as="section">
         <Grid
           gridTemplateAreas={`
-        "poker poker nav"
-        "poker poker nav"
-        "poker poker nav"
+        "poker poker"
+        "poker poker"
+        "poker poker"
         `}
           h="100vh"
           gridTemplateColumns="2fr 2fr auto"
         >
-          <GridItem gridArea={"nav"} bg="dino.secondary">
-            <PokerMenu />
-          </GridItem>
           <GridItem gridArea="poker" justifyContent="center">
             <Grid
               w="100%"
@@ -237,12 +214,15 @@ export const Poker = () => {
               p={4}
             >
               <GridItem
+                bg="dino.secondary"
+                p={2}
                 gridArea="logo"
                 alignSelf="start"
-                p={2}
-                bg="dino.secondary"
               >
-                <DinoPoker small />
+                <Flex alignItems="center" justifyContent="space-between">
+                  <DinoPoker small />
+                  <PokerMenu />
+                </Flex>
               </GridItem>
               <GridItem gridArea="game" alignSelf="center">
                 <PokerRoundData
@@ -260,7 +240,7 @@ export const Poker = () => {
                         <CardPoints
                           disabled={roomStatus !== "PENDING"}
                           onClick={(vote) => handlePlayerVote(vote)}
-                          selected={number === pickCurrentPlayer()?.vote}
+                          selected={number === pickCurrentPlayerVote()}
                           point={number}
                         />
                       </div>

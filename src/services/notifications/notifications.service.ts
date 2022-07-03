@@ -22,6 +22,10 @@ export const NotificationsService = {
     emitter.emit("EMIT_MESSAGEBOX_LOADING", value);
   },
 
+  emitMessageBoxClose() {
+    emitter.emit("EMIT_MESSAGEBOX_CLOSE", true);
+  },
+
   emitToast(message: string) {
     emitter.emit("EMIT_TOAST", message);
   },

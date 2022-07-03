@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Box,
   Container,
   Flex,
   FormControl,
+  FormLabel,
   Grid,
   GridItem,
   Heading,
@@ -23,9 +24,14 @@ import { JoinRoomDialog } from "../components/molecules/dialog-joinroom/dialog-j
 import { RoomsService } from "../services/rooms/rooms.service";
 import { useNavigate } from "react-router-dom";
 import { IPlayerData } from "../model/PlayerData";
+import {
+  getLocalStorage,
+  setLocalStorage,
+} from "../services/local-storage/handler";
 
 export const Home = () => {
   const navigate = useNavigate();
+
   const { t } = useTranslation();
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
@@ -41,15 +47,13 @@ export const Home = () => {
     setLoading(true);
 
     try {
-      const { roomId, preparedPlayer } = await RoomsService.createRoom(
-        playerData
-      );
+      const { roomId, player } = await RoomsService.createRoom(playerData);
 
       localStorage.setItem("createdCharacter", JSON.stringify(playerData));
 
       navigate("room/" + roomId, {
         state: {
-          player: preparedPlayer,
+          player,
         },
       });
     } catch (err: any) {
@@ -66,7 +70,7 @@ export const Home = () => {
       children: <JoinRoomDialog playerData={playerData} />,
     });
 
-    localStorage.setItem("createdCharacter", JSON.stringify(playerData));
+    setLocalStorage("createdCharacter", JSON.stringify(playerData));
   };
 
   useEffect(() => {
@@ -82,16 +86,17 @@ export const Home = () => {
       emitter.off("PLAYER_CHARACTER");
       emitter.off("PLAYER_NAME");
     };
-  }, []);
+  }, [nameNotFilled]);
 
   useEffect(() => {
-    const createdCharacter = JSON.parse(
-      localStorage.getItem("createdCharacter") || "{}"
-    );
+    const createdCharacter: { name: string } =
+      getLocalStorage("createdCharacter");
 
-    if (createdCharacter.name) {
+    if (createdCharacter?.name) {
       setPlayerData(createdCharacter);
     }
+
+    return () => {};
   }, []);
 
   return (
@@ -112,16 +117,17 @@ export const Home = () => {
           <Grid gap={6}>
             <Box w="50%" margin="0 auto">
               <FormControl isInvalid={nameNotFilled}>
+                <FormLabel>{t("home.type-your-name")}</FormLabel>
                 <Input
                   value={playerData?.name}
                   onChange={(event) =>
                     PlayerService.PLAYER_NAME(event.target.value)
                   }
-                  placeholder={t("home.type-your-name")}
+                  placeholder={t("home.type-your-name-placeholder")}
                 />
               </FormControl>
             </Box>
-            <Text fontSize="md" textAlign="center">
+            <Text fontSize="" textAlign="center">
               {t("home.select-gameplay-option")}
             </Text>
             <Flex justifyContent="center" gap={3}>
