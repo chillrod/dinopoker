@@ -10,6 +10,7 @@ import ChakraTheme from "./config/theme";
 import "./dino.css";
 
 import { initializeApp } from "firebase/app";
+import React from "react";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -27,9 +28,11 @@ export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 createRoot(document.getElementById("root")!).render(
-  <ChakraProvider theme={ChakraTheme}>
-    <BrowserRouter>
-      <Router />
-    </BrowserRouter>
-  </ChakraProvider>
+  <React.StrictMode>
+    <ChakraProvider theme={ChakraTheme}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </ChakraProvider>
+  </React.StrictMode>
 );
