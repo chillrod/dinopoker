@@ -6,6 +6,9 @@ import { NotificationsService } from "../services/notifications/notifications.se
 import {
   child,
   getDatabase,
+  onChildAdded,
+  onChildChanged,
+  onChildRemoved,
   onDisconnect,
   onValue,
   ref,
@@ -23,33 +26,48 @@ import { VoteSystemOptions } from "../config/vote-system/vote-system";
 import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
 import { AnimatePresence, motion } from "framer-motion";
 import { CharacterList } from "../config/characters";
-import { ChatMessages } from "../components/molecules/chat-messages/chat-messages";
-
-interface IPlayerState {
-  player: IPlayerData;
-}
+import { getLocalStorage } from "../services/local-storage/handler";
 
 export const Poker = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
-
-  const state = location.state as IPlayerState;
-
-  const getCurrentPlayer = JSON.parse(
-    localStorage.getItem("character") || "{}"
-  );
 
   const [currentPlayers, setCurrentPlayers] = useState<any>({});
   const [roomLoading, setRoomLoading] = useState(false);
   const [voteLoading, setVoteLoading] = useState(false);
   const [roomStatus, setCurrentRoomStatus] = useState("");
 
-  const retrievePlayerFromRouting = async () => {
+  const handleAddPlayerNode = (players: any) => {
+    setCurrentPlayers({ ...players });
+  };
+
+  const pickCurrentPlayerVote = () => {
+    const playerId = getLocalStorage("character").player?.id;
+
+    const player = currentPlayers[playerId];
+
+    if (player) {
+      return player.vote;
+    }
+
+    return "";
+  };
+
+  const handlePlayerRemoved = (player: IPlayerData) => {
+    if (player.id) {
+      const newPlayers = { ...currentPlayers };
+
+      newPlayers[player.id] = { ...player, removed: true };
+
+      setCurrentPlayers(newPlayers);
+    }
+  };
+
+  const setCharacterToRoom = async (player: IPlayerData) => {
     try {
       setRoomLoading(true);
 
-      await RoomsService.updatePlayersFromRoom(getCurrentPlayer.player);
+      await RoomsService.setCharacterToRoom(player);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -57,22 +75,16 @@ export const Poker = () => {
     }
   };
 
-  const pickCurrentPlayer = () => {
-    const player = currentPlayers[state?.player?.id];
-
-    return player;
-  };
-
   const handlePlayerVote = async (vote: number) => {
     const player = {
-      ...getCurrentPlayer.player,
+      ...getLocalStorage("character").player,
       vote: vote,
     };
 
     try {
       setRoomLoading(true);
 
-      await RoomsService.updatePlayersFromRoom(player);
+      await RoomsService.changePlayerVote(player);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -112,73 +124,56 @@ export const Poker = () => {
     }
   };
 
-  const db = getDatabase(app);
-
-  const roomPlayersDbRef = child(ref(db), "dinopoker-room/" + id + "/players");
-  const roomPlayerDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/players/" + state?.player?.id
-  );
-
-  const roomStatusDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/roomStatus"
-  );
-
   useEffect(() => {
-    const unsubRoomDbRef = onValue(roomPlayersDbRef, (data) => {
-      setCurrentPlayers({ ...data.val() });
+    const db = getDatabase(app);
+
+    const playerListValues = child(ref(db), `dinopoker-room/${id}/players`);
+    const statusValues = child(ref(db), `dinopoker-room/${id}/roomStatus`);
+
+    const subscribedPlayerAdded = onValue(playerListValues, (data) => {
+      handleAddPlayerNode(data.val());
     });
 
-    const unsubRoomPlayerDbRef = onValue(roomPlayerDbRef, (data) => {
-      localStorage.setItem(
-        "character",
-        JSON.stringify({
-          player: { ...data.val(), team: data.val().team },
-          room: id,
-        })
-      );
+    const subscribedPlayerRemoved = onChildRemoved(playerListValues, (data) => {
+      handlePlayerRemoved(data.val());
     });
 
-    const unsubRoomStatus = onValue(roomStatusDbRef, (data) => {
+    const subscribedRoomStatus = onValue(statusValues, (data) => {
       setCurrentRoomStatus(data.val());
 
-      const player = {
-        ...getCurrentPlayer.player,
-      };
-
-      localStorage.setItem(
-        "character",
-        JSON.stringify({ player, room: player.room })
-      );
-
       if (data.val() === "PENDING") {
-        resetPlayerVote(getCurrentPlayer.player);
+        resetPlayerVote(getLocalStorage("character").player);
       }
     });
 
-    retrievePlayerFromRouting();
-
     return () => {
-      unsubRoomDbRef();
-      unsubRoomStatus();
-      unsubRoomPlayerDbRef();
+      subscribedPlayerAdded();
+      subscribedPlayerRemoved();
+      subscribedRoomStatus();
     };
   }, []);
 
-  const onDisconnectDbRef = child(
-    ref(db),
-    "dinopoker-room/" + id + "/players/" + state?.player?.id
-  );
-
   useEffect(() => {
-    onDisconnect(onDisconnectDbRef).remove();
+    const db = getDatabase(app);
+
+    const currentPlayerNode = child(
+      ref(db),
+      `dinopoker-room/${id}/players/${getLocalStorage("character").player.id}`
+    );
+
+    onDisconnect(currentPlayerNode).remove();
 
     return () => {};
   }, []);
 
   useEffect(() => {
-    if (!getCurrentPlayer.player) {
+    if (getLocalStorage("character").player) {
+      setCharacterToRoom(getLocalStorage("character").player);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!getLocalStorage("character").player) {
       navigate("/");
     }
 
@@ -186,92 +181,67 @@ export const Poker = () => {
   }, []);
 
   return (
-    <>
-      <AnimatePresence presenceAffectsLayout={true}>
-        {roomLoading && (
-          <motion.div
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0.5 }}
-          >
-            <Flex
-              justifyContent="center"
-              direction="column"
-              gap={2}
-              sx={{
-                position: "absolute",
-                left: 10,
-                bottom: 50,
-              }}
-            >
-              <Img w="50%" src={CharacterList[2].src} />
-              <Text>Carregando...</Text>
-            </Flex>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <Box as="section">
-        <Grid
-          gridTemplateAreas={`
+    <Box as="section">
+      <Grid
+        gridTemplateAreas={`
         "poker poker nav"
         "poker poker nav"
         "poker poker nav"
         `}
-          h="100vh"
-          gridTemplateColumns="2fr 2fr auto"
-        >
-          <GridItem gridArea={"nav"} bg="dino.secondary">
-            <PokerMenu />
-          </GridItem>
-          <GridItem gridArea="poker" justifyContent="center">
-            <Grid
-              w="100%"
-              h="100vh"
-              gridTemplateAreas={`
+        h="100vh"
+        gridTemplateColumns="2fr 2fr auto"
+      >
+        <GridItem gridArea={"nav"} bg="dino.secondary">
+          <PokerMenu />
+        </GridItem>
+        <GridItem gridArea="poker" justifyContent="center">
+          <Grid
+            w="100%"
+            h="100vh"
+            gridTemplateAreas={`
                     "logo"
                     "game"
                     "vote"
                     `}
-              gridTemplateColumns="1fr"
-              gridTemplateRows="0.5fr auto 0.5fr"
-              p={4}
+            gridTemplateColumns="1fr"
+            gridTemplateRows="0.5fr auto 0.5fr"
+            p={4}
+          >
+            <GridItem
+              gridArea="logo"
+              alignSelf="start"
+              p={2}
+              bg="dino.secondary"
             >
-              <GridItem
-                gridArea="logo"
-                alignSelf="start"
-                p={2}
-                bg="dino.secondary"
-              >
-                <DinoPoker small />
-              </GridItem>
-              <GridItem gridArea="game" alignSelf="center">
-                <PokerRoundData
-                  voteLoading={voteLoading}
-                  roomStatus={roomStatus}
-                  updateRoomStatus={updateRoomStatus}
-                  currentPlayers={currentPlayers}
-                />
-              </GridItem>
-              <GridItem gridArea="vote" justifySelf="center" alignSelf="end">
-                <Flex gap={2}>
-                  {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
-                    (number) => (
-                      <div key={number}>
-                        <CardPoints
-                          disabled={roomStatus !== "PENDING"}
-                          onClick={(vote) => handlePlayerVote(vote)}
-                          selected={number === pickCurrentPlayer()?.vote}
-                          point={number}
-                        />
-                      </div>
-                    )
-                  )}
-                </Flex>
-              </GridItem>
-            </Grid>
-          </GridItem>
-        </Grid>
-      </Box>
-    </>
+              <DinoPoker small />
+            </GridItem>
+            <GridItem gridArea="game" alignSelf="center">
+              <PokerRoundData
+                voteLoading={voteLoading}
+                roomStatus={roomStatus}
+                updateRoomStatus={updateRoomStatus}
+                currentPlayers={currentPlayers}
+              />
+            </GridItem>
+            <GridItem gridArea="vote" justifySelf="center" alignSelf="end">
+              <Flex gap={2}>
+                {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
+                  (number) => (
+                    <div key={number}>
+                      <CardPoints
+                        disabled={roomStatus !== "PENDING"}
+                        onClick={(vote) => handlePlayerVote(vote)}
+                        selected={number === pickCurrentPlayerVote()}
+                        point={number}
+                      />
+                    </div>
+                  )
+                )}
+              </Flex>
+            </GridItem>
+          </Grid>
+        </GridItem>
+      </Grid>
+    </Box>
   );
 };

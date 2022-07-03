@@ -1,3 +1,4 @@
+import { IPlayerData, PlayerDataTeam } from "../../model/PlayerData";
 import { emitter } from "../emitter/emitter";
 
 export const PlayerService = {
@@ -7,5 +8,18 @@ export const PlayerService = {
 
   PLAYER_CHARACTER(characterId: number) {
     emitter.emit("PLAYER_CHARACTER", characterId);
+  },
+
+  preparePlayer(playerData: IPlayerData) {
+    const preparedPlayer: IPlayerData = {
+      ...playerData,
+      raiseHand: false,
+      vote: 0,
+      team: PlayerDataTeam.UNKNOWN,
+    };
+
+    return {
+      ...preparedPlayer,
+    };
   },
 };

@@ -1,5 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "./views/routes";
 
@@ -27,13 +26,10 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <ChakraProvider theme={ChakraTheme}>
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
-    </ChakraProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+createRoot(document.getElementById("root")!).render(
+  <ChakraProvider theme={ChakraTheme}>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  </ChakraProvider>
 );

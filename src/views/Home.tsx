@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Box,
@@ -23,9 +23,11 @@ import { JoinRoomDialog } from "../components/molecules/dialog-joinroom/dialog-j
 import { RoomsService } from "../services/rooms/rooms.service";
 import { useNavigate } from "react-router-dom";
 import { IPlayerData } from "../model/PlayerData";
+import { getLocalStorage } from "../services/local-storage/handler";
 
 export const Home = () => {
   const navigate = useNavigate();
+
   const { t } = useTranslation();
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
@@ -41,15 +43,13 @@ export const Home = () => {
     setLoading(true);
 
     try {
-      const { roomId, preparedPlayer } = await RoomsService.createRoom(
-        playerData
-      );
+      const { roomId, player } = await RoomsService.createRoom(playerData);
 
       localStorage.setItem("createdCharacter", JSON.stringify(playerData));
 
       navigate("room/" + roomId, {
         state: {
-          player: preparedPlayer,
+          player,
         },
       });
     } catch (err: any) {
@@ -85,13 +85,13 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    const createdCharacter = JSON.parse(
-      localStorage.getItem("createdCharacter") || "{}"
-    );
+    const createdCharacter = getLocalStorage("createdCharacter");
 
-    if (createdCharacter.name) {
+    if (createdCharacter?.name) {
       setPlayerData(createdCharacter);
     }
+
+    return () => {};
   }, []);
 
   return (
