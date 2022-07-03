@@ -1,4 +1,5 @@
 import { Flex, Grid, GridItem, Img, Tag, Text } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { CharacterList } from "../../../config/characters";
@@ -206,34 +207,42 @@ export const PokerRoundData = ({
           {renderTableStatus(roomStatus, isRevealed)}
         </Flex>
       </GridItem>
-      {Object.keys(currentPlayerPositions).map((playerPosition) => (
-        <GridItem
-          justifySelf="center"
-          key={playerPosition}
-          area={playerPosition}
-        >
-          <Flex
-            gap={4}
-            direction={
-              playerPosition === "left" || playerPosition === "right"
-                ? "column"
-                : "row"
-            }
+      <AnimatePresence>
+        {Object.keys(currentPlayerPositions).map((playerPosition) => (
+          <GridItem
+            justifySelf="center"
+            key={playerPosition}
+            area={playerPosition}
           >
-            {currentPlayerPositions[playerPosition].map(
-              (player: IPlayerData) => (
-                <div key={player.id}>
-                  <PokerCharacter
-                    character={player}
-                    status={roomStatus}
-                    handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
-                  />
-                </div>
-              )
-            )}
-          </Flex>
-        </GridItem>
-      ))}
+            <Flex
+              gap={4}
+              direction={
+                playerPosition === "left" || playerPosition === "right"
+                  ? "column"
+                  : "row"
+              }
+            >
+              {currentPlayerPositions[playerPosition].map(
+                (player: IPlayerData) => (
+                  <div key={player.id}>
+                    <motion.div
+                      initial={{ scale: 0.97 }}
+                      animate={{ scale: [1.1, 0.99, 1] }}
+                      exit={{ scale: 0.97 }}
+                    >
+                      <PokerCharacter
+                        character={player}
+                        status={roomStatus}
+                        handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
+                      />
+                    </motion.div>
+                  </div>
+                )
+              )}
+            </Flex>
+          </GridItem>
+        ))}
+      </AnimatePresence>
     </Grid>
   );
 };
