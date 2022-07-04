@@ -14,15 +14,7 @@ import {
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import {
-  Grid,
-  GridItem,
-  Box,
-  Flex,
-  Img,
-  Text,
-  Container,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex } from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
@@ -33,6 +25,7 @@ import { getLocalStorage } from "../services/local-storage/handler";
 
 export const Poker = () => {
   const { id } = useParams();
+
   const navigate = useNavigate();
 
   const [currentPlayers, setCurrentPlayers] = useState<any>({});

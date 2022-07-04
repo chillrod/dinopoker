@@ -135,7 +135,7 @@ export const Home = () => {
             textAlign="center"
             size={["lg", "xl"]}
           >
-            {t("home.select-your-avatar-and-join-or-create-a-room")}
+            {t("home.title")}
           </Heading>
         </GridItem>
         <GridItem area="player" p={3}>
@@ -167,7 +167,7 @@ export const Home = () => {
                 disabled={nameNotFilled}
                 onClick={() => createRoom()}
               >
-                {t("home.create-a-room")}
+                {t("home.create-room")}
               </Button>
               <Button
                 loading={loading}
@@ -175,7 +175,7 @@ export const Home = () => {
                 onClick={() => joinRoom()}
                 bg="dino.secondary"
               >
-                {t("home.or-join-a-room")}
+                {t("home.join-room")}
               </Button>
             </Flex>
           </Stack>
