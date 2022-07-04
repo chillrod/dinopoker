@@ -185,7 +185,7 @@ export const Poker = () => {
         gridTemplateColumns="1fr"
         gridTemplateRows="auto 1fr auto"
       >
-        <GridItem area="nav" p={3}>
+        <GridItem area="nav" p={4} px={5}>
           <Flex w="100%" justifyContent="space-between">
             <DinoPoker />
             <PokerMenu />
@@ -193,7 +193,6 @@ export const Poker = () => {
         </GridItem>
         <GridItem p={3} area="poker" borderRadius="lg">
           <Grid
-            bg="gray.900"
             borderRadius="md"
             h="100%"
             gridTemplateAreas={`
