@@ -28,11 +28,9 @@ export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ChakraProvider theme={ChakraTheme}>
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
-    </ChakraProvider>
-  </React.StrictMode>
+  <ChakraProvider theme={ChakraTheme}>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  </ChakraProvider>
 );

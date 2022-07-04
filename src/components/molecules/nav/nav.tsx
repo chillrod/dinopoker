@@ -6,7 +6,7 @@ export const Nav = () => {
   return (
     <Box as="nav">
       <Flex justifyContent="space-around" alignItems="center">
-        <DinoPoker />
+        <DinoPoker small />
         {/* <MenuChangeLanguage /> */}
       </Flex>
     </Box>

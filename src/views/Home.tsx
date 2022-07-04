@@ -9,6 +9,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 
@@ -100,60 +101,70 @@ export const Home = () => {
   }, []);
 
   return (
-    <Container as="section">
-      <Grid templateRows="1fr 1fr 2fr" gap={8} justifyContent="center">
-        <GridItem alignSelf="center" gridRow={1}>
-          <Nav />
-        </GridItem>
-        <GridItem alignSelf="center" gridRow={2}>
-          <Heading fontWeight={400} textAlign="center" size="lg">
-            {t("home.select-your-avatar-and-join-or-create-a-room")}
-          </Heading>
-        </GridItem>
-        <GridItem alignSelf="center" justifySelf="center">
-          <SelectCharacter character={playerData?.character} />
-        </GridItem>
-        <GridItem alignSelf="center">
-          <Grid gap={6}>
-            <Box w="50%" margin="0 auto">
-              <FormControl isInvalid={nameNotFilled}>
-                <FormLabel>{t("home.type-your-name")}</FormLabel>
-                <Input
-                  value={playerData?.name}
-                  onChange={(event) =>
-                    PlayerService.PLAYER_NAME(event.target.value)
-                  }
-                  placeholder={t("home.type-your-name-placeholder")}
-                />
-              </FormControl>
-            </Box>
-            <Text fontSize="" textAlign="center">
-              {t("home.select-gameplay-option")}
-            </Text>
-            <Flex justifyContent="center" gap={3}>
-              <Box justifySelf="center">
-                <Button
-                  loading={loading}
-                  disabled={nameNotFilled}
-                  onClick={() => createRoom()}
-                >
-                  {t("home.create-a-room")}
-                </Button>
-              </Box>
-              <Box justifySelf="center">
-                <Button
-                  loading={loading}
-                  disabled={nameNotFilled}
-                  onClick={() => joinRoom()}
-                  bg="dino.secondary"
-                >
-                  {t("home.or-join-a-room")}
-                </Button>
-              </Box>
-            </Flex>
-          </Grid>
-        </GridItem>
-      </Grid>
-    </Container>
+    <Grid
+      maxW={["100%", "500px", "800px"]}
+      gridTemplateAreas={`
+      "nav"
+      "heading"
+      "player"
+      "actions"
+      `}
+      width="95%"
+      margin="0 auto"
+      gridTemplateRows="auto auto auto auto"
+      gap={2}
+      p={2}
+    >
+      <GridItem area="nav" w="100%" h="100%" p={4}>
+        <Nav />
+      </GridItem>
+      <GridItem area="heading" p={3}>
+        <Heading fontWeight={400} textAlign="center" size={["lg", "xl"]}>
+          {t("home.select-your-avatar-and-join-or-create-a-room")}
+        </Heading>
+      </GridItem>
+      <GridItem area="player" p={3}>
+        <SelectCharacter character={playerData?.character} />
+      </GridItem>
+      <GridItem
+        area="actions"
+        p={4}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Stack spacing={4} maxW={["100%", "60%"]} margin="0 auto">
+          <FormControl isInvalid={nameNotFilled}>
+            <FormLabel>{t("home.type-your-name")}</FormLabel>
+            <Input
+              value={playerData?.name}
+              onChange={(event) =>
+                PlayerService.PLAYER_NAME(event.target.value)
+              }
+              placeholder={t("home.type-your-name-placeholder")}
+            />
+          </FormControl>
+          <Text fontSize="xl" textAlign="center">
+            {t("home.select-gameplay-option")}
+          </Text>
+          <Flex justifyContent="space-around" gap={3}>
+            <Button
+              loading={loading}
+              disabled={nameNotFilled}
+              onClick={() => createRoom()}
+            >
+              {t("home.create-a-room")}
+            </Button>
+            <Button
+              loading={loading}
+              disabled={nameNotFilled}
+              onClick={() => joinRoom()}
+              bg="dino.secondary"
+            >
+              {t("home.or-join-a-room")}
+            </Button>
+          </Flex>
+        </Stack>
+      </GridItem>
+    </Grid>
   );
 };

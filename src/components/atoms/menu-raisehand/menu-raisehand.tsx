@@ -58,7 +58,8 @@ export const MenuRaiseHand = () => {
 
   return (
     <>
-      <Flex w="100%" gap={2} alignItems="center">
+      <Flex w="100%" gap={3} alignItems="center">
+        <Text fontSize="sm" fontWeight={600}>Ações</Text>
         <IconButton
           onClick={() => handleRaiseHand()}
           color={returnColor()}

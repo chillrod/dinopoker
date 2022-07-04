@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { child, getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
 import { Codepen, Server } from "react-feather";
@@ -62,7 +62,11 @@ export const MenuTeam = () => {
 
   return (
     <>
-      <Flex gap={2}>
+      <Flex gap={3} alignItems="center" w="100%">
+        <Text fontSize="sm" fontWeight={600}>
+          Equipes
+        </Text>
+
         <IconButton
           onClick={() => handleTeamChange(2)}
           color={returnColor(2)}

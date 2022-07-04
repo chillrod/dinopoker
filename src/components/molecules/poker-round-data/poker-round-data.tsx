@@ -115,10 +115,10 @@ export const PokerRoundData = ({
             </Button>
 
             <Flex mt={2}>
-              <Tag color="yellow.300" fontSize="lg" mx={2}>
+              <Tag color="yellow.300" fontSize={["sm", "sm", "lg"]} mx={2}>
                 Nota Frontend: {calculateMd("frontend")}
               </Tag>
-              <Tag color="blue.200" fontSize="lg" mx={2}>
+              <Tag color="blue.200" fontSize={["sm", "sm", "lg"]} mx={2}>
                 Nota Backend: {calculateMd("backend")}
               </Tag>
             </Flex>
@@ -178,11 +178,12 @@ export const PokerRoundData = ({
 
   return (
     <Grid
-      minH="30em"
+      minH="50vh"
       justifyContent="center"
       alignItems="center"
       gridTemplateColumns="8em 50% 8em"
       gridTemplateRows="auto auto auto"
+      gap={3}
       gridTemplateAreas={`
                        "left top right"
                        "left table right"
@@ -190,10 +191,8 @@ export const PokerRoundData = ({
                        `}
     >
       <GridItem
-        justifySelf="center"
-        w="100%"
         bg="gray.700"
-        height="12em"
+        height={["6em", "10em"]}
         borderRadius="full"
         area="table"
       >

@@ -55,27 +55,17 @@ export const PokerCharacter = ({
             role="@dino-charactervote"
             size="xs"
             p={2}
-            width={{
-              sm: "5em",
-              md: "5em",
-              lg: "5em",
-            }}
-            height={{
-              sm: "5em",
-              md: "5em",
-              lg: "5em",
-            }}
+            w={["4.5em", "5.5em"]}
+            h={["4.5em", "5.5em"]}
           >
             <Flex w="100%" direction="column" alignItems="center">
-              <Box w="100%" h="100%">
-                <Img
-                  role="@dino-characterimg"
-                  src={CharacterList[character?.character || 0].src}
-                  w="100%"
-                  h="100%"
-                  objectFit="cover"
-                />
-              </Box>
+              <Img
+                role="@dino-characterimg"
+                src={CharacterList[character?.character || 0].src}
+                w="100%"
+                h="100%"
+                objectFit="cover"
+              />
             </Flex>
           </Button>
         </Tooltip>
