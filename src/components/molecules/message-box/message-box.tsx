@@ -105,7 +105,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
                 onClick={onClose}
                 forwardRef={cancelRef}
               >
-                {t("components.cancel-action")}
+                {t("components.cancel")}
               </Button>
             )}
             <Button
@@ -113,7 +113,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
               onClick={() => handleActionConfirm()}
               bg="dino.primary"
             >
-              {t("components.confirm-action")}
+              {t("components.confirm")}
             </Button>
           </Flex>
         </AlertDialogFooter>
