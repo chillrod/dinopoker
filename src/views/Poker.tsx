@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
-
+import { Helmet } from "react-helmet-async";
 import {
   child,
   getDatabase,
-  onChildRemoved,
   onDisconnect,
   onValue,
   ref,
@@ -15,7 +14,15 @@ import {
 import { app } from "../main";
 import { IPlayerData } from "../model/PlayerData";
 
-import { Grid, GridItem, Box, Flex, Img, Text } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Box,
+  Flex,
+  Img,
+  Text,
+  Container,
+} from "@chakra-ui/react";
 
 import { CardPoints } from "../components/atoms/card-points/card-points";
 import { PokerMenu } from "../components/molecules/poker-menu/poker-menu";
@@ -23,8 +30,6 @@ import { DinoPoker } from "../components/atoms/dinopoker";
 import { VoteSystemOptions } from "../config/vote-system/vote-system";
 import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
 import { getLocalStorage } from "../services/local-storage/handler";
-import { AnimatePresence, motion } from "framer-motion";
-import { CharacterList } from "../config/characters";
 
 export const Poker = () => {
   const { id } = useParams();
@@ -167,91 +172,67 @@ export const Poker = () => {
 
   return (
     <>
-      <AnimatePresence presenceAffectsLayout={true}>
-        {roomLoading && (
-          <motion.div
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0.5 }}
-          >
-            <Flex
-              justifyContent="center"
-              direction="column"
-              gap={2}
-              sx={{
-                position: "absolute",
-                left: 10,
-                bottom: 50,
-              }}
-            >
-              <Img w="50%" src={CharacterList[2].src} />
-              <Text>Carregando...</Text>
-            </Flex>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <Box as="section">
-        <Grid
-          gridTemplateAreas={`
-        "poker poker"
-        "poker poker"
-        "poker poker"
+      <Helmet>
+        <title>dinopoker.app - gameroom: {id}</title>
+        <link rel="canonical" href={`/game`} />
+        <meta
+          name="description"
+          content="Planning poker for agile teams"
+        ></meta>
+      </Helmet>
+      <Grid
+        gridTemplateAreas={`
+        "nav"
+        "poker"
+        "vote"
         `}
-          h="100vh"
-          gridTemplateColumns="2fr 2fr auto"
-        >
-          <GridItem gridArea="poker" justifyContent="center">
-            <Grid
-              w="100%"
-              h="100vh"
-              gridTemplateAreas={`
-                    "logo"
-                    "game"
-                    "vote"
-                    `}
-              gridTemplateColumns="1fr"
-              gridTemplateRows="0.5fr auto 0.5fr"
-              p={4}
-            >
-              <GridItem
-                bg="dino.secondary"
-                p={2}
-                gridArea="logo"
-                alignSelf="start"
-              >
-                <Flex alignItems="center" justifyContent="space-between">
-                  <DinoPoker small />
-                  <PokerMenu />
-                </Flex>
-              </GridItem>
-              <GridItem gridArea="game" alignSelf="center">
-                <PokerRoundData
-                  voteLoading={voteLoading}
-                  roomStatus={roomStatus}
-                  updateRoomStatus={updateRoomStatus}
-                  currentPlayers={currentPlayers}
-                />
-              </GridItem>
-              <GridItem gridArea="vote" justifySelf="center" alignSelf="end">
-                <Flex gap={2}>
-                  {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
-                    (number) => (
-                      <div key={number}>
-                        <CardPoints
-                          disabled={roomStatus !== "PENDING"}
-                          onClick={(vote) => handlePlayerVote(vote)}
-                          selected={number === pickCurrentPlayerVote()}
-                          point={number}
-                        />
-                      </div>
-                    )
-                  )}
-                </Flex>
-              </GridItem>
-            </Grid>
-          </GridItem>
-        </Grid>
-      </Box>
+        h="100vh"
+        gridTemplateColumns="1fr"
+        gridTemplateRows="auto 1fr auto"
+        p={4}
+      >
+        <GridItem area="nav" p={4} px={5}>
+          <Flex w="100%" justifyContent="space-between">
+            <DinoPoker />
+            <PokerMenu />
+          </Flex>
+        </GridItem>
+        <GridItem p={3} area="poker" borderRadius="lg">
+          <Grid
+            borderRadius="md"
+            h="100%"
+            gridTemplateAreas={`
+                "game"
+                "game"
+                `}
+          >
+            <GridItem area="game" alignSelf="center">
+              <PokerRoundData
+                voteLoading={voteLoading}
+                roomStatus={roomStatus}
+                updateRoomStatus={updateRoomStatus}
+                currentPlayers={currentPlayers}
+              />
+            </GridItem>
+          </Grid>
+        </GridItem>
+        <GridItem area="vote" alignSelf="end" justifySelf="center">
+          <Flex maxW="100vw" overflow="auto">
+            {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
+              (number) => (
+                <Box key={number} mx={1}>
+                  <CardPoints
+                    disabled={roomStatus !== "PENDING"}
+                    onClick={(vote) => handlePlayerVote(vote)}
+                    selected={number === pickCurrentPlayerVote()}
+                    point={number}
+                  />
+                </Box>
+              )
+            )}
+          </Flex>
+        </GridItem>
+      </Grid>
     </>
   );
 };

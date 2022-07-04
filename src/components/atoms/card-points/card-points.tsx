@@ -23,8 +23,9 @@ export const CardPoints = ({
       }}
       size="sm"
       bg={selected ? "dino.primary" : "gray.700"}
-      width="6em"
-      height="8em"
+      width={["auto", "6em"]}
+      height={["auto", "8em"]}
+      p={2}
     >
       <Grid gap={2}>
         <GridItem justifySelf="start">

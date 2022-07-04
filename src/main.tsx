@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "./views/routes";
+import { HelmetProvider } from "react-helmet-async";
 
 import "./config/locale/";
 
@@ -28,11 +29,11 @@ export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ChakraProvider theme={ChakraTheme}>
-      <BrowserRouter>
+  <ChakraProvider theme={ChakraTheme}>
+    <BrowserRouter>
+      <HelmetProvider>
         <Router />
-      </BrowserRouter>
-    </ChakraProvider>
-  </React.StrictMode>
+      </HelmetProvider>
+    </BrowserRouter>
+  </ChakraProvider>
 );

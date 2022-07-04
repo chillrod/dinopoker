@@ -22,7 +22,11 @@ export const Input = ({
   return (
     <Inp
       border="none"
-      bg="dino.secondary"
+      bg="gray.700"
+      outline="none"
+      _focus={{
+        background: "purple.700",
+      }}
       color="dino.text"
       role="@dino-input"
       placeholder={placeholder}

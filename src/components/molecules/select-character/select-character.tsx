@@ -43,43 +43,46 @@ export const SelectCharacter = ({ character }: { character?: number }) => {
   }, [character]);
 
   return (
-    <Box>
-      <Grid
-        gap={3}
-        templateRows="1fr"
-        templateColumns="5% auto 5%"
-        alignItems="center"
-      >
-        <GridItem gridColumn={2}>
-          <Box overflowX="scroll" maxW="100%">
-            <Flex px={5} maxW={[300, 350, 450, 700]}>
-              {CharacterList.map((character) => (
-                <Box key={character.id} m={2}>
-                  <CharacterCard
-                    onClick={() => handleSelected(character.id)}
-                    characterId={character.id}
-                    isSelected={selected}
-                  />
-                </Box>
-              ))}
-            </Flex>
-          </Box>
-        </GridItem>
-        <GridItem gridColumn={1} gridRow={1}>
-          <IconButton
-            onClick={() => handleArrowBack(selected)}
-            ariaLabel={t("components.previous")}
-            icon={<ChevronLeft />}
-          ></IconButton>
-        </GridItem>
-        <GridItem gridColumn={3} gridRow={1}>
-          <IconButton
-            onClick={() => handleSelectNext(selected)}
-            ariaLabel={t("components.next")}
-            icon={<ChevronRight />}
-          ></IconButton>
-        </GridItem>
-      </Grid>
-    </Box>
+    <Grid
+      gridTemplateAreas={`
+    "arrow-left characters arrow-right"
+    `}
+      gridTemplateColumns="auto auto"
+      gridTemplateRows="1fr"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <GridItem area="characters">
+        <Flex
+          wrap={["wrap", "wrap", "nowrap"]}
+          justifyContent="center"
+          overflow="auto"
+        >
+          {CharacterList.map((character) => (
+            <Box key={character.id} p={3}>
+              <CharacterCard
+                onClick={() => handleSelected(character.id)}
+                characterId={character.id}
+                isSelected={selected}
+              />
+            </Box>
+          ))}
+        </Flex>
+      </GridItem>
+      <GridItem area="arrow-left">
+        <IconButton
+          onClick={() => handleArrowBack(selected)}
+          ariaLabel={t("components.previous")}
+          icon={<ChevronLeft />}
+        ></IconButton>
+      </GridItem>
+      <GridItem area="arrow-right">
+        <IconButton
+          onClick={() => handleSelectNext(selected)}
+          ariaLabel={t("components.next")}
+          icon={<ChevronRight />}
+        ></IconButton>
+      </GridItem>
+    </Grid>
   );
 };

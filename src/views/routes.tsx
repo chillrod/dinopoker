@@ -11,7 +11,7 @@ export const Router = () => {
       <ToastProvider />
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
-        <Route path="/room/:id" element={<Poker />} />
+        <Route path="/game/:id" element={<Poker />} />
       </Routes>
     </>
   );

@@ -26,7 +26,6 @@ export const IconButton = ({
         aria-label={ariaLabel}
         icon={icon}
         bg={bg}
-        fontSize="22px"
         color={color}
         isDisabled={disabled}
         role="@dino-iconbutton"
