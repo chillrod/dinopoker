@@ -1,6 +1,7 @@
 import { Flex, Grid, GridItem, Img, Tag, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
@@ -20,6 +21,8 @@ export const PokerRoundData = ({
   updateRoomStatus,
   voteLoading,
 }: IPokerRoundData) => {
+  const { t } = useTranslation();
+
   const [currentPlayerPositions, setCurrentPlayerPositions] = useState<{
     [key: string]: IPlayerData[];
   }>({});
@@ -40,8 +43,8 @@ export const PokerRoundData = ({
 
   const parseActionsAndTextBasedOnStatus = (roomStatus: string) => {
     const states: { [status: string]: string } = {
-      PENDING: "Revelar votos",
-      REVEALED: "Reiniciar",
+      PENDING: t("poker.actions.reveal-votes"),
+      REVEALED: t("poker.actions.restart-votes"),
     };
 
     return states[roomStatus];
@@ -49,7 +52,7 @@ export const PokerRoundData = ({
 
   const calculateMd = (state: string) => {
     const states: { [status: string]: () => any } = {
-      frontend: () => {
+      team1: () => {
         const frontEndMd = Object.keys(currentPlayers)
           .filter((player) => currentPlayers[player].team === 1)
           .map((player) => currentPlayers[player].vote);
@@ -58,7 +61,7 @@ export const PokerRoundData = ({
 
         return Math.max(...frontEndMd);
       },
-      backend: () => {
+      team2: () => {
         const backendMd = Object.keys(currentPlayers)
           .filter((player) => currentPlayers[player].team === 2)
           .map((player) => currentPlayers[player].vote);
@@ -97,7 +100,7 @@ export const PokerRoundData = ({
         return (
           <Flex direction="column" justifyContent="center">
             <Tag fontSize="lg" colorScheme="purple" fontWeight={600}>
-              Revelando {revealingTimeout}
+              {t("poker.actions.revealing-in")} {revealingTimeout}
             </Tag>
             <Img src={CharacterList[2].src} w="50%" margin="0 auto" />
           </Flex>
@@ -116,18 +119,15 @@ export const PokerRoundData = ({
 
             <Flex mt={2}>
               <Tag color="yellow.300" fontSize={["sm", "sm", "lg"]} mx={2}>
-                Nota Frontend: {calculateMd("frontend")}
+                {t("poker.actions.team-1-note")}: {calculateMd("team1")}
               </Tag>
               <Tag color="blue.200" fontSize={["sm", "sm", "lg"]} mx={2}>
-                Nota Backend: {calculateMd("backend")}
+                {t("poker.actions.team-2-note")}: {calculateMd("team2")}
               </Tag>
             </Flex>
             <Text fontSize="lg">
-              Média Total:{" "}
-              {calculateAverage(
-                calculateMd("frontend"),
-                calculateMd("backend")
-              )}
+              {t("poker.actions.team-average")}:{" "}
+              {calculateAverage(calculateMd("team1"), calculateMd("team2"))}
             </Text>
           </>
         );

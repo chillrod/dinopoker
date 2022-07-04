@@ -1,13 +1,6 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Img,
-  Tag,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Button, Flex, Img, Tag, Tooltip } from "@chakra-ui/react";
+
+import { useTranslation } from "react-i18next";
 
 import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
@@ -23,8 +16,15 @@ export const PokerCharacter = ({
   handleVoteFunction,
   status,
 }: ICharacterCardProps) => {
+  const { t } = useTranslation();
+
   const parseCharacterTeam = (team: number) => {
-    const arrayState = ["-", "(frontend)", "(backend)", "(sem time)"];
+    const arrayState = [
+      "-",
+      t("poker.actions.team-one"),
+      t("poker.actions.team-two"),
+      t("poker.actions.no-team"),
+    ];
 
     return arrayState[team];
   };
@@ -42,9 +42,13 @@ export const PokerCharacter = ({
           color={character?.team ? parseCharacterTeamColor(character.team) : ""}
         >
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
-          {character?.team ? parseCharacterTeam(character.team) : "-"}
+          {character?.team ? `(${parseCharacterTeam(character.team)})` : "-"}
         </Tag>
-        <Tooltip label={character.vote ? "Voted... hmmm" : "Not voted"}>
+        <Tooltip
+          label={
+            character.vote ? t("poker.poker.voted") : t("poker.poker.not-voted")
+          }
+        >
           <Button
             bg={character.vote ? "dino.primary" : ""}
             borderColor={character.raiseHand ? "yellow.500" : ""}
@@ -74,11 +78,12 @@ export const PokerCharacter = ({
         </Tooltip>
         {character.vote ? (
           <Tag colorScheme="purple" fontSize="xl">
-            Vote: {handleVoteFunction(status, character.vote)}
+            {t("poker.poker.vote")}:{" "}
+            {handleVoteFunction(status, character.vote)}
           </Tag>
         ) : (
           <Tag colorScheme="purple" fontSize="xl">
-            Vote: -
+            {t("poker.poker.vote")}: -
           </Tag>
         )}
       </Flex>

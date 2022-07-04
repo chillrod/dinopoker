@@ -48,7 +48,8 @@ export const MenuChangeLanguage = () => {
       <PopoverTrigger>
         <span>
           <IconButton
-            color="dino.base1"
+            bg="dino.primary"
+            color="dino.base4"
             icon={<Globe />}
             ariaLabel={t("components.change-language")}
           ></IconButton>
@@ -78,7 +79,7 @@ export const MenuChangeLanguage = () => {
           <FormControl>
             <Grid gap={3}>
               <GridItem>
-                <FormLabel>{t("components.languages")}</FormLabel>
+                <FormLabel>{t("components.languages-select")}</FormLabel>
                 <Select
                   selected={currentLanguage}
                   onChange={(event) => handleChangei18Language(event)}
@@ -91,7 +92,7 @@ export const MenuChangeLanguage = () => {
         <PopoverFooter border="none">
           <Grid width="100%">
             <Button onClick={() => handleChangeLanguage()} bg="dino.primary">
-              {t("components.save-action")}
+              {t("components.confirm")}
             </Button>
           </Grid>
         </PopoverFooter>

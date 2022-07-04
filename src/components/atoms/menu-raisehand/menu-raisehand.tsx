@@ -2,12 +2,15 @@ import { Flex, Text } from "@chakra-ui/react";
 import { child, getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
 import { Speaker } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { app } from "../../../main";
 import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { RoomsService } from "../../../services/rooms/rooms.service";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 
 export const MenuRaiseHand = () => {
+  const { t } = useTranslation();
+
   const getCurrentPlayer = JSON.parse(
     localStorage.getItem("character") || "{}"
   );
@@ -59,12 +62,14 @@ export const MenuRaiseHand = () => {
   return (
     <>
       <Flex w="100%" gap={3} alignItems="center">
-        <Text fontSize="sm" fontWeight={600}>Ações</Text>
+        <Text fontSize="sm" fontWeight={600}>
+          {t("poker.actions.room-action")}
+        </Text>
         <IconButton
           onClick={() => handleRaiseHand()}
           color={returnColor()}
           bg={returnBg()}
-          ariaLabel="Levantar a mão"
+          ariaLabel={t("poker.actions.raise-hand")}
           icon={<Speaker />}
         />
       </Flex>
