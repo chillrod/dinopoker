@@ -173,11 +173,11 @@ export const Poker = () => {
   return (
     <>
       <Helmet>
-        <title>dinopoker.app - gameroom: {id}</title>
+        <title>Planningpoker round of game {id} - dinopoker.app</title>
         <link rel="canonical" href={`/game`} />
         <meta
           name="description"
-          content="Planning poker for agile teams"
+          content="Agile Poker - dinopoker.app - gaming session - Create a new room or join an existing one"
         ></meta>
       </Helmet>
       <Grid
