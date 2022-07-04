@@ -103,11 +103,13 @@ export const Home = () => {
   return (
     <>
       <Helmet>
-        <title>dinopoker.app - beta {dino.version}</title>
+        <title>
+          Online planningpoker for agile teams - dinopoker {dino.version}
+        </title>
         <link rel="canonical" href="/" />
         <meta
           name="description"
-          content="Planning poker for agile teams"
+          content="Create a room and invite your team to join. Start planning your sprints and get feedback from your team."
         ></meta>
       </Helmet>
       <Grid
