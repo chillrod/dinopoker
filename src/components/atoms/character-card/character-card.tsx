@@ -48,11 +48,14 @@ export const CharacterCard = ({
       disabled={disabled}
       size={size}
       p={2}
-      w={["4.5em", "8em", "7.5em"]}
-      h={["4.5em", "8em", "7.5em"]}
+      w={["4.5em", "4.5em", "7.5em"]}
+      h={["4.5em", "4.5em", "7.5em"]}
     >
       <Box w="100%" h="100%">
         <Img
+          title={CharacterList[characterId].name}
+          alt="Dinosaur of DinoPoker"
+          loading="eager"
           role="@dino-characterimg"
           src={CharacterList[characterId].src}
           w="100%"

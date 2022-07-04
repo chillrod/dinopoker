@@ -1,12 +1,11 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { RoomsService } from "../services/rooms/rooms.service";
 import { NotificationsService } from "../services/notifications/notifications.service";
-
+import { Helmet } from "react-helmet-async";
 import {
   child,
   getDatabase,
-  onChildRemoved,
   onDisconnect,
   onValue,
   ref,
@@ -31,8 +30,6 @@ import { DinoPoker } from "../components/atoms/dinopoker";
 import { VoteSystemOptions } from "../config/vote-system/vote-system";
 import { PokerRoundData } from "../components/molecules/poker-round-data/poker-round-data";
 import { getLocalStorage } from "../services/local-storage/handler";
-import { AnimatePresence, motion } from "framer-motion";
-import { CharacterList } from "../config/characters";
 
 export const Poker = () => {
   const { id } = useParams();
@@ -175,6 +172,14 @@ export const Poker = () => {
 
   return (
     <>
+      <Helmet>
+        <title>dinopoker.app - gameroom: {id}</title>
+        <link rel="canonical" href={`/game`} />
+        <meta
+          name="description"
+          content="Planning poker for agile teams"
+        ></meta>
+      </Helmet>
       <Grid
         gridTemplateAreas={`
         "nav"
@@ -184,6 +189,7 @@ export const Poker = () => {
         h="100vh"
         gridTemplateColumns="1fr"
         gridTemplateRows="auto 1fr auto"
+        p={4}
       >
         <GridItem area="nav" p={4} px={5}>
           <Flex w="100%" justifyContent="space-between">
@@ -211,7 +217,7 @@ export const Poker = () => {
           </Grid>
         </GridItem>
         <GridItem area="vote" alignSelf="end" justifySelf="center">
-          <Flex p={3} maxW="100vw" overflow="auto">
+          <Flex maxW="100vw" overflow="auto">
             {VoteSystemOptions["modified-fibonacci"]?.voteSystem.map(
               (number) => (
                 <Box key={number} mx={1}>

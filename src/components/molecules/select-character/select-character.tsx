@@ -53,7 +53,11 @@ export const SelectCharacter = ({ character }: { character?: number }) => {
       justifyContent="center"
     >
       <GridItem area="characters">
-        <Flex wrap={["wrap", "nowrap"]} justifyContent="center" overflow="auto">
+        <Flex
+          wrap={["wrap", "wrap", "nowrap"]}
+          justifyContent="center"
+          overflow="auto"
+        >
           {CharacterList.map((character) => (
             <Box key={character.id} p={3}>
               <CharacterCard

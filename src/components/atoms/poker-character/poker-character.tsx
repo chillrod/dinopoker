@@ -60,6 +60,9 @@ export const PokerCharacter = ({
           >
             <Flex w="100%" direction="column" alignItems="center">
               <Img
+                alt={CharacterList[character?.character || 0].name}
+                title={CharacterList[character?.character || 0].name}
+                loading="eager"
                 role="@dino-characterimg"
                 src={CharacterList[character?.character || 0].src}
                 w="100%"

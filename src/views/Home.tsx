@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import dino from "../dino.json";
+import { Helmet } from "react-helmet-async";
 
 import {
-  Box,
-  Container,
   Flex,
   FormControl,
   FormLabel,
@@ -52,7 +52,7 @@ export const Home = () => {
 
       localStorage.setItem("createdCharacter", JSON.stringify(playerData));
 
-      navigate("room/" + roomId, {
+      navigate("game/" + roomId, {
         state: {
           player,
         },
@@ -101,70 +101,84 @@ export const Home = () => {
   }, []);
 
   return (
-    <Grid
-      maxW={["100%", "500px", "800px"]}
-      gridTemplateAreas={`
+    <>
+      <Helmet>
+        <title>dinopoker.app - beta {dino.version}</title>
+        <link rel="canonical" href="/" />
+        <meta
+          name="description"
+          content="Planning poker for agile teams"
+        ></meta>
+      </Helmet>
+      <Grid
+        maxW={["100%", "500px", "800px"]}
+        gridTemplateAreas={`
       "nav"
       "heading"
       "player"
       "actions"
       `}
-      width="95%"
-      margin="0 auto"
-      gridTemplateRows="auto auto auto auto"
-      gap={2}
-      p={2}
-    >
-      <GridItem area="nav" w="100%" h="100%" p={4}>
-        <Nav />
-      </GridItem>
-      <GridItem area="heading" p={3}>
-        <Heading fontWeight={400} textAlign="center" size={["lg", "xl"]}>
-          {t("home.select-your-avatar-and-join-or-create-a-room")}
-        </Heading>
-      </GridItem>
-      <GridItem area="player" p={3}>
-        <SelectCharacter character={playerData?.character} />
-      </GridItem>
-      <GridItem
-        area="actions"
-        p={4}
-        justifyContent="center"
-        alignItems="center"
+        margin="0 auto"
+        gridTemplateRows="auto auto auto auto"
+        gap={2}
+        p={2}
       >
-        <Stack spacing={4} maxW={["100%", "60%"]} margin="0 auto">
-          <FormControl isInvalid={nameNotFilled}>
-            <FormLabel>{t("home.type-your-name")}</FormLabel>
-            <Input
-              value={playerData?.name}
-              onChange={(event) =>
-                PlayerService.PLAYER_NAME(event.target.value)
-              }
-              placeholder={t("home.type-your-name-placeholder")}
-            />
-          </FormControl>
-          <Text fontSize="xl" textAlign="center">
-            {t("home.select-gameplay-option")}
-          </Text>
-          <Flex justifyContent="space-around" gap={3}>
-            <Button
-              loading={loading}
-              disabled={nameNotFilled}
-              onClick={() => createRoom()}
-            >
-              {t("home.create-a-room")}
-            </Button>
-            <Button
-              loading={loading}
-              disabled={nameNotFilled}
-              onClick={() => joinRoom()}
-              bg="dino.secondary"
-            >
-              {t("home.or-join-a-room")}
-            </Button>
-          </Flex>
-        </Stack>
-      </GridItem>
-    </Grid>
+        <GridItem area="nav" w="100%" h="100%" p={4}>
+          <Nav />
+        </GridItem>
+        <GridItem area="heading" p={3}>
+          <Heading
+            as="h1"
+            fontWeight={400}
+            textAlign="center"
+            size={["lg", "xl"]}
+          >
+            {t("home.select-your-avatar-and-join-or-create-a-room")}
+          </Heading>
+        </GridItem>
+        <GridItem area="player" p={3}>
+          <SelectCharacter character={playerData?.character} />
+        </GridItem>
+        <GridItem
+          area="actions"
+          p={4}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Stack spacing={4} maxW={["100%", "60%"]} margin="0 auto">
+            <FormControl isInvalid={nameNotFilled}>
+              <FormLabel>{t("home.type-your-name")}</FormLabel>
+              <Input
+                value={playerData?.name}
+                onChange={(event) =>
+                  PlayerService.PLAYER_NAME(event.target.value)
+                }
+                placeholder={t("home.type-your-name-placeholder")}
+              />
+            </FormControl>
+            <Text fontSize="xl" textAlign="center">
+              {t("home.select-gameplay-option")}
+            </Text>
+            <Flex justifyContent="space-around" gap={3}>
+              <Button
+                loading={loading}
+                disabled={nameNotFilled}
+                onClick={() => createRoom()}
+              >
+                {t("home.create-a-room")}
+              </Button>
+              <Button
+                loading={loading}
+                disabled={nameNotFilled}
+                onClick={() => joinRoom()}
+                bg="dino.secondary"
+              >
+                {t("home.or-join-a-room")}
+              </Button>
+            </Flex>
+          </Stack>
+        </GridItem>
+      </Grid>
+    </>
   );
 };
