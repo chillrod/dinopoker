@@ -38,7 +38,7 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
 
       NotificationsService.emitMessageBoxClose();
 
-      navigate(`room/${roomId}`, {
+      navigate(`game/${roomId}`, {
         state: {
           player: data,
         },
