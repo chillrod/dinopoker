@@ -36,6 +36,8 @@ const HomeView = () => {
 
       setLocalStorage("createdCharacter", JSON.stringify(playerData));
 
+      await router.prefetch(`/game/${uuid}`);
+
       router.push(`/game/${uuid}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
@@ -79,10 +81,6 @@ const HomeView = () => {
 
     return () => {};
   }, []);
-
-  useEffect(() => {
-    router.prefetch("/game/[id]");
-  }, [router]);
 
   return (
     <>

@@ -37,6 +37,8 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
 
       NotificationsService.emitMessageBoxClose();
 
+      await router.prefetch(`/game/${roomId}`);
+
       router.push(`/game/${roomId}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
@@ -54,10 +56,6 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
       emitter.off("SET_JOIN_ROOM");
     };
   }, [roomId]);
-
-  useEffect(() => {
-    router.prefetch(`/game/[id]`);
-  }, [router]);
 
   return (
     <SimpleGrid gap={2}>
