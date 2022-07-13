@@ -1,38 +1,22 @@
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-
+import { Flex, FormControl, FormLabel, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
-
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { IPlayerData } from "../../model/PlayerData";
+import { emitter } from "../../services/emitter/emitter";
+import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
+import { NotificationsService } from "../../services/notifications/notifications.service";
+import { PlayerService } from "../../services/player/player.service";
+import { RoomsService } from "../../services/rooms/rooms.service";
 import { Button } from "../atoms/button/button";
 import { Input } from "../atoms/input/input";
 import { JoinRoomDialog } from "../molecules/dialog-joinroom/dialog-joinroom";
 import { Nav } from "../molecules/nav/nav";
 import { SelectCharacter } from "../molecules/select-character/select-character";
-import { IPlayerData } from "../../model/PlayerData";
-import { emitter } from "../../services/emitter/emitter";
-import {
-  getLocalStorage,
-  setLocalStorage,
-} from "../../services/local-storage/handler";
-import { NotificationsService } from "../../services/notifications/notifications.service";
-import { PlayerService } from "../../services/player/player.service";
-import { RoomsService } from "../../services/rooms/rooms.service";
-import Link from "next/link";
 
 const HomeView = () => {
   const { t } = useTranslation("common");
-
   const router = useRouter();
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
@@ -48,11 +32,11 @@ const HomeView = () => {
     setLoading(true);
 
     try {
-      const { roomId, player } = await RoomsService.createRoom(playerData);
+      const { uuid } = await RoomsService.createRoom(playerData);
 
       setLocalStorage("createdCharacter", JSON.stringify(playerData));
 
-      router.push(`/game/${roomId}`);
+      router.push(`/game/${uuid}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -95,6 +79,10 @@ const HomeView = () => {
 
     return () => {};
   }, []);
+
+  useEffect(() => {
+    router.prefetch("/game/[id]");
+  }, [router]);
 
   return (
     <>

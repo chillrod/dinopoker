@@ -1,15 +1,16 @@
+import { FormControl, SimpleGrid, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { SimpleGrid, Text, FormControl } from "@chakra-ui/react";
-import { Input } from "../../atoms/input/input";
-import { emitter } from "../../../services/emitter/emitter";
-import { RoomsService } from "../../../services/rooms/rooms.service";
-import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { IPlayerData } from "../../../model/PlayerData";
+import { emitter } from "../../../services/emitter/emitter";
+import { NotificationsService } from "../../../services/notifications/notifications.service";
+import { RoomsService } from "../../../services/rooms/rooms.service";
+import { Input } from "../../atoms/input/input";
 
 export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
-
   const [roomId, setRoomId] = useState("");
+  const router = useRouter();
 
   const handleJoinRoom = async ({
     playerData,
@@ -32,15 +33,11 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
     };
 
     try {
-      const data = await RoomsService.joinPlayerToRoom(player);
+      await RoomsService.joinPlayerToRoom(player);
 
       NotificationsService.emitMessageBoxClose();
 
-      // navigate(`game/${roomId}`, {
-      //   state: {
-      //     player: data,
-      //   },
-      // });
+      router.push(`/game/${roomId}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -57,6 +54,10 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
       emitter.off("SET_JOIN_ROOM");
     };
   }, [roomId]);
+
+  useEffect(() => {
+    router.prefetch(`/game/[id]`);
+  }, [router]);
 
   return (
     <SimpleGrid gap={2}>

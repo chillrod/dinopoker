@@ -14,26 +14,28 @@ const mountCharacterLocalStorage = (player: IPlayerData) => {
 };
 
 export const RoomsService = {
+  generateUuid() {
+    return uuid();
+  },
   async createRoom({ name, character }: IPlayerData) {
     const db = getDatabase(appFirebase);
-
-    const roomId = uuid();
+    const uuid = this.generateUuid();
 
     const player = PlayerService.preparePlayer({
       name,
       character,
-      room: roomId,
+      room: uuid,
     });
 
     try {
-      await set(ref(db, "dinopoker-room/" + roomId), {
-        id: roomId,
+      await set(ref(db, "dinopoker-room/" + uuid), {
+        id: uuid,
         roomStatus: "PENDING",
       });
 
       await RoomsService.joinPlayerToRoom(player);
 
-      return { roomId, player };
+      return { uuid, player };
     } catch (err: any) {
       throw new Error(err);
     }
@@ -81,10 +83,6 @@ export const RoomsService = {
   },
 
   async setCharacterToRoom(player: IPlayerData) {
-    console.log(
-      "🚀 ~ file: rooms.service.ts ~ line 92 ~ setCharacterToRoom ~ player",
-      player
-    );
     if (!player) return;
 
     const db = getDatabase(appFirebase);
