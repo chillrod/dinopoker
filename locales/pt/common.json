@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "Selecione seu avatar, crie sua sala de planningpoker ou entre em uma existente.",
+    "type-your-name": "Digite seu nome",
+    "type-your-name-placeholder": "Exemplo: Pepito",
+    "select-gameplay-option": "Selecione uma opção de jogo",
+    "create-room": "Criar uma sala",
+    "join-room": "Entrar em uma sala"
+  },
+
+  "components": {
+    "next": "Próximo",
+    "previous": "Anterior",
+    "change-language": "Mudar idioma",
+    "languages-select": "Selecione um idioma",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "open-menu": "Abrir menu"
+  },
+
+  "poker": {
+    "poker": {
+      "vote": "Voto",
+      "not-voted": "Não votado",
+      "voted": "Votado"
+    },
+    "actions": {
+      "room-action": "Ações",
+      "teams-action": "Times",
+      "raise-hand": "Levantar a mão",
+      "team-one": "Time Backend",
+      "team-two": "Time Frontend",
+      "no-team": "Sem time",
+      "reveal-votes": "Revelar votos",
+      "restart-votes": "Reiniciar votos",
+      "revealing-in": "Revelando em...",
+      "team-1-note": "Nota do Backend",
+      "team-2-note": "Nota do Frontend",
+      "team-average": "Média da equipe"
+    }
+  }
+}

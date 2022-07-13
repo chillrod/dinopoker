@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "Select your avatar, create your planningpoker room or join a existing one.",
+    "type-your-name": "Type your name",
+    "type-your-name-placeholder": "Example: Pepito",
+    "select-gameplay-option": "Select a gameplay option",
+    "create-room": "Create a room",
+    "join-room": "Join a room"
+  },
+
+  "components": {
+    "next": "Next",
+    "previous": "Previous",
+    "change-language": "Change language",
+    "languages-select": "Select a language",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "open-menu": "Open menu"
+  },
+
+"poker": {
+    "poker": {
+      "vote": "Vote",
+      "not-voted": "Not voted",
+      "voted": "Voted"
+    },
+    "actions": {
+      "room-action": "Actions",
+      "teams-action": "Teams",
+      "raise-hand": "Raise hand",
+      "team-one": "Team 1",
+      "team-two": "Team 2",
+      "no-team": "No team",
+      "reveal-votes": "Reveal votes",
+      "restart-votes": "Restart votes",
+      "revealing-in": "Revealing in...",
+      "team-1-note": "Team 1 note",
+      "team-2-note": "Team 2 note",
+      "team-average": "Team average"
+    }
+  }
+}

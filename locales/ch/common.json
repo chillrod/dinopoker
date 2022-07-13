@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "选择你的头像，创建你的计划排骨房间或加入一个现有的。",
+    "type-your-name": "输入你的名字",
+    "type-your-name-placeholder": "例如：Pepito",
+    "select-gameplay-option": "选择一个游戏选项",
+    "create-room": "创建一个房间",
+    "join-room": "加入一个房间"
+  },
+
+  "components": {
+    "next": "下一个",
+    "previous": "上一个",
+    "change-language": "更改语言",
+    "languages-select": "选择一种语言",
+    "confirm": "确认",
+    "cancel": "取消",
+    "open-menu": "打开菜单"
+  },
+
+  "poker": {
+    "poker": {
+      "vote": "投票",
+      "not-voted": "未投票",
+      "voted": "已投票"
+    },
+    "actions": {
+      "room-action": "动作",
+      "teams-action": "团队",
+      "raise-hand": "提高手",
+      "team-one": "团队1",
+      "team-two": "团队2",
+      "no-team": "无团队",
+      "reveal-votes": "显示投票",
+      "restart-votes": "重新开始投票",
+      "revealing-in": "正在显示...",
+      "team-1-note": "团队1笔记",
+      "team-2-note": "团队2笔记",
+      "team-average": "团队平均"
+    }
+  }
+}
