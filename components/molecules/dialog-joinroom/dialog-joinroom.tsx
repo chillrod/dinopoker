@@ -37,9 +37,7 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
 
       NotificationsService.emitMessageBoxClose();
 
-      await router.prefetch(`/game/${roomId}`);
-
-      router.push(`/game/${roomId}`);
+      await router.push(`/game/${roomId}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {

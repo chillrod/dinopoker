@@ -1,4 +1,12 @@
-import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
+import {
+  child,
+  get,
+  getDatabase,
+  push,
+  ref,
+  set,
+  update,
+} from "firebase/database";
 import { generate as uuid } from "short-uuid";
 
 import { appFirebase } from "../../config/firebase/firebase";
@@ -33,6 +41,7 @@ export const RoomsService = {
         roomStatus: "PENDING",
       });
 
+    
       await RoomsService.joinPlayerToRoom(player);
 
       return { uuid, player };

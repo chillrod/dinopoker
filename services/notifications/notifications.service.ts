@@ -30,6 +30,10 @@ export const NotificationsService = {
     emitter.emit("EMIT_TOAST", message);
   },
 
+  emitScreenLoading({ show, message }: { show: boolean; message?: string }) {
+    emitter.emit("EMIT_SCREENLOADING", { show, message });
+  },
+
   emitConfirm({ func }: { func?: keyof Events }) {
     if (func) {
       return emitter.emit(func, "");

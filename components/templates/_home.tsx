@@ -8,9 +8,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import { IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
@@ -47,9 +49,7 @@ const HomeView = () => {
 
       setLocalStorage("createdCharacter", playerData);
 
-      await router.prefetch(`/game/${uuid}`);
-
-      router.push(`/game/${uuid}`);
+      await router.push(`/game/${uuid}`);
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     } finally {
@@ -141,6 +141,11 @@ const HomeView = () => {
               {t("home.select-gameplay-option")}
             </Text>
             <Flex justifyContent="space-around" gap={3}>
+              {/* <Link
+                href={{
+                  pathname: `/game/${playerData.room}`,
+                }}
+              > */}
               <Button
                 loading={loading}
                 disabled={nameNotFilled}
@@ -148,6 +153,7 @@ const HomeView = () => {
               >
                 {t("home.create-room")}
               </Button>
+              {/* </Link> */}
               <Button
                 loading={loading}
                 disabled={nameNotFilled}
