@@ -1,6 +1,5 @@
 import Head from "next/head";
 
-import { DinoPoker } from "../../components/atoms/dinopoker";
 import Poker from "../../components/templates/_poker";
 
 const GameRoom = () => {

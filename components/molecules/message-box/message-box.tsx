@@ -6,7 +6,7 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   Flex,
-  Text,
+  Text
 } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";

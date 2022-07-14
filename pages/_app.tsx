@@ -1,13 +1,13 @@
-import type { AppProps } from "next/app";
-
 import { ChakraProvider } from "@chakra-ui/react";
-
-import theme from "../config/theme/theme";
-import { MessageBox } from "../components/molecules/message-box/message-box";
-import { ToastProvider } from "../services/toast-provider";
-import { Nav } from "../components/molecules/nav/nav";
-import ScreenLoading from "../components/templates/_create";
+import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
+
+import { MessageBox } from "../components/molecules/message-box/message-box";
+import { Nav } from "../components/molecules/nav/nav";
+import theme from "../config/theme/theme";
+import { ToastProvider } from "../services/toast-provider";
+
+import ScreenLoading from "../components/templates/_screen-loading";
 import { emitter } from "../services/emitter/emitter";
 
 function MyApp({ Component, pageProps }: AppProps) {

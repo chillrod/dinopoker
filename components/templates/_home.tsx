@@ -6,19 +6,18 @@ import {
   GridItem,
   Heading,
   Stack,
-  Text,
+  Text
 } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 import { IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
 import {
   getLocalStorage,
-  setLocalStorage,
+  setLocalStorage
 } from "../../services/local-storage/handler";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { PlayerService } from "../../services/player/player.service";

@@ -15,7 +15,7 @@ export const Nav = () => {
       <Grid templateColumns="1fr auto" alignItems="center">
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
-            <DinoPoker small />
+            <DinoPoker />
             {!id && <MenuChangeLanguage />}
           </Flex>
         </GridItem>

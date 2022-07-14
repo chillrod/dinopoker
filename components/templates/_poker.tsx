@@ -4,7 +4,7 @@ import {
   getDatabase,
   onDisconnect,
   onValue,
-  ref,
+  ref
 } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -16,8 +16,6 @@ import { getLocalStorage } from "../../services/local-storage/handler";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
 import { CardPoints } from "../atoms/card-points/card-points";
-import { DinoPoker } from "../atoms/dinopoker";
-import { PokerMenu } from "../molecules/poker-menu/poker-menu";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 
 const Poker = () => {
@@ -157,7 +155,7 @@ const Poker = () => {
   return (
     <>
       <Grid
-        height="calc(100vh - 80px)"
+        height="calc(100vh - 100px)"
         alignItems="center"
         gridTemplateAreas={`
         "poker"

@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 
+import useTranslation from "next-translate/useTranslation";
 import { CharacterList } from "../../../config/characters";
+import { PlayerService } from "../../../services/player/player.service";
 import { CharacterCard } from "../../atoms/character-card/character-card";
 import { IconButton } from "../../atoms/icon-button/icon-button";
-import useTranslation from "next-translate/useTranslation";
-import { PlayerService } from "../../../services/player/player.service";
 
 export const SelectCharacter = ({ character }: { character?: number }) => {
   const { t } = useTranslation("common");

@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, Img, Tag, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
