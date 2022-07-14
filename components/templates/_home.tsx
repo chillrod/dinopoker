@@ -1,18 +1,29 @@
-import { Flex, FormControl, FormLabel, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  GridItem,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
-import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
+import {
+  getLocalStorage,
+  setLocalStorage,
+} from "../../services/local-storage/handler";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { PlayerService } from "../../services/player/player.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
 import { Button } from "../atoms/button/button";
 import { Input } from "../atoms/input/input";
 import { JoinRoomDialog } from "../molecules/dialog-joinroom/dialog-joinroom";
-import { Nav } from "../molecules/nav/nav";
 import { SelectCharacter } from "../molecules/select-character/select-character";
 
 const HomeView = () => {
@@ -87,19 +98,15 @@ const HomeView = () => {
       <Grid
         maxW={["100%", "500px", "800px"]}
         gridTemplateAreas={`
-      "nav"
       "heading"
       "player"
       "actions"
       `}
         margin="0 auto"
-        gridTemplateRows="auto auto auto auto"
+        gridTemplateRows="auto auto auto"
         gap={2}
         p={2}
       >
-        <GridItem area="nav" w="100%" h="100%" p={4}>
-          <Nav />
-        </GridItem>
         <GridItem area="heading" p={3}>
           <Heading
             as="h1"

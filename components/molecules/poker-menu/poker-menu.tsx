@@ -12,12 +12,7 @@ export const PokerMenu = () => {
 
   return (
     <>
-      <Grid
-        bg="gray.700"
-        p={2}
-        borderRadius="md"
-        display={["none", "none", "block"]}
-      >
+      <Grid borderRadius="md" display={["none", "none", "block"]}>
         <Flex gap={7}>
           {[<MenuRaiseHand key={1} />, <MenuTeam key={2} />].map(
             (Component, id) => (

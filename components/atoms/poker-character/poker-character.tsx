@@ -38,7 +38,7 @@ export const PokerCharacter = ({
     <>
       <Flex direction="column" alignItems="center" gap={2}>
         <Tag
-          fontSize="md"
+          fontSize="sm"
           color={character?.team ? parseCharacterTeamColor(character.team) : ""}
         >
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
@@ -51,14 +51,14 @@ export const PokerCharacter = ({
         >
           <Button
             bg={character.vote ? "dino.primary" : ""}
-            borderColor={character.raiseHand ? "yellow.500" : ""}
+            borderColor={character.raiseHand ? "yellow.500" : "dino.primary"}
             borderWidth="2px"
-            as="div"
+            as="section"
             borderRadius="full"
             outline="none"
             role="@dino-charactervote"
             size="xs"
-            p={2}
+            p={3}
             w={["4.5em", "5.5em"]}
             h={["4.5em", "5.5em"]}
           >
@@ -77,7 +77,7 @@ export const PokerCharacter = ({
           </Button>
         </Tooltip>
         {character.vote ? (
-          <Tag colorScheme="purple" fontSize="xl">
+          <Tag fontSize="xl">
             {t("poker.poker.vote")}:{" "}
             {handleVoteFunction(status, character.vote)}
           </Tag>

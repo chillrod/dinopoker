@@ -12,7 +12,7 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
-  Text,
+  Text
 } from "@chakra-ui/react";
 
 import languages from "../../../config/locale/languages";
@@ -23,10 +23,8 @@ import { Select } from "../../atoms/select/select";
 
 import useTranslation from "next-translate/useTranslation";
 
-import { Globe } from "react-feather";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { setLocalStorage } from "../../../services/local-storage/handler";
+import { Globe } from "react-feather";
 
 export const MenuChangeLanguage = () => {
   const { t, lang } = useTranslation("common");

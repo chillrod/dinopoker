@@ -181,7 +181,7 @@ export const PokerRoundData = ({
       minH="50vh"
       justifyContent="center"
       alignItems="center"
-      gridTemplateColumns="10% 50% 10%"
+      gridTemplateColumns="10% 60% 10%"
       gridTemplateRows="auto auto auto"
       gap={3}
       gridTemplateAreas={`
@@ -192,7 +192,8 @@ export const PokerRoundData = ({
     >
       <GridItem
         bg="gray.700"
-        height={["6em", "10em"]}
+        p={4}
+        height={["4em", "10em"]}
         borderRadius="full"
         area="table"
       >
