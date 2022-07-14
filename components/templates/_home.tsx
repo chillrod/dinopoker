@@ -45,7 +45,7 @@ const HomeView = () => {
     try {
       const { uuid } = await RoomsService.createRoom(playerData);
 
-      setLocalStorage("createdCharacter", JSON.stringify(playerData));
+      setLocalStorage("createdCharacter", playerData);
 
       await router.prefetch(`/game/${uuid}`);
 
@@ -64,7 +64,7 @@ const HomeView = () => {
       children: <JoinRoomDialog playerData={playerData} />,
     });
 
-    setLocalStorage("createdCharacter", JSON.stringify(playerData));
+    setLocalStorage("createdCharacter", playerData);
   };
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const HomeView = () => {
             <FormControl isInvalid={nameNotFilled}>
               <FormLabel>{t("home.type-your-name")}</FormLabel>
               <Input
-                value={playerData?.name}
+                value={playerData.name}
                 onChange={(event) =>
                   PlayerService.PLAYER_NAME(event.target.value)
                 }

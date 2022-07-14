@@ -11,12 +11,12 @@ export const Nav = () => {
   const { id } = router.query;
 
   return (
-    <Box as="nav" height="auto">
-      <Grid templateColumns="1fr auto" p={3} gap={6} alignItems="center">
+    <Box as="nav" height="auto" px={6} pt={6}>
+      <Grid templateColumns="1fr auto" alignItems="center">
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <DinoPoker small />
-            <MenuChangeLanguage />
+            {!id && <MenuChangeLanguage />}
           </Flex>
         </GridItem>
         {id && (
