@@ -96,7 +96,7 @@ const HomeView = () => {
   return (
     <>
       <Grid
-        maxW={["100%", "500px", "800px"]}
+        maxW={["100%", "600px", "850px"]}
         gridTemplateAreas={`
       "heading"
       "player"

@@ -20,6 +20,15 @@ const ChakraTheme = extendTheme({
   colors: {
     dino,
   },
+  styles: {
+    global: () => ({
+      body: {
+        h: '100vh',
+        bg: '#191719',
+        backgroundImage: "linear-gradient(to top, #2d05712e 0%, #191719 100%);",
+      },
+    }),
+  },
 });
 
 export default ChakraTheme;
