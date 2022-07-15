@@ -1,11 +1,5 @@
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
-import {
-  child,
-  getDatabase,
-  onDisconnect,
-  onValue,
-  ref
-} from "firebase/database";
+import { child, getDatabase, onDisconnect, onValue, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -130,11 +124,15 @@ const Poker = () => {
   }, [playerListValues]);
 
   useEffect(() => {
+    const player = getLocalStorage("character")?.player || "";
+
+    if (!player) return;
+
     const db = getDatabase(appFirebase);
 
     const currentPlayerNode = child(
       ref(db),
-      `dinopoker-room/${id}/players/${getLocalStorage("character").player.id}`
+      `dinopoker-room/${id}/players/${player.id}`
     );
 
     onDisconnect(currentPlayerNode).remove();
@@ -143,11 +141,15 @@ const Poker = () => {
   }, []);
 
   useEffect(() => {
-    setCharacterToRoom(getLocalStorage("character").player);
+    const player = getLocalStorage("character")?.player || "";
+
+    if (!player) return;
+
+    setCharacterToRoom(player);
   }, []);
 
   useEffect(() => {
-    if (!getLocalStorage("character").player) {
+    if (!getLocalStorage("character")?.player) {
       router.push("/");
     }
   }, []);

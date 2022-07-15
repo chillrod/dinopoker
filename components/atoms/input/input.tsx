@@ -24,9 +24,6 @@ export const Input = ({
       border="none"
       bg="gray.700"
       outline="none"
-      _focus={{
-        background: "purple.700",
-      }}
       color="dino.text"
       role="@dino-input"
       placeholder={placeholder}

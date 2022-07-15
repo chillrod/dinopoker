@@ -1,4 +1,4 @@
-import { Grid, GridItem, Heading, Img, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Img } from "@chakra-ui/react";
 import { CharacterList } from "../../config/characters";
 
 export const NotFoundView = () => {

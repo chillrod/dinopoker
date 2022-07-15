@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 
 import Head from "next/head";
 import HomeView from "../components/templates/_home";
+// import Landing from "../components/templates/_landing";
 
 const Home: NextPage = () => {
   return (

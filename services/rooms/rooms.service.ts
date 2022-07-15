@@ -1,12 +1,4 @@
-import {
-  child,
-  get,
-  getDatabase,
-  push,
-  ref,
-  set,
-  update,
-} from "firebase/database";
+import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
 import { generate as uuid } from "short-uuid";
 
 import { appFirebase } from "../../config/firebase/firebase";
@@ -41,7 +33,6 @@ export const RoomsService = {
         roomStatus: "PENDING",
       });
 
-    
       await RoomsService.joinPlayerToRoom(player);
 
       return { uuid, player };
@@ -89,6 +80,16 @@ export const RoomsService = {
     } catch (err: any) {
       throw new Error(err);
     }
+  },
+
+  async getCharacters(room?: string | string[]) {
+    const db = getDatabase(appFirebase);
+
+    const data = await get(
+      child(ref(db), "dinopoker-room/" + room + "/players/")
+    );
+
+    return data.val();
   },
 
   async setCharacterToRoom(player: IPlayerData) {

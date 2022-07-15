@@ -1,4 +1,5 @@
 import { FormControl, SimpleGrid, Text } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -11,6 +12,7 @@ import { Input } from "../../atoms/input/input";
 export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
   const [roomId, setRoomId] = useState("");
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const handleJoinRoom = async ({
     playerData,
@@ -58,7 +60,7 @@ export const JoinRoomDialog = ({ playerData }: { playerData: IPlayerData }) => {
   return (
     <SimpleGrid gap={2}>
       <Text textAlign="center" as="h2" color="dino.text" fontWeight={500}>
-        Digite o ID da sala
+        {t("home.type-room-id")}
       </Text>
       <FormControl isInvalid={!roomId.length}>
         <Input

@@ -7,6 +7,7 @@ import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
 import { Button } from "../../atoms/button/button";
 import { PokerCharacter } from "../../atoms/poker-character/poker-character";
+import { Stat } from "../../atoms/stat/stat";
 
 export interface IPokerRoundData {
   voteLoading: boolean;
@@ -21,7 +22,7 @@ export const PokerRoundData = ({
   updateRoomStatus,
   voteLoading,
 }: IPokerRoundData) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const [currentPlayerPositions, setCurrentPlayerPositions] = useState<{
     [key: string]: IPlayerData[];
@@ -50,37 +51,30 @@ export const PokerRoundData = ({
     return states[roomStatus];
   };
 
-  const calculateMd = (state: string) => {
+  const calculateMd = (state: string): { max: number; all: number[] } => {
     const states: { [status: string]: () => any } = {
       team1: () => {
         const frontEndMd = Object.keys(currentPlayers)
           .filter((player) => currentPlayers[player].team === 1)
           .map((player) => currentPlayers[player].vote);
 
-        if (!frontEndMd.length) return "";
+        if (!frontEndMd.length) return 0;
 
-        return Math.max(...frontEndMd);
+        return { max: Math.max(...frontEndMd), all: frontEndMd };
       },
+
       team2: () => {
         const backendMd = Object.keys(currentPlayers)
           .filter((player) => currentPlayers[player].team === 2)
           .map((player) => currentPlayers[player].vote);
 
-        if (!backendMd.length) return "";
+        if (!backendMd.length) return 0;
 
-        return Math.max(...backendMd);
+        return { max: Math.max(...backendMd), all: backendMd };
       },
     };
 
     return states[state]();
-  };
-
-  const calculateAverage = (team1Value: number, team2Value: number) => {
-    if (team1Value > 0 && team2Value > 0) {
-      return (team1Value + team2Value) / 2;
-    }
-
-    return team1Value + team2Value;
   };
 
   const renderTableStatus = (roomStatus: string, isRevealed: boolean) => {
@@ -119,16 +113,14 @@ export const PokerRoundData = ({
 
             <Flex mt={2}>
               <Tag color="yellow.300" fontSize={["sm", "sm", "lg"]} mx={2}>
-                {t("poker.actions.team-1-note")}: {calculateMd("team1")}
+                {t("poker.actions.team-1-note")}:{" "}
+                {calculateMd("team1").max || 0}
               </Tag>
               <Tag color="blue.200" fontSize={["sm", "sm", "lg"]} mx={2}>
-                {t("poker.actions.team-2-note")}: {calculateMd("team2")}
+                {t("poker.actions.team-2-note")}:{" "}
+                {calculateMd("team2").max || 0}
               </Tag>
             </Flex>
-            <Text fontSize="lg">
-              {t("poker.actions.team-average")}:{" "}
-              {calculateAverage(calculateMd("team1"), calculateMd("team2"))}
-            </Text>
           </>
         );
       },
@@ -191,9 +183,10 @@ export const PokerRoundData = ({
                        `}
     >
       <GridItem
-        bg="gray.700"
-        p={4}
-        height={["4em", "10em"]}
+        bg="gray.800"
+        p={5}
+        minH="150px"
+        height={["10em", "8em"]}
         borderRadius="full"
         area="table"
       >
@@ -224,19 +217,18 @@ export const PokerRoundData = ({
             >
               {currentPlayerPositions[playerPosition].map(
                 (player: IPlayerData) => (
-                  <div key={player.id}>
-                    <motion.div
-                      initial={{ scale: 0.97 }}
-                      animate={{ scale: [1.1, 0.99, 1] }}
-                      exit={{ scale: 0.97 }}
-                    >
-                      <PokerCharacter
-                        character={player}
-                        status={roomStatus}
-                        handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
-                      />
-                    </motion.div>
-                  </div>
+                  <motion.div
+                    key={player.id}
+                    initial={{ scale: 0.97 }}
+                    animate={{ scale: [1.1, 0.99, 1] }}
+                    exit={{ scale: 0.97 }}
+                  >
+                    <PokerCharacter
+                      character={player}
+                      status={roomStatus}
+                      handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
+                    />
+                  </motion.div>
                 )
               )}
             </Flex>

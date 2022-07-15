@@ -1,30 +1,13 @@
+import { FormControl, FormLabel, Grid, GridItem, Popover, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Text } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import { ChangeEvent, useState } from "react";
-
-import {
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
-  Popover,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTrigger,
-  Text
-} from "@chakra-ui/react";
+import { Globe } from "react-feather";
 
 import languages from "../../../config/locale/languages";
-
 import { Button } from "../../atoms/button/button";
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { Select } from "../../atoms/select/select";
-
-import useTranslation from "next-translate/useTranslation";
-
-import Link from "next/link";
-import { Globe } from "react-feather";
 
 export const MenuChangeLanguage = () => {
   const { t, lang } = useTranslation("common");
@@ -42,7 +25,7 @@ export const MenuChangeLanguage = () => {
       <PopoverTrigger>
         <span>
           <IconButton
-            bg="dino.primary"
+            bg="dino.base1"
             color="dino.base4"
             icon={<Globe />}
             ariaLabel={t("components.change-language")}

@@ -1,11 +1,13 @@
 {
   "home": {
     "title": "Seleccione su avatar, cree su sala de planningpoker o entre en una existente.",
+    "playing-planning-poker": "planning poker",
     "type-your-name": "Escribe tu nombre",
     "type-your-name-placeholder": "Ejemplo: Pepito",
     "select-gameplay-option": "Seleccione una opción de juego",
     "create-room": "Crear una sala",
-    "join-room": "Entrar en una sala"
+    "join-room": "Entrar en una sala",
+    "type-room-id": "Escribe el id de la sala"
   },
 
   "components": {

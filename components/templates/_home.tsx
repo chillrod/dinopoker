@@ -1,24 +1,11 @@
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
-  Heading,
-  Stack,
-  Text
-} from "@chakra-ui/react";
-
+import { Flex, FormControl, FormLabel, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
-import {
-  getLocalStorage,
-  setLocalStorage
-} from "../../services/local-storage/handler";
+import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { PlayerService } from "../../services/player/player.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
@@ -95,23 +82,23 @@ const HomeView = () => {
   return (
     <>
       <Grid
-        maxW={["100%", "600px", "850px"]}
+        maxW={["100%", "600px", "1000px"]}
         gridTemplateAreas={`
       "heading"
       "player"
       "actions"
       `}
-        margin="0 auto"
+        pt={6}
         gridTemplateRows="auto auto auto"
         gap={2}
-        p={2}
+        margin="0 auto"
       >
         <GridItem area="heading" p={3}>
           <Heading
             as="h1"
             fontWeight={400}
             textAlign="center"
-            size={["lg", "xl"]}
+            size={["lg", "2xl"]}
           >
             {t("home.title")}
           </Heading>
@@ -119,12 +106,7 @@ const HomeView = () => {
         <GridItem area="player" p={3}>
           <SelectCharacter character={playerData?.character} />
         </GridItem>
-        <GridItem
-          area="actions"
-          p={4}
-          justifyContent="center"
-          alignItems="center"
-        >
+        <GridItem area="actions" justifyContent="center" alignItems="center">
           <Stack spacing={4} maxW={["100%", "60%"]} margin="0 auto">
             <FormControl isInvalid={nameNotFilled}>
               <FormLabel>{t("home.type-your-name")}</FormLabel>
@@ -140,20 +122,16 @@ const HomeView = () => {
               {t("home.select-gameplay-option")}
             </Text>
             <Flex justifyContent="space-around" gap={3}>
-              {/* <Link
-                href={{
-                  pathname: `/game/${playerData.room}`,
-                }}
-              > */}
               <Button
+                size="lg"
                 loading={loading}
                 disabled={nameNotFilled}
                 onClick={() => createRoom()}
               >
                 {t("home.create-room")}
               </Button>
-              {/* </Link> */}
               <Button
+                size="lg"
                 loading={loading}
                 disabled={nameNotFilled}
                 onClick={() => joinRoom()}

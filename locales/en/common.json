@@ -1,11 +1,13 @@
 {
   "home": {
+    "playing-planning-poker": "playing planning poker",
     "title": "Select your avatar, create your planningpoker room or join a existing one.",
     "type-your-name": "Type your name",
     "type-your-name-placeholder": "Example: Pepito",
     "select-gameplay-option": "Select a gameplay option",
     "create-room": "Create a room",
-    "join-room": "Join a room"
+    "join-room": "Join a room",
+    "type-room-id": "Type the room id"
   },
 
   "components": {

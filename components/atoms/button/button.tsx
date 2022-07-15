@@ -7,6 +7,7 @@ interface IButtonProps {
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
   forwardRef?: any;
+  size?: string;
 }
 
 export const Button = ({
@@ -16,10 +17,12 @@ export const Button = ({
   onClick,
   forwardRef,
   bg = "",
+  size,
 }: IButtonProps) => {
   return (
     <Btn
       ref={forwardRef}
+      size={size}
       isDisabled={disabled}
       role="@dino-button"
       bg={!bg.length ? "dino.primary" : bg}

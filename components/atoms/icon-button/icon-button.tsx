@@ -22,7 +22,9 @@ export const IconButton = ({
   return (
     <Tooltip label={ariaLabel}>
       <Btn
-        _hover={{}}
+        _hover={{
+          bg: "dino.base2",
+        }}
         aria-label={ariaLabel}
         icon={icon}
         bg={bg}

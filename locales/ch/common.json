@@ -1,11 +1,13 @@
 {
   "home": {
+    "playing-planning-poker": "玩计划排骨",
     "title": "选择你的头像，创建你的计划排骨房间或加入一个现有的。",
     "type-your-name": "输入你的名字",
     "type-your-name-placeholder": "例如：Pepito",
     "select-gameplay-option": "选择一个游戏选项",
     "create-room": "创建一个房间",
-    "join-room": "加入一个房间"
+    "join-room": "加入一个房间",
+    "type-room-id": "输入房间ID"
   },
 
   "components": {

@@ -1,4 +1,4 @@
-import { Button, Flex, Img, Tag, Tooltip } from "@chakra-ui/react";
+import { Avatar, AvatarBadge, Flex, Tag } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
 
@@ -34,6 +34,16 @@ export const PokerCharacter = ({
 
     return arrayState[team];
   };
+
+  const parseCharacterColor = (character: IPlayerData) => {
+    if (character.raiseHand) return "yellow";
+
+    if (character.vote) return "purple.400";
+
+
+    return 'dino.base2'
+  };
+
   return (
     <>
       <Flex direction="column" alignItems="center" gap={2}>
@@ -44,48 +54,26 @@ export const PokerCharacter = ({
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
           {character?.team ? `(${parseCharacterTeam(character.team)})` : "-"}
         </Tag>
-        <Tooltip
-          label={
-            character.vote ? t("poker.poker.voted") : t("poker.poker.not-voted")
-          }
+
+        <Avatar
+          loading="eager"
+          src={CharacterList[character?.character || 0].src}
+          size="lg"
+          name={character.name ? character.name : "Unknown"}
+          bg={parseCharacterColor(character)}
         >
-          <Button
-            bg={character.vote ? "dino.primary" : ""}
-            borderColor={character.raiseHand ? "yellow.500" : "dino.primary"}
-            borderWidth="2px"
-            as="section"
-            borderRadius="full"
-            outline="none"
-            role="@dino-charactervote"
-            size="xs"
-            p={3}
-            w={["4.5em", "5.5em"]}
-            h={["4.5em", "5.5em"]}
+          <AvatarBadge
+            boxSize="1.5em"
+            bg={character.vote ? "dino.primary" : "dino.base1"}
+            color="dino.text"
           >
-            <Flex w="100%" direction="column" alignItems="center">
-              <Img
-                alt={CharacterList[character?.character || 0].name}
-                title={CharacterList[character?.character || 0].name}
-                loading="eager"
-                role="@dino-characterimg"
-                src={CharacterList[character?.character || 0].src}
-                w="100%"
-                h="100%"
-                objectFit="cover"
-              />
-            </Flex>
-          </Button>
-        </Tooltip>
-        {character.vote ? (
-          <Tag fontSize="xl">
-            {t("poker.poker.vote")}:{" "}
-            {handleVoteFunction(status, character.vote)}
-          </Tag>
-        ) : (
-          <Tag colorScheme="purple" fontSize="xl">
-            {t("poker.poker.vote")}: -
-          </Tag>
-        )}
+            {character?.vote ? (
+              <>{handleVoteFunction(status, character.vote)}</>
+            ) : (
+              "-"
+            )}
+          </AvatarBadge>
+        </Avatar>
       </Flex>
     </>
   );
