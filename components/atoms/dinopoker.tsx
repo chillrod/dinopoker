@@ -26,7 +26,7 @@ export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
         >
           dino
           <Text fontWeight={300} as="span" color="dino.primary">
-            planning.app
+            poker.app
           </Text>
         </Heading>
       </GridItem>
