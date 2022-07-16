@@ -6,7 +6,6 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   Box,
-  Flex,
   Grid,
   GridItem,
   Text,
@@ -33,24 +32,24 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const { t } = useTranslation("common");
 
   const [isOpen, setIsOpen] = useState(open);
-
   const [currentMessage, setCurrentMessage] = useState("");
   const [currentFunc, setCurrentFunc] = useState<keyof Events>();
+  const [userOnClose, setUserOnClose] = useState<() => void>();
   const [loading, setLoading] = useState(false);
 
   const [children, setCurrentChildren] = useState<React.ReactElement>();
 
-  const onClose = () => setIsOpen(false);
-
   const cancelRef: RefObject<FocusableElement> = useRef(null);
 
   useEffect(() => {
-    emitter.on("EMIT_MESSAGEBOX", ({ message, func, children }) => {
+    emitter.on("EMIT_MESSAGEBOX", ({ message, func, children, onClose }) => {
       setIsOpen(true);
 
       setCurrentMessage(message);
 
       setCurrentFunc(func);
+
+      setUserOnClose(() => onClose);
 
       setCurrentChildren(children);
     });
@@ -90,7 +89,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
       >
         <AlertDialogContent
           boxShadow="xl"
@@ -118,20 +117,24 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
               <GridItem justifySelf="start">
                 <Button
                   loading={loading}
-                  onClick={() => handleActionConfirm()}
-                  bg="dino.primary"
+                  bg="dino.secondary"
+                  onClick={
+                    userOnClose
+                      ? () => [userOnClose(), setIsOpen(false)]
+                      : () => setIsOpen(false)
+                  }
+                  forwardRef={cancelRef}
                 >
-                  {t("components.confirm")}
+                  {t("components.cancel")}
                 </Button>
               </GridItem>
               <GridItem justifySelf="end">
                 <Button
                   loading={loading}
-                  bg="dino.secondary"
-                  onClick={onClose}
-                  forwardRef={cancelRef}
+                  onClick={() => handleActionConfirm()}
+                  bg="dino.primary"
                 >
-                  {t("components.cancel")}
+                  {t("components.confirm")}
                 </Button>
               </GridItem>
             </Grid>

@@ -1,13 +1,14 @@
-import { Flex, Grid, GridItem, Img, Tag, Text } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Img, Tag } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useMemo, useState } from "react";
+import { Share2 } from "react-feather";
 
-import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
+import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { Button } from "../../atoms/button/button";
+import { IconButton } from "../../atoms/icon-button/icon-button";
 import { PokerCharacter } from "../../atoms/poker-character/poker-character";
-import { Stat } from "../../atoms/stat/stat";
 
 export interface IPokerRoundData {
   voteLoading: boolean;
@@ -30,6 +31,15 @@ export const PokerRoundData = ({
 
   const [revealingTimeout, setRevealingTimeout] = useState(3);
   const [isRevealed, setIsRevealed] = useState(false);
+
+  const copyRoomLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+
+    NotificationsService.emitToast({
+      message: t("poker.actions.copy-link-success"),
+      state: "success",
+    });
+  };
 
   const parseSecretVoteBasedOnRoomStatus = (status: string, vote: number) => {
     const states: { [status: string]: string | number } = {
@@ -96,7 +106,7 @@ export const PokerRoundData = ({
             <Tag fontSize="lg" colorScheme="purple" fontWeight={600}>
               {t("poker.actions.revealing-in")} {revealingTimeout}
             </Tag>
-            <Img src={CharacterList[3].src} w="100px" margin="0 auto" />
+            <Img src="/dino1.svg" w="50px" margin="0 auto" mt={5} />
           </Flex>
         );
       },
@@ -112,11 +122,11 @@ export const PokerRoundData = ({
             </Button>
 
             <Flex mt={2}>
-              <Tag color="yellow.300" fontSize={["sm", "sm", "lg"]} mx={2}>
+              <Tag fontSize={["sm", "sm", "lg"]} mx={2}>
                 {t("poker.actions.team-1-note")}:{" "}
                 {calculateMd("team1").max || 0}
               </Tag>
-              <Tag color="blue.200" fontSize={["sm", "sm", "lg"]} mx={2}>
+              <Tag fontSize={["sm", "sm", "lg"]} mx={2}>
                 {t("poker.actions.team-2-note")}:{" "}
                 {calculateMd("team2").max || 0}
               </Tag>
@@ -130,6 +140,23 @@ export const PokerRoundData = ({
 
     if (revealingTimeout > 0 && roomStatus === "REVEALED")
       return stateHandler["REVEALING"]();
+
+    if (currentPlayers.length === 1) {
+      return (
+        <>
+          <Flex mt={2} direction="column">
+            <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
+              Invite your team mates
+            </Tag>
+            <IconButton
+              onClick={() => copyRoomLink()}
+              ariaLabel="Share"
+              icon={<Share2 />}
+            />
+          </Flex>
+        </>
+      );
+    }
 
     return stateHandler[roomStatus]();
   };
@@ -170,12 +197,12 @@ export const PokerRoundData = ({
 
   return (
     <Grid
-      minH="50vh"
+      minH="30vh"
       justifyContent="center"
       alignItems="center"
       gridTemplateColumns="10% 60% 10%"
       gridTemplateRows="auto auto auto"
-      gap={3}
+      gap={4}
       gridTemplateAreas={`
                        "left top right"
                        "left table right"
@@ -183,7 +210,7 @@ export const PokerRoundData = ({
                        `}
     >
       <GridItem
-        bg="gray.800"
+        bg="dino.base3"
         p={5}
         minH="150px"
         height={["10em", "8em"]}

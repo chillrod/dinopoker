@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 
 import { useCallback, useEffect, useState } from "react";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
@@ -27,24 +28,28 @@ import { Select } from "../atoms/select/select";
 const CreateRoomDialog = () => {
   const { t } = useTranslation("common");
 
+  const router = useRouter();
+
   const [playerData, setPlayerData] = useState<IPlayerData>({});
 
   const nameNotFilled = !playerData?.name?.length;
 
-  const createRoom = useCallback(async () => {
+  const createRoom = async () => {
     try {
       NotificationsService.emitScreenLoading({
         show: true,
         message: "Creating game...",
       });
-
       await new Promise(function (resolve) {
         setTimeout(resolve, 2500);
       });
 
+      await router.push("/game/223");
+
       NotificationsService.emitScreenLoading({
         show: false,
       });
+
       // const { uuid } = await RoomsService.createRoom();
 
       // setLocalStorage("createdCharacter", playerData);
@@ -54,7 +59,7 @@ const CreateRoomDialog = () => {
       NotificationsService.emitToast(err.message);
     } finally {
     }
-  }, []);
+  };
 
   useEffect(() => {
     const createdCharacter: { name: string } =
@@ -75,7 +80,7 @@ const CreateRoomDialog = () => {
     return () => {
       emitter.off("SET_CREATE_ROOM");
     };
-  }, []);
+  });
 
   return (
     <>

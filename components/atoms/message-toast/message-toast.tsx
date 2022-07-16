@@ -4,17 +4,26 @@ import theme from "../../../config/theme/theme";
 
 const { toast } = createStandaloneToast({ theme: theme });
 
-export const emitToast = ({ message }: { message: string }) =>
+export const emitToast = ({
+  message,
+  state,
+}: {
+  message: string;
+  state: string;
+}) =>
   toast({
     position: "top-right",
     render: () => (
-      <SimpleGrid bg="dino.secondary" borderRadius="md" p={2}>
+      <SimpleGrid
+        bg={state === "error" ? "red.600" : "green.500"}
+        borderRadius="md"
+        p={2}
+      >
         <Box p={2.5}>
           <Text as="span">{message}</Text>
         </Box>
-        <Box width="100%" height="3px" bg="dino.primary"></Box>
       </SimpleGrid>
     ),
-    duration: 3000,
+    duration: 2000,
     status: "success",
   });

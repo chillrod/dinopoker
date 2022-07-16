@@ -36,12 +36,11 @@ export const PokerCharacter = ({
   };
 
   const parseCharacterColor = (character: IPlayerData) => {
-    if (character.raiseHand) return "yellow";
+    if (character.raiseHand) return "yellow.500";
 
     if (character.vote) return "purple.400";
 
-
-    return 'dino.base2'
+    return "dino.base2";
   };
 
   return (

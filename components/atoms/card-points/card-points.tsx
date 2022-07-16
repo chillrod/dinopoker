@@ -19,15 +19,14 @@ export const CardPoints = ({
       onClick={() => onClick && onClick(point)}
       _hover={{
         transform: "translateY(-2%)",
-        backgroundColor: "dino.primary",
+        backgroundColor: "dino.base3",
       }}
-      size="sm"
-      bg={selected ? "dino.primary" : "gray.700"}
-      width={["auto", "6em"]}
-      height={["auto", "8em"]}
-      p={2}
+      size="md"
+      bg={selected ? "dino.primary" : "dino.base3"}
+      width={["auto", "7em"]}
+      height={["8em", "8em"]}
     >
-      <Grid gap={2}>
+      <Grid gap={2} p={4}>
         <GridItem justifySelf="start">
           <Box>
             <Text as="span">{point}</Text>
@@ -38,14 +37,14 @@ export const CardPoints = ({
             sx={{
               display: "grid",
             }}
-            bg="gray.400"
-            width="6ch"
-            h="6ch"
+            bg="dino.base1"
+            width="5ch"
+            h="5ch"
             borderRadius="full"
           >
             <Text
               fontSize="3xl"
-              color="dino.secondary"
+              color="dino.text"
               fontWeight={600}
               alignSelf="center"
             >

@@ -6,15 +6,18 @@ export const NotificationsService = {
     message,
     func,
     children,
+    onClose,
   }: {
     message: string;
     func: keyof Events;
     children: React.ReactElement;
+    onClose?: () => void | Promise<boolean>;
   }) {
     emitter.emit("EMIT_MESSAGEBOX", {
       message,
       func,
       children,
+      onClose,
     });
   },
 
@@ -26,8 +29,11 @@ export const NotificationsService = {
     emitter.emit("EMIT_MESSAGEBOX_CLOSE", true);
   },
 
-  emitToast(message: string) {
-    emitter.emit("EMIT_TOAST", message);
+  emitToast({ message, state }: { message: string; state: string }) {
+    emitter.emit("EMIT_TOAST", {
+      message,
+      state,
+    });
   },
 
   emitScreenLoading({ show, message }: { show: boolean; message?: string }) {

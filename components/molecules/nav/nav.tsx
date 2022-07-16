@@ -42,9 +42,12 @@ export const Nav = () => {
                   justifyItems="end"
                 >
                   {lang === "pt" && (
-                    <Link href="/pricing">
-                      <LinkChakra>Donating</LinkChakra>
-                    </Link>
+                    <LinkChakra
+                      href="https://nubank.com.br/pagar/152tv/6xqf3wx7rA"
+                      target="_blank"
+                    >
+                      Donating
+                    </LinkChakra>
                   )}
                   <LinkChakra
                     target="_blank"

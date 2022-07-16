@@ -21,7 +21,7 @@ import { PlayerService } from "../../services/player/player.service";
 import { HeadText } from "../atoms/head-text/head-text";
 import { Input } from "../atoms/input/input";
 
-const JoinRoomDialog = () => {
+const JoinRoomDialog = ({ room }: { room?: string }) => {
   const { t } = useTranslation("common");
 
   const [playerData, setPlayerData] = useState<IPlayerData>({});
@@ -85,7 +85,7 @@ const JoinRoomDialog = () => {
         gap={6}
       >
         <GridItem area="text">
-          <HeadText head="Almost creating a new fancing room" />
+          <HeadText head="Almost joining the room" />
         </GridItem>
         <GridItem area="actions" w="100%">
           <FormControl isInvalid={nameNotFilled}>
@@ -103,7 +103,8 @@ const JoinRoomDialog = () => {
               <Box>
                 <FormLabel>{t("home.type-room-id")}</FormLabel>
                 <Input
-                  value={playerData.name}
+                  disabled={!!room}
+                  value={room || ""}
                   onChange={(event) =>
                     PlayerService.PLAYER_NAME(event.target.value)
                   }

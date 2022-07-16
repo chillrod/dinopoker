@@ -1,20 +1,10 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Img,
-  Tag,
-  Text,
-} from "@chakra-ui/react";
-import { useCallback, useEffect } from "react";
-import { emitter } from "../../services/emitter/emitter";
+import { Flex, Grid, GridItem, Heading, Img, Text } from "@chakra-ui/react";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 
 import { ButtonBox } from "../atoms/button-box/button-box";
 import { Button } from "../atoms/button/button";
 import { HeadText } from "../atoms/head-text/head-text";
+
 import JoinRoomDialog from "./_join-room-dialog";
 import CreateRoomDialog from "./_create-room-dialog";
 import { PlainTemplate } from "./_plain-template";
@@ -34,21 +24,6 @@ export const Landing = () => {
       func: "SET_JOIN_ROOM",
       children: <JoinRoomDialog />,
     });
-  };
-
-  const containerTemplate = {
-    sm: `
-      "hero hero"
-      "dino dino"
-      `,
-    md: `
-      "hero hero"
-      "dino dino"
-      `,
-    lg: `
-      "dino hero"
-      "dino hero"
-      `,
   };
 
   return (
@@ -71,8 +46,8 @@ export const Landing = () => {
     "dino hero"
       `,
       ]}
-      rows={["1fr", "1fr", '1fr', '1fr 1fr']}
-      cols={["1fr", "1fr", '1fr', '1fr 1fr']}
+      rows={["1fr", "1fr", "1fr", "1fr 1fr"]}
+      cols={["1fr", "1fr", "1fr", "1fr 1fr"]}
     >
       <GridItem gridArea="dino" justifySelf="start" alignSelf="center">
         <HeadText
@@ -112,7 +87,12 @@ export const Landing = () => {
             </Grid>
           </GridItem>
           <GridItem gridArea="dino" display={["none", "none", "none", "block"]}>
-            <Flex gap={2} alignItems="center" w="100%" wrap={['wrap', 'nowrap']}>
+            <Flex
+              gap={2}
+              alignItems="center"
+              w="100%"
+              wrap={["wrap", "nowrap"]}
+            >
               <ButtonBox
                 onClick={() => handleCreate()}
                 text="Create a planning poker room"
