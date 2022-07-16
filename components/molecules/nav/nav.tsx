@@ -1,5 +1,12 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Link as LinkChakra,
+} from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { Button } from "../../atoms/button/button";
@@ -9,25 +16,43 @@ import { PokerMenu } from "../poker-menu/poker-menu";
 
 export const Nav = () => {
   const router = useRouter();
-  const { t } = useTranslation("common");
+  const { t, lang } = useTranslation("common");
 
   const { id } = router.query;
 
   return (
-    <Box as="nav" height="auto" px={6} pt={6}>
+    <Box as="nav" height="auto" p={6}>
       <Grid templateColumns="1fr auto" alignItems="center">
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
               <DinoPoker />
-              {!id && <MenuChangeLanguage />}
             </Grid>
 
-            {/* {!id && (
-              <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-                <Button>{t("home.play-poker")}</Button>
-              </Grid>
-            )} */}
+            {!id && (
+              <>
+                <Grid
+                  gap={4}
+                  gridTemplateColumns="repeat(4, auto)"
+                  alignItems="center"
+                  justifyItems="end"
+                >
+                  {lang === "pt" && (
+                    <Link href="/pricing">
+                      <LinkChakra>Donating</LinkChakra>
+                    </Link>
+                  )}
+                  <LinkChakra
+                    target="_blank"
+                    href="https://github.com/chillrod"
+                  >
+                    Follow me on Github
+                  </LinkChakra>
+                  <MenuChangeLanguage />
+                  <Button>{t("home.play-poker")}</Button>
+                </Grid>
+              </>
+            )}
           </Flex>
         </GridItem>
         {id && (

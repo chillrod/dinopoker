@@ -24,6 +24,7 @@ export const Select = ({ options, onChange, disabled, selected }: ISelect) => {
       defaultValue={selected}
       onChange={onChange}
       bg="dino.secondary"
+      size="lg"
       color="dino.text"
       border="none"
       isDisabled={disabled}

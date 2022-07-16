@@ -5,8 +5,11 @@ import {
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
+  Box,
   Flex,
-  Text
+  Grid,
+  GridItem,
+  Text,
 } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
@@ -73,51 +76,68 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   };
 
   return (
-    <AlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
+    <Box
+      bg="dino.base5"
+      {...(isOpen
+        ? {
+            opacity: "0.8",
+            position: "absolute",
+            h: "100%",
+            w: "100%",
+          }
+        : {})}
     >
-      <AlertDialogContent
-        boxShadow="xl"
-        role="@dino-dialogcontent"
-        bg="dino.base4"
-        borderRadius="lg"
-        p={2}
-        px={8}
-        maxWidth="fit-content"
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
       >
-        <AlertDialogBody>
-          {children && <>{children}</>}
-          {!children && (
-            <Text textAlign="center" as="h2" color="dino.text" fontWeight={500}>
-              {t("components.are-you-sure-you-want-to")}
-              <br /> {currentMessage.length ? currentMessage : "ACTION"} ?
-            </Text>
-          )}
-        </AlertDialogBody>
-        <AlertDialogFooter justifyContent="center">
-          <Flex gap={2} justifyContent="center">
-            {process.env.NODE_ENV !== "test" && (
-              <Button
-                loading={loading}
-                bg="dino.secondary"
-                onClick={onClose}
-                forwardRef={cancelRef}
+        <AlertDialogContent
+          boxShadow="xl"
+          role="@dino-dialogcontent"
+          bg="dino.base3"
+          p={12}
+          px={6}
+        >
+          <AlertDialogBody>
+            {children && <>{children}</>}
+            {!children && (
+              <Text
+                textAlign="center"
+                as="h2"
+                color="dino.text"
+                fontWeight={500}
               >
-                {t("components.cancel")}
-              </Button>
+                {t("components.are-you-sure-you-want-to")}
+                <br /> {currentMessage.length ? currentMessage : "ACTION"} ?
+              </Text>
             )}
-            <Button
-              loading={loading}
-              onClick={() => handleActionConfirm()}
-              bg="dino.primary"
-            >
-              {t("components.confirm")}
-            </Button>
-          </Flex>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Grid gridTemplateColumns="1fr 1fr">
+              <GridItem justifySelf="start">
+                <Button
+                  loading={loading}
+                  onClick={() => handleActionConfirm()}
+                  bg="dino.primary"
+                >
+                  {t("components.confirm")}
+                </Button>
+              </GridItem>
+              <GridItem justifySelf="end">
+                <Button
+                  loading={loading}
+                  bg="dino.secondary"
+                  onClick={onClose}
+                  forwardRef={cancelRef}
+                >
+                  {t("components.cancel")}
+                </Button>
+              </GridItem>
+            </Grid>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Box>
   );
 };

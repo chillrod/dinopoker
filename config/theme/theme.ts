@@ -23,9 +23,8 @@ const ChakraTheme = extendTheme({
   styles: {
     global: () => ({
       body: {
-        h: '100vh',
-        bg: '#191719',
-        backgroundImage: "linear-gradient(to top, #2d05712e 0%, #191719 100%);",
+        minH:"100vh",
+        bg: "linear-gradient(315deg, #2d3436 0%, #000000 74%)",
       },
     }),
   },

@@ -150,7 +150,7 @@ const Poker = () => {
 
   useEffect(() => {
     if (!getLocalStorage("character")?.player) {
-      router.push("/");
+      // router.push("/");
     }
   }, []);
 

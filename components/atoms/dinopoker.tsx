@@ -11,22 +11,17 @@ interface IDinoPoker {
 
 export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const { id } = router.query;
 
   return (
     <Grid justifyItems="start" gap={2} justifyContent={justify}>
       <GridItem>
-        <Heading
-          as={!small ? "h1" : "h2"}
-          fontWeight={600}
-          textAlign="center"
-          size={small ? "md" : "lg"}
-        >
-          dino
+        <Heading fontWeight={600} textAlign="center" size={['sm', 'lg', 'xl']}>
+          {"dino"}
           <Text fontWeight={300} as="span" color="dino.primary">
-            poker.app
+            {"scrum.app"}
           </Text>
         </Heading>
       </GridItem>

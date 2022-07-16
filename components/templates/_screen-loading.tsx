@@ -1,15 +1,38 @@
-import { Grid, GridItem, Img, Text } from "@chakra-ui/react";
-import { CharacterList } from "../../config/characters";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Info } from "react-feather";
+import { PlainTemplate } from "./_plain-template";
 
 const ScreenLoading = ({ action }: { action?: string }) => {
   return (
-    <Grid justifyContent="center" gridTemplateRows="1fr 1fr">
-      <GridItem alignSelf="center" gridRow="2">
-        <Text fontSize="2xl">{action ? action : ""} </Text>
-
-        <Img w="100%" src={CharacterList[0].src} />
-      </GridItem>
-    </Grid>
+    <Box position="absolute" w="100%" h="100%">
+      <PlainTemplate cols="1fr" areas="1fr" rows="auto auto">
+        <GridItem justifySelf="center">
+          <Heading fontWeight={600} fontSize={"2em"}>
+            {action ? action : ""}{" "}
+          </Heading>
+        </GridItem>
+        <GridItem justifySelf="center" alignSelf="start">
+          <Spinner />
+        </GridItem>
+        <GridItem justifySelf="center">
+          <Flex>
+            <Info />
+            <Text textAlign="center" ml={2}>
+              You can invite people by just copying the Game URL
+            </Text>
+          </Flex>
+        </GridItem>
+      </PlainTemplate>
+    </Box>
   );
 };
 

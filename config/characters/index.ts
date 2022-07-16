@@ -6,21 +6,21 @@ export const CharacterList: {
   {
     name: "Juan",
     id: 0,
-    src: "/dino/yellow.gif",
+    src: "dino1.svg",
   },
   {
     name: "Mac",
     id: 1,
-    src: "/dino/blue.gif",
+    src: "dino2.svg",
   },
   {
     name: "Pepito",
     id: 2,
-    src: "/dino/red.gif",
+    src: "dino3.svg",
   },
   {
     name: "Pepa",
     id: 3,
-    src: "/dino/green.gif",
+    src: "dino4.svg",
   },
 ];
