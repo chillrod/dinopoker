@@ -65,8 +65,7 @@ export const Landing = () => {
                 Plan your agile sprints in a fun environment with dinosaurs!
               </Heading>
               <Text fontSize="lg">
-                We connect your team with a funny tools to handle your sprint's
-                &apos;
+                We connect your team with a funny tools to handle your sprints
                 planning, retrospectives and more
               </Text>
               <GridItem display={["block", "block", "none"]}>
