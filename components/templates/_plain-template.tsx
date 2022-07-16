@@ -7,35 +7,20 @@ export const PlainTemplate = ({
   areas,
 }: {
   children: React.ReactElement[] | React.ReactElement;
-  cols?: string;
-  rows?: string;
-  areas?: string;
+  cols?: string[];
+  rows?: string[];
+  areas?: string[];
 }) => {
-  const containerTemplate = {
-    sm: `
-      "hero hero"
-      "dino dino"
-      `,
-    md: `
-      "hero hero"
-      "dino dino"
-      `,
-    lg: `
-      "dino hero"
-      "dino hero"
-      `,
-  };
-
   return (
     <Grid
       bg="dino.base5"
       borderRadius="2xl"
-      h='calc(100vh)'
+      h="calc(100vh)"
+      gap={4}
       p={8}
-      gap={6}
-      gridTemplateRows={rows || ""}
-      gridTemplateColumns={cols || ["1fr", "1fr", "1fr", "1fr 1fr"]}
-      gridTemplateAreas={areas || containerTemplate}
+      gridTemplateRows={rows}
+      gridTemplateColumns={cols}
+      gridTemplateAreas={areas}
     >
       {children}
     </Grid>

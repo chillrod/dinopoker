@@ -33,7 +33,11 @@ export const Nav = () => {
               <>
                 <Grid
                   gap={4}
-                  gridTemplateColumns="repeat(4, auto)"
+                  gridTemplateColumns={[
+                    "repeat(3, auto)",
+                    "repeat(3, auto)",
+                    "repeat(4, auto)",
+                  ]}
                   alignItems="center"
                   justifyItems="end"
                 >
@@ -49,7 +53,9 @@ export const Nav = () => {
                     Follow me on Github
                   </LinkChakra>
                   <MenuChangeLanguage />
-                  <Button>{t("home.play-poker")}</Button>
+                  <Box display={["none", "none", "none", "block"]}>
+                    <Button>{t("home.play-poker")}</Button>
+                  </Box>
                 </Grid>
               </>
             )}

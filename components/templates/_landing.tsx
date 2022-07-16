@@ -36,9 +36,45 @@ export const Landing = () => {
     });
   };
 
+  const containerTemplate = {
+    sm: `
+      "hero hero"
+      "dino dino"
+      `,
+    md: `
+      "hero hero"
+      "dino dino"
+      `,
+    lg: `
+      "dino hero"
+      "dino hero"
+      `,
+  };
+
   return (
-    <PlainTemplate>
-      <GridItem gridArea="dino" justifySelf="start">
+    <PlainTemplate
+      areas={[
+        `
+    "hero hero"
+    "dino dino"
+    `,
+        `
+    "hero hero"
+    "dino dino"
+      `,
+        `
+    "hero hero"
+    "dino dino"
+      `,
+        `
+    "dino hero"
+    "dino hero"
+      `,
+      ]}
+      rows={["1fr", "1fr", '1fr', '1fr 1fr']}
+      cols={["1fr", "1fr", '1fr', '1fr 1fr']}
+    >
+      <GridItem gridArea="dino" justifySelf="start" alignSelf="center">
         <HeadText
           head="Our goal"
           tags={[
@@ -49,7 +85,7 @@ export const Landing = () => {
             that is completely free.`,
           ]}
         />
-        <Img w={[100, 200, 300, 250]} h="100%" src="/dino3.svg" />
+        <Img mt={5} w={[100, 200, 300, 250]} h="100%" src="/dino3.svg" />
       </GridItem>
       <GridItem gridArea="hero" alignSelf="start">
         <Grid
@@ -68,15 +104,15 @@ export const Landing = () => {
                 We connect your team with a funny tools to handle your sprints
                 planning, retrospectives and more
               </Text>
-              <GridItem display={["block", "block", "none"]}>
+              <GridItem display={["hidden", "hidden", "none"]}>
                 <Button onClick={() => handleCreate()} size="lg">
                   Try planning poker free
                 </Button>
               </GridItem>
             </Grid>
           </GridItem>
-          <GridItem gridArea="dino" display={["none", "none", "block"]}>
-            <Flex gap={2} alignItems="center" w="100%" wrap="wrap">
+          <GridItem gridArea="dino" display={["none", "none", "none", "block"]}>
+            <Flex gap={2} alignItems="center" w="100%" wrap={['wrap', 'nowrap']}>
               <ButtonBox
                 onClick={() => handleCreate()}
                 text="Create a planning poker room"

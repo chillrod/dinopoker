@@ -13,8 +13,8 @@ import { PlainTemplate } from "./_plain-template";
 
 const ScreenLoading = ({ action }: { action?: string }) => {
   return (
-    <Box position="absolute" w="100%" h="100%">
-      <PlainTemplate cols="1fr" areas="1fr" rows="auto auto">
+    <Box position="absolute" zIndex={1} w="100%">
+      <PlainTemplate cols={["1fr"]} areas={["1fr"]} rows={["auto auto"]}>
         <GridItem justifySelf="center">
           <Heading fontWeight={600} fontSize={"2em"}>
             {action ? action : ""}{" "}

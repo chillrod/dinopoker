@@ -9,20 +9,18 @@ export const HeadText = ({
   tags?: string[];
 }) => {
   return (
-    <Grid gap={3}>
-      <GridItem alignSelf="center">
-        <Flex alignItems="center">
-          <CornerDownRight size={18}/>
-          <Heading ml={2} fontSize="lg" fontWeight={600}>
-            {head}
-          </Heading>
-        </Flex>
-      </GridItem>
+    <Flex gap={3} direction="column">
+      <Flex alignItems="center">
+        <CornerDownRight size={18} />
+        <Heading ml={2} fontSize="lg" fontWeight={600}>
+          {head}
+        </Heading>
+      </Flex>
       {tags.map((tag, id) => (
         <GridItem key={id}>
           <Tag>{tag}</Tag>
         </GridItem>
       ))}
-    </Grid>
+    </Flex>
   );
 };

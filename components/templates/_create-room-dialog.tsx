@@ -22,21 +22,7 @@ import { PlayerService } from "../../services/player/player.service";
 import { SelectParser } from "../../utils/SelectParser";
 import { HeadText } from "../atoms/head-text/head-text";
 import { Input } from "../atoms/input/input";
-import { IOption, Select } from "../atoms/select/select";
-
-// const handleVoteSystemOptions = (): IOption[] => {
-//   return Object.keys(VoteSystemOptions).map((voteSystem) => {
-//     const options: IOption = {
-//       id: voteSystem,
-//       text: `${voteSystem.replaceAll('-', ' ')} (${VoteSystemOptions[voteSystem].voteSystem.join(
-//         ", "
-//       )})`,
-//       value: VoteSystemOptions[voteSystem].voteSystem,
-//     };
-
-//     return options;
-//   });
-// };
+import { Select } from "../atoms/select/select";
 
 const CreateRoomDialog = () => {
   const { t } = useTranslation("common");
