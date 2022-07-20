@@ -1,13 +1,8 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Link as LinkChakra,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Link as LinkChakra } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { NotificationsService } from "../../../services/notifications/notifications.service";
 
 import { Button } from "../../atoms/button/button";
 import { DinoPoker } from "../../atoms/dinopoker";
@@ -57,7 +52,10 @@ export const Nav = () => {
                   </LinkChakra>
                   <MenuChangeLanguage />
                   <Box display={["none", "none", "none", "block"]}>
-                    <Button>{t("home.play-poker")}</Button>
+                    <Button onClick={() => NotificationsService.emitBottomLoading({
+                      message: "Creating room",
+                      show: true,
+                    })}>{t("home.play-poker")}</Button>
                   </Box>
                 </Grid>
               </>

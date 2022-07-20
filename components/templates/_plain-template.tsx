@@ -5,19 +5,27 @@ export const PlainTemplate = ({
   rows,
   children,
   areas,
+  align,
+  justify,
 }: {
   children: React.ReactElement[] | React.ReactElement;
   cols?: string[];
   rows?: string[];
   areas?: string[];
+  align?: string;
+  justify?: string;
 }) => {
   return (
     <Grid
+      alignItems={align}
+      justifyItems={justify}
       bg="dino.base5"
+      height="100%"
       borderRadius="2xl"
-      h="calc(100vh)"
-      gap={4}
+      gap={6}
       p={8}
+      h='full'
+      minH="100vh"
       gridTemplateRows={rows}
       gridTemplateColumns={cols}
       gridTemplateAreas={areas}

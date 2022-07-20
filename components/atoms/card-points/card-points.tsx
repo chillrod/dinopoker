@@ -17,13 +17,9 @@ export const CardPoints = ({
       disabled={disabled}
       role="@dino-cardpoint"
       onClick={() => onClick && onClick(point)}
-      _hover={{
-        transform: "translateY(-2%)",
-        backgroundColor: "dino.base3",
-      }}
       size="md"
       bg={selected ? "dino.primary" : "dino.base3"}
-      width={["auto", "7em"]}
+      width={["auto", "6em"]}
       height={["8em", "8em"]}
     >
       <Grid gap={2} p={4}>

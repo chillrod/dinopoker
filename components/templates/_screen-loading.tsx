@@ -1,19 +1,12 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Spinner, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Info } from "react-feather";
+
 import { PlainTemplate } from "./_plain-template";
 
 const ScreenLoading = ({ action }: { action?: string }) => {
   return (
-    <Box position="absolute" zIndex={1} w="100%">
+    <Box position="absolute" zIndex={200} w="100%">
       <PlainTemplate cols={["1fr"]} areas={["1fr"]} rows={["auto auto"]}>
         <GridItem justifySelf="center">
           <Heading fontWeight={600} fontSize={"2em"}>

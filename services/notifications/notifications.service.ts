@@ -40,6 +40,10 @@ export const NotificationsService = {
     emitter.emit("EMIT_SCREENLOADING", { show, message });
   },
 
+  emitBottomLoading({ show, message }: { show: boolean; message?: string }) {
+    emitter.emit("EMIT_TOP_BOTTOM_LOADING", { show, message });
+  },
+
   emitConfirm({ func }: { func?: keyof Events }) {
     if (func) {
       return emitter.emit(func, "");

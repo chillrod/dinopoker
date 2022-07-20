@@ -1,24 +1,11 @@
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { RefObject, useEffect, useRef, useState } from "react";
 
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  Box,
-  Grid,
-  GridItem,
-  Text,
-} from "@chakra-ui/react";
-
-import useTranslation from "next-translate/useTranslation";
-
-import { Button } from "../../atoms/button/button";
-
 import { emitter } from "../../../services/emitter/emitter";
-
 import { Events } from "../../../services/emitter/emitter-dto";
 import { NotificationsService } from "../../../services/notifications/notifications.service";
+import { Button } from "../../atoms/button/button";
 
 interface FocusableElement {
   focus(options?: FocusOptions): void;
@@ -79,17 +66,19 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       bg="dino.base5"
       {...(isOpen
         ? {
-            opacity: "0.8",
-            position: "absolute",
-            h: "100%",
-            w: "100%",
-          }
+          opacity: "0.8",
+          position: "absolute",
+          h: "100%",
+          w: "100%",
+        }
         : {})}
     >
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={() => setIsOpen(false)}
+        motionPreset='slideInBottom'
+        isCentered
       >
         <AlertDialogContent
           boxShadow="xl"

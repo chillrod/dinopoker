@@ -12,13 +12,15 @@ export const HeadText = ({
     <Flex gap={3} direction="column">
       <Flex alignItems="center">
         <CornerDownRight size={18} />
-        <Heading ml={2} fontSize="lg" fontWeight={600}>
+        <Heading ml={2} fontSize={['lg', 'lg', 'xl', '2xl']} fontWeight={600}>
           {head}
         </Heading>
       </Flex>
       {tags.map((tag, id) => (
         <GridItem key={id}>
-          <Tag>{tag}</Tag>
+          <Tag
+            fontSize={['lg', 'lg', 'lg', 'lg']}
+          >{tag}</Tag>
         </GridItem>
       ))}
     </Flex>

@@ -20,8 +20,8 @@ export const ButtonBox = ({
       }}
       borderRadius="xl"
       as="button"
-      w={["100%", "100%", 250]}
-      h={["100%", "100%", 200]}
+      w={["100%", "100%", '100%', 250]}
+      h={["100%", "100%", 150, 200, 200]}
       bg={secondary ? "purple.900" : "purple.600"}
       p={6}
     >

@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Container } from "@chakra-ui/react";
 
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
@@ -12,9 +12,14 @@ import ScreenLoading from "../components/templates/_screen-loading";
 import { emitter } from "../services/emitter/emitter";
 import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
+import { BottomLoading } from "../components/templates/_top-bottom-loading";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState<{ show: boolean; message?: string }>({
+    show: false,
+  });
+
+  const [topBottomLoading, setTopBottomLoading] = useState<{ show: boolean; message?: string }>({
     show: false,
   });
 
@@ -32,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     initial: {
       opacity: 0.80,
       transition: {
-        duration: 0.5,
+        duration: 0.1,
       },
     },
     animate: {
@@ -44,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     exit: {
       opacity: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.2,
       },
     },
   };
@@ -60,7 +65,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Nav />
+      <Container maxW="container.xl" centerContent>
+        <Nav />
+      </Container>
 
       <AnimatePresence>
         {loading.show && (
@@ -75,15 +82,30 @@ function MyApp({ Component, pageProps }: AppProps) {
             </motion.div>
           </>
         )}
+
+        {topBottomLoading.show && (
+          <motion.div
+            variants={screenLoadingTransition}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <BottomLoading />
+          </motion.div>
+        )}
       </AnimatePresence>
 
-      {!loading.show && (
-        <>
-          <ToastProvider />
-          <MessageBox />
-        </>
-      )}
-      <Component {...pageProps} />
+
+      <Container maxW="container.xl" centerContent>
+
+        {!loading.show && (
+          <>
+            <ToastProvider />
+            <MessageBox />
+            <Component {...pageProps} />
+          </>
+        )}
+      </Container>
     </ChakraProvider>
   );
 }

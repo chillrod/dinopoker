@@ -20,6 +20,7 @@ export type Events = {
   EMIT_TOAST: { message: string; state: string };
 
   EMIT_SCREENLOADING: { show: boolean; message?: string };
+  EMIT_TOP_BOTTOM_LOADING: { show: boolean; message?: string };
 
   SET_JOIN_ROOM: () => void;
   SET_CREATE_ROOM: () => void;
