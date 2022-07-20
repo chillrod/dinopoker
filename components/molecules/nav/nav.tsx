@@ -10,9 +10,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { Button } from "../../atoms/button/button";
-import { DinoPoker } from "../../atoms/dinopoker";
+import { DinoPoker } from "../../../domain/dino-poker/components/dinopoker";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
-import { PokerMenu } from "../poker-menu/poker-menu";
+import { PokerMenu } from "../../../domain/dino-poker/components/poker-menu/poker-menu";
 
 export const Nav = () => {
   const router = useRouter();

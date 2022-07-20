@@ -1,5 +1,5 @@
 import { Grid, GridItem, Img, Box, Text } from "@chakra-ui/react";
-import { CharacterList } from "../../../config/characters";
+import { CharacterList } from "../../../domain/dino-poker/interface/characters";
 
 interface IChatMessage {
   character?: number;

@@ -15,10 +15,10 @@ import useTranslation from "next-translate/useTranslation";
 
 import { Button } from "../../atoms/button/button";
 
-import { emitter } from "../../../services/emitter/emitter";
+import { emitter } from "../../../providers/emitter/emitter";
 
-import { Events } from "../../../services/emitter/emitter-dto";
-import { NotificationsService } from "../../../services/notifications/notifications.service";
+import { Events } from "../../../providers/emitter/emitter-dto";
+import { NotificationsService } from "../../../providers/notifications/notifications.service";
 
 interface FocusableElement {
   focus(options?: FocusOptions): void;

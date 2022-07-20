@@ -6,14 +6,17 @@ import { useEffect, useState } from "react";
 import { MessageBox } from "../components/molecules/message-box/message-box";
 import { Nav } from "../components/molecules/nav/nav";
 import theme from "../config/theme/theme";
-import { ToastProvider } from "../services/toast-provider";
+import { ToastProvider } from "../providers/toast-provider";
 
 import ScreenLoading from "../components/templates/_screen-loading";
-import { emitter } from "../services/emitter/emitter";
+import { emitter } from "../providers/emitter/emitter";
 import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
+import { NotificationsService } from "../providers/notifications/notifications.service";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState<{ show: boolean; message?: string }>({
     show: false,
   });
@@ -28,9 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
   }, []);
 
+  useEffect(() => {
+    NotificationsService.emitMessageBoxClose();
+  }, [router]);
+
   const screenLoadingTransition = {
     initial: {
-      opacity: 0.80,
+      opacity: 0.8,
       transition: {
         duration: 0.5,
       },
@@ -62,6 +69,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Nav />
 
+      
+      <ToastProvider />
+
       <AnimatePresence>
         {loading.show && (
           <>
@@ -79,7 +89,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       {!loading.show && (
         <>
-          <ToastProvider />
           <MessageBox />
         </>
       )}

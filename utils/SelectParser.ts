@@ -10,7 +10,7 @@ export const SelectParser = ({
   return Object.keys(options).map((option) => {
     return {
       id: option,
-      text: `${option.replaceAll("-", "")}
+      text: `${option.replaceAll("-", " ")}
       (${options[option][key].join(", ")})
       `,
       value: options[option][key],

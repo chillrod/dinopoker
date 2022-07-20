@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 
 import Head from "next/head";
-import { Landing } from "../components/templates/_landing";
+import { Landing } from "../domain/dino-poker/views/_landing";
 
 const Home: NextPage = () => {
   return (
