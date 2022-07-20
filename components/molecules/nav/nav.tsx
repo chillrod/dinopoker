@@ -6,13 +6,11 @@ import {
   Link as LinkChakra,
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
+
 import { useRouter } from "next/router";
 
-import { Button } from "../../atoms/button/button";
-import { DinoPoker } from "../../../domain/dino-poker/components/dinopoker";
+import { DinoScrum } from "../../dino-scrum";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
-import { PokerMenu } from "../../../domain/dino-poker/components/poker-menu/poker-menu";
 
 export const Nav = () => {
   const router = useRouter();
@@ -26,7 +24,7 @@ export const Nav = () => {
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-              <DinoPoker />
+              <DinoScrum />
             </Grid>
 
             {!id && (
@@ -56,19 +54,11 @@ export const Nav = () => {
                     Follow me on Github
                   </LinkChakra>
                   <MenuChangeLanguage />
-                  <Box display={["none", "none", "none", "block"]}>
-                    <Button>{t("home.play-poker")}</Button>
-                  </Box>
                 </Grid>
               </>
             )}
           </Flex>
         </GridItem>
-        {id && (
-          <GridItem justifySelf="end">
-            <PokerMenu />
-          </GridItem>
-        )}
       </Grid>
     </Box>
   );

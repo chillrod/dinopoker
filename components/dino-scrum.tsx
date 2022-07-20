@@ -1,15 +1,14 @@
-import { Flex, Grid, GridItem, Heading, Tag, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Tag, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 
-import dino from "../../../dino.json";
 
-interface IDinoPoker {
+interface IDinoScrum {
   justify?: string;
   small?: boolean;
 }
 
-export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
+export const DinoScrum = ({ justify = "center", small }: IDinoScrum) => {
   const router = useRouter();
   const { t } = useTranslation("common");
 
