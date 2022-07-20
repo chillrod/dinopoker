@@ -4,10 +4,10 @@ import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 
 import useTranslation from "next-translate/useTranslation";
-import { CharacterList } from "../../interface/characters";
-import { PlayerService } from "../../services/player/player.service";
-import { CharacterCard } from "../character-card/character-card";
-import { IconButton } from "../../../../components/atoms/icon-button/icon-button";
+import { CharacterList } from "../interface/characters";
+import { PlayerService } from "../services/player/player.service";
+import { CharacterCard } from "./character-card";
+import { IconButton } from "../../../components/atoms/icon-button/icon-button";
 
 export const SelectCharacter = ({ character }: { character?: number }) => {
   const { t } = useTranslation("common");

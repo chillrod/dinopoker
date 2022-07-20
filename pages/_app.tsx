@@ -8,53 +8,19 @@ import { Nav } from "../components/molecules/nav/nav";
 import theme from "../config/theme/theme";
 import { ToastProvider } from "../providers/toast-provider";
 
-import ScreenLoading from "../components/templates/_screen-loading";
-import { emitter } from "../providers/emitter/emitter";
 import Head from "next/head";
-import { AnimatePresence, motion } from "framer-motion";
+
+
 import { useRouter } from "next/router";
 import { NotificationsService } from "../providers/notifications/notifications.service";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState<{ show: boolean; message?: string }>({
-    show: false,
-  });
-
-  useEffect(() => {
-    emitter.on("EMIT_SCREENLOADING", (data) => {
-      setLoading(data);
-    });
-
-    return () => {
-      emitter.off("EMIT_SCREENLOADING");
-    };
-  }, []);
 
   useEffect(() => {
     NotificationsService.emitMessageBoxClose();
   }, [router]);
 
-  const screenLoadingTransition = {
-    initial: {
-      opacity: 0.8,
-      transition: {
-        duration: 0.5,
-      },
-    },
-    animate: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-    exit: {
-      opacity: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
 
   return (
     <ChakraProvider theme={theme}>
@@ -69,29 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Nav />
 
-      
+
       <ToastProvider />
-
-      <AnimatePresence>
-        {loading.show && (
-          <>
-            <motion.div
-              variants={screenLoadingTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <ScreenLoading action={loading.message} />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {!loading.show && (
-        <>
-          <MessageBox />
-        </>
-      )}
+      <MessageBox />
       <Component {...pageProps} />
     </ChakraProvider>
   );

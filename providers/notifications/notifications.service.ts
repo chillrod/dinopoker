@@ -1,5 +1,5 @@
-import { emitter } from "../emitter/emitter";
-import { Events } from "../emitter/emitter-dto";
+import { ModuleEmitter } from "../module-emitter/emitter";
+import { Events } from "../module-emitter/emitter-dto";
 
 export const NotificationsService = {
   emitMessageBox({
@@ -13,7 +13,7 @@ export const NotificationsService = {
     children: React.ReactElement;
     onClose?: () => void | Promise<boolean>;
   }) {
-    emitter.emit("EMIT_MESSAGEBOX", {
+    ModuleEmitter.emit("EMIT_MESSAGEBOX", {
       message,
       func,
       children,
@@ -22,27 +22,27 @@ export const NotificationsService = {
   },
 
   emitMessageBoxLoading(value: boolean) {
-    emitter.emit("EMIT_MESSAGEBOX_LOADING", value);
+    ModuleEmitter.emit("EMIT_MESSAGEBOX_LOADING", value);
   },
 
   emitMessageBoxClose() {
-    emitter.emit("EMIT_MESSAGEBOX_CLOSE", true);
+    ModuleEmitter.emit("EMIT_MESSAGEBOX_CLOSE", true);
   },
 
   emitToast({ message, state }: { message: string; state: string }) {
-    emitter.emit("EMIT_TOAST", {
+    ModuleEmitter.emit("EMIT_TOAST", {
       message,
       state,
     });
   },
 
   emitScreenLoading({ show, message }: { show: boolean; message?: string }) {
-    emitter.emit("EMIT_SCREENLOADING", { show, message });
+    ModuleEmitter.emit("EMIT_SCREENLOADING", { show, message });
   },
 
   emitConfirm({ func }: { func?: keyof Events }) {
     if (func) {
-      return emitter.emit(func, "");
+      return ModuleEmitter.emit(func, true);
     }
   },
 };

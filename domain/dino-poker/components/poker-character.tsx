@@ -2,8 +2,8 @@ import { Avatar, AvatarBadge, Flex, Tag } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
 
-import { CharacterList } from "../../interface/characters";
-import { IPlayerData } from "../../interface/PlayerData";
+import { CharacterList } from "../interface/characters";
+import { IPlayerData } from "../interface/PlayerData";
 
 interface ICharacterCardProps {
   character: IPlayerData;

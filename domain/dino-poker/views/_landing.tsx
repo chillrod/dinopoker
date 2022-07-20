@@ -14,8 +14,8 @@ import { ButtonBox } from "../../../components/atoms/button-box/button-box";
 import { Button } from "../../../components/atoms/button/button";
 import { HeadText } from "../../../components/atoms/head-text/head-text";
 
-import JoinRoomDialog from "../components/_join-room-dialog";
-import CreateRoomDialog from "../components/_create-room-dialog";
+import JoinRoomDialog from "../components/join-room-dialog";
+import CreateRoomDialog from "../components/create-room-dialog";
 import { PlainTemplate } from "../../../components/templates/_plain-template";
 
 export const Landing = () => {

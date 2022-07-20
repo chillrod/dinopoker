@@ -5,11 +5,11 @@ import { Speaker } from "react-feather";
 
 import useTranslation from "next-translate/useTranslation";
 
-import { appFirebase } from "../../../../config/firebase/firebase";
-import { getLocalStorage } from "../../../../providers/local-storage/handler";
-import { NotificationsService } from "../../../../providers/notifications/notifications.service";
-import { RoomsService } from "../../services/rooms/rooms.service";
-import { IconButton } from "../../../../components/atoms/icon-button/icon-button";
+import { appFirebase } from "../../../config/firebase/firebase";
+import { getLocalStorage } from "../../../providers/local-storage/handler";
+import { NotificationsService } from "../../../providers/notifications/notifications.service";
+import { RoomsService } from "../services/rooms/rooms.service";
+import { IconButton } from "../../../components/atoms/icon-button/icon-button";
 
 export const MenuRaiseHand = () => {
   const { t } = useTranslation("common");

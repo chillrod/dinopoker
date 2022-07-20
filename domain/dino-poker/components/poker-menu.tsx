@@ -3,9 +3,9 @@ import { Menu } from "react-feather";
 
 import useTranslation from "next-translate/useTranslation";
 
-import { IconButton } from "../../../../components/atoms/icon-button/icon-button";
-import { MenuRaiseHand } from "../menu-raisehand/menu-raisehand";
-import { MenuTeam } from "../menu-team/menu-team";
+import { IconButton } from "../../../components/atoms/icon-button/icon-button";
+import { MenuRaiseHand } from "./menu-raisehand";
+import { MenuTeam } from "./menu-team";
 
 export const PokerMenu = () => {
   const { t } = useTranslation("common");

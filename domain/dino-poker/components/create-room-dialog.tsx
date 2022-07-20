@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { VoteSystemOptions } from "../interface/vote-system/vote-system";
 
 import { IPlayerData } from "../interface/PlayerData";
-import { emitter } from "../../../providers/emitter/emitter";
 
 import {
   getLocalStorage,
@@ -91,17 +90,17 @@ const CreateRoomDialog = () => {
       setPlayerData(createdCharacter);
     }
 
-    return () => {};
+    return () => { };
   }, []);
 
   useEffect(() => {
-    emitter.on("SET_CREATE_ROOM", () => {
-      createRoom();
-    });
+    // emitter.on("SET_CREATE_ROOM", () => {
+    //   createRoom();
+    // });
 
-    return () => {
-      emitter.off("SET_CREATE_ROOM");
-    };
+    // return () => {
+    //   emitter.off("SET_CREATE_ROOM");
+    // };
   });
 
   return (

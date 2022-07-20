@@ -1,6 +1,6 @@
 import { Box, Button, Img } from "@chakra-ui/react";
 
-import { CharacterList } from "../../interface/characters";
+import { CharacterList } from "../interface/characters";
 
 export type character = {
   id: number;

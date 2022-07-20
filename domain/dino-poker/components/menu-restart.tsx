@@ -1,5 +1,6 @@
 import { RefreshCcw, Share } from "react-feather";
-import { IconButton } from "../../atoms/icon-button/icon-button";
+import { IconButton } from "../../../components/atoms/icon-button/icon-button";
+
 
 export const MenuRestart = () => {
   return (

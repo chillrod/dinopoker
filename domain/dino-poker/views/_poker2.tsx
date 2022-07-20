@@ -15,9 +15,9 @@ import { IPlayerData } from "../interface/PlayerData";
 import { getLocalStorage } from "../../../providers/local-storage/handler";
 import { NotificationsService } from "../../../providers/notifications/notifications.service";
 import { RoomsService } from "../services/rooms/rooms.service";
-import { CardPoints } from "../components/card-points/card-points";
-import { PokerRoundData } from "../components/poker-round-data/poker-round-data";
-import JoinRoomDialog from "../components/_join-room-dialog";
+import { CardPoints } from "../components/card-points";
+import { PokerRoundData } from "../components/poker-round-data";
+import JoinRoomDialog from "../components/join-room-dialog";
 import { PlainTemplate } from "../../../components/templates/_plain-template";
 
 export const Poker = () => {

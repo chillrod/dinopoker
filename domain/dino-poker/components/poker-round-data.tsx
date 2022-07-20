@@ -4,11 +4,11 @@ import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useMemo, useState } from "react";
 import { Share2 } from "react-feather";
 
-import { IPlayerData } from "../../interface/PlayerData";
-import { NotificationsService } from "../../../../providers/notifications/notifications.service";
-import { Button } from "../../../../components/atoms/button/button";
-import { IconButton } from "../../../../components/atoms/icon-button/icon-button";
-import { PokerCharacter } from "../poker-character/poker-character";
+import { IPlayerData } from "../interface/PlayerData";
+import { NotificationsService } from "../../../providers/notifications/notifications.service";
+import { Button } from "../../../components/atoms/button/button";
+import { IconButton } from "../../../components/atoms/icon-button/icon-button";
+import { PokerCharacter } from "./poker-character";
 
 export interface IPokerRoundData {
   voteLoading: boolean;

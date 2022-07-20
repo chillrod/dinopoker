@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { IPlayerData } from "../interface/PlayerData";
-import { emitter } from "../../../providers/emitter/emitter";
+import { ModuleEmitter } from "../../../providers/module-emitter/emitter";
 
 import {
   getLocalStorage,
