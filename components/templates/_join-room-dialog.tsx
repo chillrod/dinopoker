@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   Grid,
@@ -115,6 +116,19 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
                   placeholder={t("home.type-room-id")}
                 />
               </Box>
+              {room && (
+                <Grid>
+                  <GridItem justifySelf="end">
+                    <Button
+                      onClick={() => NotificationsService.emitMessageBoxClose()}
+                      bg="dino.secondary"
+                      size="sm"
+                    >
+                      Join as spectator
+                    </Button>
+                  </GridItem>
+                </Grid>
+              )}
             </Stack>
           </FormControl>
         </GridItem>
