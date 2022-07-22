@@ -21,7 +21,11 @@ export const Nav = () => {
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-              <DinoPoker />
+              <Link href='/'>
+                <LinkChakra>
+                  <DinoPoker />
+                </LinkChakra>
+              </Link>
             </Grid>
 
             {!id && (

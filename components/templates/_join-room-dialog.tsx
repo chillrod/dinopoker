@@ -8,61 +8,64 @@ import {
 } from "@chakra-ui/react";
 
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { IPlayerData } from "../../model/PlayerData";
+import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
 
-import { getLocalStorage } from "../../services/local-storage/handler";
+import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
-import { PlayerService } from "../../services/player/player.service";
+import { RoomsService } from "../../services/rooms/rooms.service";
 import { HeadText } from "../atoms/head-text/head-text";
 import { Input } from "../atoms/input/input";
 
 const JoinRoomDialog = ({ room }: { room?: string }) => {
   const { t } = useTranslation("common");
 
-  const [playerData, setPlayerData] = useState<IPlayerData>({});
+  const router = useRouter();
 
-  const nameNotFilled = !playerData?.name?.length;
 
-  const joinRoom = useCallback(async () => {
+  const [playerData, setPlayerData] = useState<IPlayerData>({
+    name: "" || getLocalStorage("user-name")?.name,
+    room: ''
+  });
+
+
+  const joinRoom = async () => {
+    if (!playerData.name?.length || !playerData.room?.length) return;
+
+    setLocalStorage('user-name', { name: playerData.name });
+
     try {
       NotificationsService.emitScreenLoading({
         show: true,
         message: "Joining game...",
       });
 
-      await new Promise(function (resolve) {
-        setTimeout(resolve, 2500);
+      const player = InitializePlayerData({
+        ...playerData,
       });
 
+      await RoomsService.JOIN_ROOM({
+        player
+      })
+
+      await router.push(`/game/${player.room}`);
+    } catch (err: any) {
+      NotificationsService.emitToast({
+        message: err.message,
+        state: 'error'
+      });
+
+    } finally {
       NotificationsService.emitScreenLoading({
         show: false,
       });
-      // const { uuid } = await RoomsService.joinRoom();
-
-      // setLocalStorage("createdCharacter", playerData);
-
-      // await router.push(`/game/${uuid}`);
-    } catch (err: any) {
-      NotificationsService.emitToast(err.message);
-    } finally {
     }
-  }, []);
-
-  useEffect(() => {
-    const createdCharacter: { name: string } =
-      getLocalStorage("createdCharacter");
-
-    if (createdCharacter?.name) {
-      setPlayerData(createdCharacter);
-    }
-
-    return () => {};
-  }, []);
+  }
 
   useEffect(() => {
     emitter.on("SET_JOIN_ROOM", () => {
@@ -72,7 +75,7 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
     return () => {
       emitter.off("SET_JOIN_ROOM");
     };
-  }, []);
+  }, [playerData]);
 
   return (
     <>
@@ -88,26 +91,27 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
           <HeadText head="Almost joining the room" />
         </GridItem>
         <GridItem area="actions" w="100%">
-          <FormControl isInvalid={nameNotFilled}>
+          <FormControl isInvalid={!playerData?.name?.length || !playerData?.room?.length}
+          >
             <Stack spacing={6}>
               <Box>
                 <FormLabel>{t("home.type-your-name")}</FormLabel>
                 <Input
                   value={playerData.name}
-                  onChange={(event) =>
-                    PlayerService.PLAYER_NAME(event.target.value)
-                  }
+                  onChange={(event) => {
+                    setPlayerData({ ...playerData, name: event.target.value });
+                  }}
                   placeholder={t("home.type-your-name-placeholder")}
                 />
               </Box>
               <Box>
                 <FormLabel>{t("home.type-room-id")}</FormLabel>
                 <Input
+                  value={playerData.room}
                   disabled={!!room}
-                  value={room || ""}
-                  onChange={(event) =>
-                    PlayerService.PLAYER_NAME(event.target.value)
-                  }
+                  onChange={(event) => {
+                    setPlayerData({ ...playerData, room: event.target.value });
+                  }}
                   placeholder={t("home.type-room-id")}
                 />
               </Box>

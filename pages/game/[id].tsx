@@ -1,7 +1,6 @@
 import Head from "next/head";
 
-import Poker from "../../components/templates/_poker";
-import { Poker2 } from "../../components/templates/_poker2";
+import { Poker } from "../../components/templates/_poker";
 
 const GameRoom = () => {
   return (
@@ -17,8 +16,7 @@ const GameRoom = () => {
         ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Poker2 />
-      {/* <Poker /> */}
+      <Poker />
     </>
   );
 };

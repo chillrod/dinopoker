@@ -10,16 +10,17 @@ import {
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
 
 import { IPlayerData } from "../../model/PlayerData";
+import { IRoomData } from "../../model/RoomData";
 import { emitter } from "../../services/emitter/emitter";
 
-import { getLocalStorage } from "../../services/local-storage/handler";
+import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
-import { PlayerService } from "../../services/player/player.service";
+import { RoomsService } from "../../services/rooms/rooms.service";
 import { SelectParser } from "../../utils/SelectParser";
 import { HeadText } from "../atoms/head-text/head-text";
 import { Input } from "../atoms/input/input";
@@ -30,47 +31,58 @@ const CreateRoomDialog = () => {
 
   const router = useRouter();
 
-  const [playerData, setPlayerData] = useState<IPlayerData>({});
+  const [playerData, setPlayerData] = useState<IPlayerData>({
+    name: "" || getLocalStorage("user-name")?.name,
+  });
 
-  const nameNotFilled = !playerData?.name?.length;
+  const [roomData, setRoomData] = useState<IRoomData>({
+    voteSystem: Object.keys(VoteSystemOptions)[0]
+  });
+
 
   const createRoom = async () => {
+
+    if (!playerData.name?.length) return;
+
+    setLocalStorage('user-name', { name: playerData.name });
+
     try {
       NotificationsService.emitScreenLoading({
         show: true,
         message: "Creating game...",
       });
-      await new Promise(function (resolve) {
-        setTimeout(resolve, 2500);
+
+      const { playerFromCreateRoom } = await RoomsService.CREATE_ROOM({
+        player: playerData,
+        voteSystem: roomData.voteSystem,
       });
 
-      await router.push("/game/223");
 
+      NotificationsService.emitScreenLoading({
+        show: true,
+        message: "Joining game...",
+      });
+
+      await RoomsService.JOIN_ROOM({
+        player: playerFromCreateRoom,
+      })
+
+
+
+      await router.push(`/game/${playerFromCreateRoom.room}`);
+    } catch (err: any) {
+
+      NotificationsService.emitToast({
+        message: err.message,
+        state: 'error'
+      });
+
+    } finally {
       NotificationsService.emitScreenLoading({
         show: false,
       });
-
-      // const { uuid } = await RoomsService.createRoom();
-
-      // setLocalStorage("createdCharacter", playerData);
-
-      // await router.push(`/game/${uuid}`);
-    } catch (err: any) {
-      NotificationsService.emitToast(err.message);
-    } finally {
     }
   };
-
-  useEffect(() => {
-    const createdCharacter: { name: string } =
-      getLocalStorage("createdCharacter");
-
-    if (createdCharacter?.name) {
-      setPlayerData(createdCharacter);
-    }
-
-    return () => {};
-  }, []);
 
   useEffect(() => {
     emitter.on("SET_CREATE_ROOM", () => {
@@ -80,7 +92,7 @@ const CreateRoomDialog = () => {
     return () => {
       emitter.off("SET_CREATE_ROOM");
     };
-  });
+  }, [playerData, roomData]);
 
   return (
     <>
@@ -96,16 +108,17 @@ const CreateRoomDialog = () => {
           <HeadText head="Almost creating a new fancing room" />
         </GridItem>
         <GridItem area="actions" w="100%">
-          <FormControl isInvalid={nameNotFilled}>
+          <FormControl isInvalid={!playerData.name?.length}
+          >
             <Stack spacing={6}>
               <Box>
                 <FormLabel>{t("home.type-your-name")}</FormLabel>
                 <Input
                   value={playerData.name}
-                  onChange={(event) =>
-                    PlayerService.PLAYER_NAME(event.target.value)
-                  }
                   placeholder={t("home.type-your-name-placeholder")}
+                  onChange={(event) => {
+                    setPlayerData({ ...playerData, name: event.target.value });
+                  }}
                 />
               </Box>
               <Box>
@@ -115,7 +128,9 @@ const CreateRoomDialog = () => {
                     options: VoteSystemOptions,
                     key: "voteSystem",
                   })}
-                  onChange={(event) => console.log(event.target.value)}
+                  onChange={(event) => {
+                    setRoomData({ voteSystem: event.target.value });
+                  }}
                 />
               </Box>
             </Stack>

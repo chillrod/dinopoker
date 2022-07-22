@@ -65,10 +65,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container maxW="container.xl" centerContent>
-        <Nav />
-      </Container>
-
+      <Nav />
+      <ToastProvider />
+      
       <AnimatePresence>
         {loading.show && (
           <>
@@ -100,7 +99,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         {!loading.show && (
           <>
-            <ToastProvider />
             <MessageBox />
             <Component {...pageProps} />
           </>

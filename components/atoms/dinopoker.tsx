@@ -1,8 +1,5 @@
-import { Flex, Grid, GridItem, Heading, Tag, Text } from "@chakra-ui/react";
-import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 
-import dino from "../../dino.json";
 
 interface IDinoPoker {
   justify?: string;
@@ -10,29 +7,17 @@ interface IDinoPoker {
 }
 
 export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
-  const router = useRouter();
-  const { t } = useTranslation("common");
-
-  const { id } = router.query;
 
   return (
     <Grid justifyItems="start" gap={2} justifyContent={justify}>
       <GridItem>
-        <Heading fontWeight={600} textAlign="center" size={['sm', 'lg', 'xl']}>
+        <Text fontWeight={600} textAlign="center" fontSize={['sm', 'lg', 'xl', '2xl']}>
           {"dino"}
           <Text fontWeight={300} as="span" color="dino.primary">
-            {"scrum.app"}
+            {"poker.app"}
           </Text>
-        </Heading>
+        </Text>
       </GridItem>
-
-      {id && (
-        <GridItem>
-          <Tag fontWeight={600} as="span" colorScheme="purple">
-            {t("home.playing-planning-poker")}
-          </Tag>
-        </GridItem>
-      )}
     </Grid>
   );
 };

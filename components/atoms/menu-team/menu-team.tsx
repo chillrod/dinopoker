@@ -17,16 +17,16 @@ export const MenuTeam = () => {
 
   const [currentTeam, setCurrentTeam] = useState(0);
 
-  const handleTeamChange = async (team: number) => {
-    try {
-      await RoomsService.updatePlayerTeam(
-        getLocalStorage("character")?.player,
-        team
-      );
-    } catch (err: any) {
-      NotificationsService.emitToast(err.message);
-    }
-  };
+  // const handleTeamChange = async (team: number) => {
+  //   try {
+  //     await RoomsService.updatePlayerTeam(
+  //       getLocalStorage("character")?.player,
+  //       team
+  //     );
+  //   } catch (err: any) {
+  //     NotificationsService.emitToast(err.message);
+  //   }
+  // };
 
   useEffect(() => {
     const db = getDatabase(appFirebase);
@@ -73,14 +73,14 @@ export const MenuTeam = () => {
         </Text>
 
         <IconButton
-          onClick={() => handleTeamChange(1)}
+          // onClick={() => handleTeamChange(1)}
           color={returnColor(1)}
           bg={returnBg(1)}
           ariaLabel={t("poker.actions.team-one")}
           icon={<Server />}
         />
         <IconButton
-          onClick={() => handleTeamChange(2)}
+          // onClick={() => handleTeamChange(2)}
           color={returnColor(2)}
           bg={returnBg(2)}
           ariaLabel={t("poker.actions.team-two")}

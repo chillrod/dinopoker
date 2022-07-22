@@ -1,4 +1,4 @@
-import { Box, Flex, GridItem, Heading, Highlight, Stack, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, GridItem, Heading, Highlight, Stack, Text } from "@chakra-ui/react";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { ButtonBox } from "../atoms/button-box/button-box";
@@ -54,81 +54,86 @@ export const Landing = () => {
         h="100%"
         justifySelf="center"
       >
-        <HeadText
-          head="Our goal"
-          tags={[
-            "Dino poker is currently in beta!",
-            `Our goal is to provide a full solution to 
-              handle phases of the Scrum framework.`,
-            `Currently, we have a functional planning poker tool, 
-              that is completely free.`,
-          ]}
-        />
+        <Container maxW="container.sm">
+          <HeadText
+            head="Our goal"
+            tags={[
+              "Dino poker is currently in beta!",
+              `Our goal is to provide a full solution to 
+            handle phases of the Scrum framework.`,
+              `Currently, we have a functional planning poker tool, 
+            that is completely free.`,
+            ]}
+          />
+        </Container>
       </GridItem>
       <GridItem
         gridArea="hero"
-        justifySelf="center"
         alignSelf="start"
       >
-        <Stack spacing={5}
-          direction="column"
-        >
-          <Heading fontSize={['3xl', '3xl', '4xl', '6xl']} fontWeight={600}>
-            <Highlight
-              query={['real time', 'with your team mates']}
-              styles={{ color: 'dino.primary' }}
-            >
-              Improve your sprint estimates with real time connection with your team mates
-            </Highlight>
-          </Heading>
-          <Text
-            fontSize={['lg', 'lg', 'xl', '2xl']}
+        <Container maxW="container.md">
+
+          <Stack spacing={3}
+            direction="column"
           >
-            <Highlight
-              query="planning poker"
-              styles={{ fontWeight: 700, color: 'dino.text' }}
+            <Heading as='h1' fontSize={['3xl', '3xl', '4xl', '6xl']} fontWeight={600}>
+              <Highlight
+                query={['real time', 'with your team mates']}
+                styles={{ color: 'dino.primary' }}
+              >
+                Improve your sprint estimates with real time connection with your team mates
+              </Highlight>
+            </Heading>
+            <Text
+              fontSize={['lg', 'lg', 'xl', '2xl']}
             >
-              We connect your team to a game like planning poker tool.
-              Making the estimation phase less boring and static
-            </Highlight>
-          </Text>
+              <Highlight
+                query="planning poker"
+                styles={{ fontWeight: 700, color: 'dino.text' }}
+              >
+                We connect your team to a game like planning poker tool.
+                Making the estimation phase less boring and static
+              </Highlight>
+            </Text>
 
-          <Box display={['block', 'block', 'block', 'none']}>
-            <Button onClick={() => handleCreate()} size="lg">
-              Try planning poker free
-            </Button>
-          </Box>
-          <Box display={['block', 'block', 'block', 'none']}>
+            <Box display={['block', 'block', 'block', 'none']}>
+              <Button onClick={() => handleCreate()} size="lg">
+                Try planning poker free
+              </Button>
+            </Box>
+            <Box display={['block', 'block', 'block', 'none']}>
 
-            <Button
-              bg="dino.secondary"
-              onClick={() => handleJoin()}
-              size="sm"
+              <Button
+                bg="dino.secondary"
+                onClick={() => handleJoin()}
+                size="sm"
+              >
+                Or join a room
+              </Button>
+            </Box>
+            <Flex
+              display={['none', 'none', 'none', 'inherit']}
+              gap={2}
+              alignItems="center"
+              w="100%"
+              wrap={["wrap", "nowrap"]}
             >
-              Or join a room
-            </Button>
-          </Box>
-          <Flex
-            display={['none', 'none', 'none', 'inherit']}
-            gap={2}
-            alignItems="center"
-            w="100%"
-            wrap={["wrap", "nowrap"]}
-          >
-            <ButtonBox
-              onClick={() => handleCreate()}
-              text="Create a planning poker room"
-              image="/dino2.svg"
-            />
+              <ButtonBox
+                onClick={() => handleCreate()}
+                text="Create a planning poker room"
+                image="/dino2.svg"
+              />
 
-            <ButtonBox
-              onClick={() => handleJoin()}
-              secondary
-              text="Join a planning poker room"
-              image="/dino3.svg"
-            />
-          </Flex>
-        </Stack>
+              <ButtonBox
+                onClick={() => handleJoin()}
+                secondary
+                text="Join a planning poker room"
+                image="/dino3.svg"
+              />
+            </Flex>
+          </Stack>
+        </Container>
+
       </GridItem>
     </PlainTemplate >
 

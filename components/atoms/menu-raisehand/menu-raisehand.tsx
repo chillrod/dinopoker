@@ -16,16 +16,16 @@ export const MenuRaiseHand = () => {
 
   const [isRaisingHand, setIsRaisingHand] = useState(true);
 
-  const handleRaiseHand = async () => {
-    try {
-      await RoomsService.updatePlayerRaiseHand(
-        getLocalStorage("character")?.player,
-        !isRaisingHand
-      );
-    } catch (err: any) {
-      NotificationsService.emitToast(err.message);
-    }
-  };
+  // const handleRaiseHand = async () => {
+  //   try {
+  //     await RoomsService.updatePlayerRaiseHand(
+  //       getLocalStorage("character")?.player,
+  //       !isRaisingHand
+  //     );
+  //   } catch (err: any) {
+  //     NotificationsService.emitToast(err.message);
+  //   }
+  // };
 
   useEffect(() => {
     const db = getDatabase(appFirebase);
@@ -33,10 +33,10 @@ export const MenuRaiseHand = () => {
     const roomStatus = child(
       ref(db),
       "dinopoker-room/" +
-        getLocalStorage("character")?.player.room +
-        "/players/" +
-        getLocalStorage("character")?.player?.id +
-        "/raiseHand"
+      getLocalStorage("character")?.player.room +
+      "/players/" +
+      getLocalStorage("character")?.player?.id +
+      "/raiseHand"
     );
 
     const unsubRoomDbRef = onValue(roomStatus, (data) => {
@@ -65,7 +65,7 @@ export const MenuRaiseHand = () => {
           {t("poker.actions.room-action")}
         </Text>
         <IconButton
-          onClick={() => handleRaiseHand()}
+          // onClick={() => handleRaiseHand()}
           color={returnColor()}
           bg={returnBg()}
           ariaLabel={t("poker.actions.raise-hand")}

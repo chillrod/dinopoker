@@ -1,4 +1,4 @@
-interface IVoteSystem {
+export interface IVoteSystem {
   voteSystem: number[];
 }
 

@@ -7,9 +7,10 @@
     "select-gameplay-option": "Selecione uma opção de jogo",
     "create-room": "Criar uma sala",
     "join-room": "Entrar em uma sala",
-    "type-room-id": "Digite o ID da sala"
+    "type-room-id": "Digite o ID da sala",
+    "test": "Improve your sprint estimates with real time connection with your team mates"
   },
-
+  
   "components": {
     "next": "Próximo",
     "previous": "Anterior",
