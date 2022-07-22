@@ -95,7 +95,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </AnimatePresence>
 
 
-      <Container maxW="container.xl" centerContent>
+      <Container maxW={['container.lg', 'container.xl']} centerContent>
 
         {!loading.show && (
           <>
