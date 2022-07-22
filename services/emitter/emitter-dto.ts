@@ -24,4 +24,9 @@ export type Events = {
 
   SET_JOIN_ROOM: () => void;
   SET_CREATE_ROOM: () => void;
+
+  EMIT_INVALID_ROOM_STATE: {
+    hasRoom: boolean;
+    hasPlayer: boolean;
+  };
 };

@@ -49,4 +49,17 @@ export const NotificationsService = {
       return emitter.emit(func, "");
     }
   },
+
+  emitInvalidRoomState({
+    hasPlayer,
+    hasRoom,
+  }: {
+    hasPlayer: boolean;
+    hasRoom: boolean;
+  }) {
+    emitter.emit("EMIT_INVALID_ROOM_STATE", {
+      hasPlayer,
+      hasRoom,
+    });
+  },
 };

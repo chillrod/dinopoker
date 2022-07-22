@@ -4,7 +4,8 @@ import { appFirebase } from "../../config/firebase/firebase";
 import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
 import { RoomDataStatus } from "../../model/RoomData";
 import { makeUuid } from "../../utils/MakeUuid";
-import { setLocalStorage } from "../local-storage/handler";
+import { getLocalStorage, setLocalStorage } from "../local-storage/handler";
+import { NotificationsService } from "../notifications/notifications.service";
 
 const db = getDatabase(appFirebase);
 
@@ -67,5 +68,26 @@ export const RoomsService = {
       ),
       player.vote
     );
+  },
+
+  async CHECK_STATE({ roomId }: { roomId?: string | string[] }) {
+    const room = await get(ref(db, "dinopoker-room/" + roomId));
+
+    const players = await get(
+      ref(db, "dinopoker-room/" + roomId + "/players")
+    ).then((res) => res);
+
+    if (!getLocalStorage("user-client-key"))
+      return NotificationsService.emitInvalidRoomState({
+        hasPlayer: false,
+        hasRoom: room.exists(),
+      });
+
+    const hasChild = players.hasChild(getLocalStorage("user-client-key"));
+
+    return NotificationsService.emitInvalidRoomState({
+      hasPlayer: hasChild,
+      hasRoom: room.exists(),
+    });
   },
 };

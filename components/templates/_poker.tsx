@@ -1,9 +1,13 @@
 import { Box, Flex, GridItem } from "@chakra-ui/react";
+import { get, getDatabase, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { appFirebase } from "../../config/firebase/firebase";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
+import { emitter } from "../../services/emitter/emitter";
 import { getLocalStorage } from "../../services/local-storage/handler";
 import { NotificationsService } from "../../services/notifications/notifications.service";
+import { RoomsService } from "../../services/rooms/rooms.service";
 import { CardPoints } from "../atoms/card-points/card-points";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 import JoinRoomDialog from "./_join-room-dialog";
@@ -14,18 +18,56 @@ export const Poker = () => {
 
   const { id } = router.query;
 
-  useEffect(() => {
-    const playerData = getLocalStorage("character")?.player;
 
-    // if (!playerData) {
-    //   NotificationsService.emitMessageBox({
-    //     children: <JoinRoomDialog room={id?.toString()} />,
-    //     message: "",
-    //     func: "SET_JOIN_ROOM",
-    //     onClose: () => router.push("/"),
-    //   });
-    // }
-  });
+  const checkPlayer = async () => {
+    const db = getDatabase(appFirebase);
+
+    const room = await get(ref(db, "dinopoker-room/" + id))
+
+    const players = await get(ref(db, "dinopoker-room/" + id + "/players")).then(res => res);
+
+    const hasChild = players.hasChild(getLocalStorage('user-client-key') || 'random')
+
+    return {
+      hasRoom: room.exists(),
+      hasPlayer: hasChild
+    }
+  }
+
+  useEffect(() => {
+    RoomsService.CHECK_STATE({ roomId: id })
+  }, []);
+
+  useEffect(() => {
+    emitter.on('EMIT_INVALID_ROOM_STATE', async ({ hasPlayer, hasRoom }) => {
+      if (!hasRoom) {
+        NotificationsService.emitScreenLoading({
+          show: true,
+          message: 'Invalid room, redirecting...'
+        })
+
+        await router.push("/");
+
+        NotificationsService.emitScreenLoading({
+          show: false,
+        })
+      }
+
+      if (!hasPlayer) {
+        NotificationsService.emitMessageBox({
+          children: <JoinRoomDialog room={id?.toString()} />,
+          message: "",
+          func: "SET_JOIN_ROOM",
+          onClose: () => router.push("/"),
+        });
+      }
+    })
+
+    return () => {
+      emitter.off('EMIT_INVALID_ROOM_STATE')
+    }
+  }, [])
+
 
   return (
     <PlainTemplate
@@ -73,7 +115,7 @@ export const Poker = () => {
           }
           voteLoading={false}
           roomStatus="REVEALED"
-          updateRoomStatus={() => {}}
+          updateRoomStatus={() => { }}
         />
       </GridItem>
       <GridItem

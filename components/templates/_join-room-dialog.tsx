@@ -30,7 +30,7 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
     name: "" || getLocalStorage("user-name")?.name,
-    room: ''
+    room: '' || room
   });
 
 
