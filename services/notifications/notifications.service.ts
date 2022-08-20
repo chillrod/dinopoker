@@ -1,3 +1,5 @@
+import { DataSnapshot } from "firebase/database";
+
 import { emitter } from "../emitter/emitter";
 import { Events } from "../emitter/emitter-dto";
 
@@ -50,16 +52,19 @@ export const NotificationsService = {
     }
   },
 
-  emitInvalidRoomState({
+  emitRoomState({
     hasPlayer,
     hasRoom,
+    player,
   }: {
     hasPlayer: boolean;
     hasRoom: boolean;
+    player?: DataSnapshot;
   }) {
-    emitter.emit("EMIT_INVALID_ROOM_STATE", {
+    emitter.emit("EMIT_ROOM_STATE", {
       hasPlayer,
       hasRoom,
+      player
     });
   },
 };

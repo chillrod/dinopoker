@@ -78,16 +78,40 @@ export const RoomsService = {
     ).then((res) => res);
 
     if (!getLocalStorage("user-client-key"))
-      return NotificationsService.emitInvalidRoomState({
+      return NotificationsService.emitRoomState({
         hasPlayer: false,
         hasRoom: room.exists(),
       });
 
     const hasChild = players.hasChild(getLocalStorage("user-client-key"));
 
-    return NotificationsService.emitInvalidRoomState({
+    return NotificationsService.emitRoomState({
       hasPlayer: hasChild,
       hasRoom: room.exists(),
+      ...(hasChild && {
+        player: players.child(getLocalStorage("user-client-key")),
+      }),
     });
+  },
+
+  PLAYER_NODE({ roomId }: { roomId?: string | string[] }) {
+    return child(
+      ref(db),
+      `dinopoker-room/${roomId}/players/${getLocalStorage("user-client-key")}`
+    );
+  },
+
+  async SET_SPECTATOR({ roomId }: { roomId?: string | string[] }) {
+    console.log(
+      "🚀 ~ file: rooms.service.ts ~ line 105 ~ SET_SPECTATOR ~ roomId",
+      roomId
+    );
+    const player = getLocalStorage("user-client-key");
+
+    if (player)
+      await set(
+        child(ref(db), "dinopoker-room/" + roomId + "/players/" + player),
+        "spectator"
+      );
   },
 };

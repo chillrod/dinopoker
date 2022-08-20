@@ -1,25 +1,14 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
-  Stack,
-} from "@chakra-ui/react";
-
+import { Box, FormControl, FormLabel, Grid, GridItem, Stack } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-
 import { useEffect, useState } from "react";
 
 import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
 import { emitter } from "../../services/emitter/emitter";
-
 import { getLocalStorage, setLocalStorage } from "../../services/local-storage/handler";
-
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
+import { Button } from "../atoms/button/button";
 import { HeadText } from "../atoms/head-text/head-text";
 import { Input } from "../atoms/input/input";
 
@@ -28,12 +17,38 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
 
   const router = useRouter();
 
+  const { id } = router.query
+
 
   const [playerData, setPlayerData] = useState<IPlayerData>({
     name: "" || getLocalStorage("user-name")?.name,
     room: '' || room
   });
 
+  const [spectatorLoading, setSpectatorLoading] = useState(false)
+
+
+  const handleJoinAsSpectator = async () => {
+    try {
+
+      NotificationsService.emitMessageBoxLoading(true);
+      setSpectatorLoading(true);
+
+      await RoomsService.SET_SPECTATOR({ roomId: id })
+
+      NotificationsService.emitMessageBoxClose()
+
+    } catch (err: any) {
+      NotificationsService.emitToast({
+        message: err.message,
+        state: "error"
+      })
+    } finally {
+      NotificationsService.emitMessageBoxLoading(false);
+      setSpectatorLoading(false);
+    }
+
+  }
 
   const joinRoom = async () => {
     if (!playerData.name?.length || !playerData.room?.length) return;
@@ -120,7 +135,8 @@ const JoinRoomDialog = ({ room }: { room?: string }) => {
                 <Grid>
                   <GridItem justifySelf="end">
                     <Button
-                      onClick={() => NotificationsService.emitMessageBoxClose()}
+                      loading={spectatorLoading}
+                      onClick={() => handleJoinAsSpectator()}
                       bg="dino.secondary"
                       size="sm"
                     >

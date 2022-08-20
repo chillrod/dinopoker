@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 import { chakra, Select as Sl } from "@chakra-ui/react";
+import { useState } from "react";
 
 export type IOption = {
   id: number | string;
@@ -27,6 +26,7 @@ export const Select = ({ options, onChange, disabled, selected }: ISelect) => {
       size="lg"
       color="dino.text"
       border="none"
+      outline="none"
       isDisabled={disabled}
     >
       {options.map((option) => (

@@ -22,7 +22,7 @@ export const Input = ({
   return (
     <Inp
       border="none"
-      bg="dino.base3"
+      bg="dino.secondary"
       outline="none"
       color="dino.text"
       role="@dino-input"
