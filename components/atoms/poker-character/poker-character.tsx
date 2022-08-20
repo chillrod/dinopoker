@@ -44,8 +44,8 @@ export const PokerCharacter = ({
 
   return (
     <>
-      {JSON.stringify(character)}
-      {JSON.stringify(CharacterList[character?.character || 0])}
+      {/* {JSON.stringify(character)} */}
+      {/* {JSON.stringify(CharacterList[character?.character || 0])} */}
       <Flex direction="column" alignItems="center" gap={2}>
         <Tag
           fontSize="sm"
