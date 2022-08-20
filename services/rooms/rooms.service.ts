@@ -27,7 +27,7 @@ export const RoomsService = {
     try {
       await set(ref(db, "dinopoker-room/" + roomId), {
         id: roomId,
-        roomStatus: RoomDataStatus.PENDING,
+        status: RoomDataStatus.PENDING,
         voteSystem: voteSystem,
       });
 

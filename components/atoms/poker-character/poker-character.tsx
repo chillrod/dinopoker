@@ -1,5 +1,4 @@
 import { Avatar, AvatarBadge, Flex, Tag } from "@chakra-ui/react";
-
 import useTranslation from "next-translate/useTranslation";
 
 import { CharacterList } from "../../../config/characters";
@@ -38,13 +37,15 @@ export const PokerCharacter = ({
   const parseCharacterColor = (character: IPlayerData) => {
     if (character.raiseHand) return "yellow.500";
 
-    if (character.vote) return "purple.400";
+    if (character.vote) return "dino.primary";
 
-    return "dino.base2";
+    return "dino.base3";
   };
 
   return (
     <>
+      {JSON.stringify(character)}
+      {JSON.stringify(CharacterList[character?.character || 0])}
       <Flex direction="column" alignItems="center" gap={2}>
         <Tag
           fontSize="sm"
@@ -53,10 +54,9 @@ export const PokerCharacter = ({
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
           {character?.team ? `(${parseCharacterTeam(character.team)})` : "-"}
         </Tag>
-
         <Avatar
           loading="eager"
-          src={CharacterList[character?.character || 0].src}
+          src={`/${CharacterList[character?.character || 0].src}`}
           size="lg"
           name={character.name ? character.name : "Unknown"}
           bg={parseCharacterColor(character)}
