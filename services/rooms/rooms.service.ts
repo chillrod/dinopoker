@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, set } from "firebase/database";
 
 import { appFirebase } from "../../config/firebase/firebase";
 import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
@@ -102,16 +102,21 @@ export const RoomsService = {
   },
 
   async SET_SPECTATOR({ roomId }: { roomId?: string | string[] }) {
-    console.log(
-      "🚀 ~ file: rooms.service.ts ~ line 105 ~ SET_SPECTATOR ~ roomId",
-      roomId
-    );
     const player = getLocalStorage("user-client-key");
 
     if (player)
       await set(
         child(ref(db), "dinopoker-room/" + roomId + "/players/" + player),
         "spectator"
+      );
+  },
+
+  async PLAYER_REMOVE({ roomId }: { roomId?: string | string[] }) {
+    const player = getLocalStorage("user-client-key");
+
+    if (player)
+      await remove(
+        child(ref(db), "dinopoker-room/" + roomId + "/players/" + player)
       );
   },
 };

@@ -16,7 +16,7 @@ const GameRoom = () => {
 
 
   useEffect(() => {
-    onDisconnect(RoomsService.PLAYER_NODE({ roomId: id })).set('offline');
+    onDisconnect(RoomsService.PLAYER_NODE({ roomId: id })).remove();
 
     return () => {
       onDisconnect(RoomsService.PLAYER_NODE({ roomId: id })).cancel();
@@ -25,6 +25,18 @@ const GameRoom = () => {
 
   useEffect(() => {
     RoomsService.CHECK_STATE({ roomId: id })
+
+    const handler = (url: string) => {
+
+      if (url === '/') return RoomsService.PLAYER_REMOVE({ roomId: id });
+    }
+
+
+    router.events.on("routeChangeStart", handler);
+
+    return () => {
+      router.events.off('routeChangeStart', () => null)
+    }
   }, []);
 
   useEffect(() => { }, [])
@@ -47,9 +59,8 @@ const GameRoom = () => {
       }
 
       const playerData = hasPlayer ? player?.val() : '';
-      console.log("🚀 ~ file: _poker.tsx ~ line 42 ~ emitter.on ~ playerData", playerData)
 
-      if (!hasPlayer || playerData?.toString() === 'offline') {
+      if (!hasPlayer || playerData?.toString() === 'spectator') {
         NotificationsService.emitMessageBox({
           children: <JoinRoomDialog room={id?.toString()} />,
           message: "",
