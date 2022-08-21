@@ -1,4 +1,4 @@
-import { DatabaseReference, onDisconnect } from "firebase/database";
+import { onDisconnect } from "firebase/database";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -23,14 +23,15 @@ const GameRoom = () => {
     }
   }, [])
 
-  useEffect(() => {
+  const roomCheckState = () => {
     RoomsService.CHECK_STATE({ roomId: id })
+  }
 
+
+  useEffect(() => {
     const handler = (url: string) => {
-
       if (url === '/') return RoomsService.PLAYER_REMOVE({ roomId: id });
     }
-
 
     router.events.on("routeChangeStart", handler);
 
@@ -39,11 +40,10 @@ const GameRoom = () => {
     }
   }, []);
 
-  useEffect(() => { }, [])
-
   useEffect(() => {
-    emitter.on('EMIT_ROOM_STATE', async ({ hasPlayer, hasRoom, player }) => {
+    roomCheckState()
 
+    emitter.on('EMIT_ROOM_STATE', async ({ hasPlayer, hasRoom, player }) => {
 
       if (!hasRoom) {
         NotificationsService.emitScreenLoading({
@@ -66,6 +66,7 @@ const GameRoom = () => {
           message: "",
           func: "SET_JOIN_ROOM",
           onClose: () => router.push("/"),
+          persistent: true,
         });
       }
     })

@@ -17,10 +17,10 @@ export const CardPoints = ({
       disabled={disabled}
       role="@dino-cardpoint"
       onClick={() => onClick && onClick(point)}
-      size="md"
+      size="sm"
       bg={selected ? "dino.primary" : "dino.base3"}
       width={["auto", "6em"]}
-      height={["8em", "8em"]}
+      height={["9em", "8em"]}
     >
       <Grid gap={2} p={4}>
         <GridItem justifySelf="start">

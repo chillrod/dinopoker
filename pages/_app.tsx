@@ -67,7 +67,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Nav />
       <ToastProvider />
-      
+
       <AnimatePresence>
         {loading.show && (
           <>
@@ -95,8 +95,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </AnimatePresence>
 
 
-      <Container maxW={['container.lg', 'container.xl']} centerContent>
-
+      <Container maxW={['container.lg', 'container.xl', 'container.xl']}>
         {!loading.show && (
           <>
             <MessageBox />

@@ -13,12 +13,14 @@ interface FocusableElement {
 
 interface IMessageBox {
   open?: boolean;
+  closeOnOverlayClick?: boolean;
 }
 
 export const MessageBox = ({ open = false }: IMessageBox) => {
   const { t } = useTranslation("common");
 
   const [isOpen, setIsOpen] = useState(open);
+  const [overlayClick, setOverlayClick] = useState<boolean | undefined>(true);
   const [currentMessage, setCurrentMessage] = useState("");
   const [currentFunc, setCurrentFunc] = useState<keyof Events>();
   const [userOnClose, setUserOnClose] = useState<() => void>();
@@ -29,8 +31,10 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const cancelRef: RefObject<FocusableElement> = useRef(null);
 
   useEffect(() => {
-    emitter.on("EMIT_MESSAGEBOX", ({ message, func, children, onClose }) => {
+    emitter.on("EMIT_MESSAGEBOX", ({ message, func, children, onClose, persistent }) => {
       setIsOpen(true);
+
+      setOverlayClick(persistent);
 
       setCurrentMessage(message);
 
@@ -66,14 +70,16 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       bg="dino.base5"
       {...(isOpen
         ? {
-          opacity: "0.8",
+          opacity: "0.6",
           position: "absolute",
           h: "100%",
-          w: "100%",
+          w: "100vw",
+          zIndex: "2",
         }
         : {})}
     >
       <AlertDialog
+        closeOnOverlayClick={overlayClick}
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={() => setIsOpen(false)}

@@ -124,7 +124,7 @@ export const Landing = () => {
         justifySelf="center"
       >
         <HeadText
-          head="Our goal"
+          head="Newsletter"
           tags={[
             "Dino poker is currently in beta!",
             `Our goal is to provide a full solution to 

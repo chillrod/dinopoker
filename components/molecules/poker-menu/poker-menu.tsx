@@ -1,7 +1,6 @@
-import { Flex, Grid } from "@chakra-ui/react";
-import { Menu } from "react-feather";
-
+import { Box, Flex, Grid, MenuButton, Menu as MenuChakra, MenuItem, MenuList } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
+import { Menu } from "react-feather";
 
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { MenuRaiseHand } from "../../atoms/menu-raisehand/menu-raisehand";
@@ -24,10 +23,23 @@ export const PokerMenu = () => {
         </Flex>
       </Grid>
       <Grid display={["block", "block", "none"]}>
-        <IconButton
-          ariaLabel={t("components.open-menu")}
-          icon={<Menu />}
-        ></IconButton>
+        <MenuChakra>
+          <MenuButton >
+            <IconButton
+              ariaLabel={t("components.open-menu")}
+              icon={<Menu />}
+            ></IconButton>
+          </MenuButton>
+          <MenuList bg="dino.base5">
+            {[<MenuRaiseHand key={1} />, <MenuTeam key={2} />].map(
+              (Component, id) => (
+                <Box key={id} mb={2} p={4}>
+                  <Flex>{Component}</Flex>
+                </Box>
+              )
+            )}
+          </MenuList>
+        </MenuChakra>
       </Grid>
     </>
   );

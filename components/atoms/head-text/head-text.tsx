@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Heading, Tag } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Stack, Tag } from "@chakra-ui/react";
 import { CornerDownRight } from "react-feather";
 
 export const HeadText = ({
@@ -9,7 +9,7 @@ export const HeadText = ({
   tags?: string[];
 }) => {
   return (
-    <Flex gap={3} direction="column">
+    <Stack spacing={3}>
       <Flex alignItems="center">
         <CornerDownRight size={18} />
         <Heading ml={2} fontSize={['lg', 'lg', 'xl', '2xl']} fontWeight={600}>
@@ -23,6 +23,6 @@ export const HeadText = ({
           >{tag}</Tag>
         </GridItem>
       ))}
-    </Flex>
+    </Stack>
   );
 };

@@ -13,6 +13,7 @@ export type Events = {
     func: keyof Events;
     children?: React.ReactElement;
     onClose?: () => void;
+    persistent?: boolean
   };
 
   EMIT_MESSAGEBOX_CLOSE: boolean;

@@ -9,17 +9,20 @@ export const NotificationsService = {
     func,
     children,
     onClose,
+    persistent,
   }: {
     message: string;
     func: keyof Events;
     children: React.ReactElement;
     onClose?: () => void | Promise<boolean>;
+    persistent?: boolean;
   }) {
     emitter.emit("EMIT_MESSAGEBOX", {
       message,
       func,
       children,
       onClose,
+      persistent,
     });
   },
 
@@ -64,7 +67,7 @@ export const NotificationsService = {
     emitter.emit("EMIT_ROOM_STATE", {
       hasPlayer,
       hasRoom,
-      player
+      player,
     });
   },
 };

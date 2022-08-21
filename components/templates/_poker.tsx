@@ -1,11 +1,10 @@
-import { Box, Flex, GridItem } from "@chakra-ui/react";
-import { DataSnapshot, getDatabase, onChildChanged, onValue, ref } from "firebase/database";
+import { Box, Center, GridItem, Spinner, Stack } from "@chakra-ui/react";
+import { DataSnapshot, getDatabase, onValue, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { appFirebase } from "../../config/firebase/firebase";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
-import { IPlayerData } from "../../model/PlayerData";
 import { IRoomData } from "../../model/RoomData";
 import { CardPoints } from "../atoms/card-points/card-points";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
@@ -14,7 +13,7 @@ import { PlainTemplate } from "./_plain-template";
 export const Poker = () => {
   const router = useRouter();
 
-  const [roomValues, setRoomValues] = useState<IRoomData>()
+  const [ROOM_DATA, SET_ROOM_DATA] = useState<IRoomData>()
 
   const { id } = router.query;
 
@@ -34,9 +33,8 @@ export const Poker = () => {
     return players
   }
 
-  const handleRoomValues = (snapshot: DataSnapshot) => {
-    setRoomValues(snapshot.val())
-
+  const roomDataListener = (snapshot: DataSnapshot) => {
+    SET_ROOM_DATA(snapshot.val())
   }
 
   const room = ref(db, `dinopoker-room/${id}`)
@@ -44,7 +42,7 @@ export const Poker = () => {
   useEffect(() => {
 
     const roomSubscribe = onValue(room, (data) => {
-      handleRoomValues(data)
+      roomDataListener(data)
     })
 
 
@@ -58,66 +56,72 @@ export const Poker = () => {
     <PlainTemplate
       areas={[
         `
-        "poker poker poker"
-        "poker poker poker"
-        "vote vote vote"
-        `,
+            "poker"
+            "poker"
+            "vote"
+            `,
         `
-        "poker poker poker"
-        "poker poker poker"
-        "vote vote vote"
-        `,
+            "poker"
+            "poker"
+            "vote"
+            `,
         `
-        "poker poker poker"
-        "poker poker poker"
-        "vote vote vote"
-        `,
+            "poker"
+            "poker"
+            "vote"
+            `,
         `
-        "poker poker poker"
-        "poker poker poker"
-        "vote vote vote"
-        `,
+            "poker"
+            "poker"
+            "vote"
+            `,
       ]}
-      cols={["1fr 1fr 1fr", "1fr 1fr 1fr", "1fr 1fr 1fr", "1fr 1fr 1fr"]}
+      cols={["1fr", "1fr", "1fr", "1fr"]}
       rows={["auto auto 1fr", "auto auto 1fr", "auto auto 1fr"]}
     >
-      {roomValues ? (
-        <>
-          <GridItem
-            area="poker"
-            h="100%"
-            justifyContent="center"
-            alignSelf="center"
-          >
-            <PokerRoundData
-              currentPlayers={handleCurrentPlayers(roomValues.players)}
-              roomStatus={roomValues.status}
-              updateRoomStatus={() => { }}
-            />
-          </GridItem>
-          <GridItem
-            area="vote"
-            justifySelf="center"
-            alignSelf={["center", "center", "center"]}
-            p={2}
-          >
-            <Flex maxW="100vw" overflow="auto">
-              {VoteSystemOptions[roomValues.voteSystem]?.voteSystem.map(
-                (number: number) => (
-                  <Box key={number} mx={1}>
-                    <CardPoints
-                      onClick={(vote) => console.log(vote)}
-                      selected={number === 2}
-                      point={number}
-                    />
-                  </Box>
-                )
-              )}
-            </Flex>
-          </GridItem>
-        </>
-      ) : <></>}
+      <GridItem
+        area="poker"
+        h="100%"
+        justifyContent="center"
+        alignSelf="center"
+      >
+        {ROOM_DATA ? (<>
+          <PokerRoundData
+            currentPlayers={handleCurrentPlayers(ROOM_DATA?.players)}
+            roomStatus={ROOM_DATA?.status}
+            updateRoomStatus={() => { }}
+          />
+        </>) : <>
+          <Center>
+            <Spinner />
+          </Center>
+        </>}
+      </GridItem>
+      <GridItem
+        area="vote"
+        alignSelf="center"
+        justifySelf="center"
+      >
 
+        <Stack direction="row" overflowX="auto" maxW="100vw"
+          w={["80vw", "80vw", "100%", "100%"]}
+          margin="0 auto"
+        >
+          {VoteSystemOptions[ROOM_DATA ? ROOM_DATA.voteSystem : 0]?.voteSystem.map(
+            (number: number) => (
+              <Box
+                key={number}
+              >
+                <CardPoints
+                  onClick={(vote) => console.log(vote)}
+                  selected={number === 2}
+                  point={number}
+                />
+              </Box>
+            )
+          )}
+        </Stack>
+      </GridItem>
     </PlainTemplate>
   );
 };
