@@ -102,55 +102,67 @@ export const PokerRoundData = ({
           justifyContent="center"
           alignItems="center"
         >
-          <PokerRoomStatus
-            roomStatus={roomStatus}
-            isRevealed={isRevealed}
-          />
-          {/* {renderTableStatus(roomStatus, isRevealed)} */}
+          {currentPlayers.length > 1 ? (
+            <PokerRoomStatus
+              roomStatus={roomStatus}
+              isRevealed={isRevealed}
+            />
+
+          ) :
+            <Flex mt={2} direction="column">
+              <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
+                Invite your team mates
+              </Tag>
+              <IconButton
+                onClick={() => copyRoomLink()}
+                ariaLabel="Share"
+                icon={<Share2 />}
+              />
+            </Flex>
+
+          }
         </Flex>
       </GridItem>
 
-      <AnimatePresence>
-        <>
-          {Object.keys(currentPlayerPositions).map((playerPosition) => (
-            <GridItem
-              justifySelf="center"
-              key={playerPosition}
-              area={playerPosition}
-            >
-              <Flex
-                gap={4}
-                direction={
-                  playerPosition === "left" || playerPosition === "right"
-                    ? "column"
-                    : "row"
-                }
-              >
-                {currentPlayerPositions[playerPosition].map(
-                  (player: IPlayerData) => (
-                    <motion.div
-                      key={player?.id}
-                      initial={{ scale: 0.97 }}
-                      animate={{ scale: [1.1, 0.99, 1] }}
-                      exit={{ scale: 0.97 }}
-                    >
-                      {player ? (
-                        <PokerCharacter
-                          character={player}
-                          status="PENDING"
-                          handleVoteFunction={() => ''}
-                        // status={roomStatus}
-                        // handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
-                        />
-                      ) : <></>}
-                    </motion.div>
-                  )
-                )}
-              </Flex>
-            </GridItem>
-          ))}
-        </>
-      </AnimatePresence>
+      {Object.keys(currentPlayerPositions).map((playerPosition) => (
+        <GridItem
+          justifySelf="center"
+          key={playerPosition}
+          area={playerPosition}
+        >
+          <Flex
+            gap={4}
+            direction={
+              playerPosition === "left" || playerPosition === "right"
+                ? "column"
+                : "row"
+            }
+          >
+            <AnimatePresence>
+              {currentPlayerPositions[playerPosition].map(
+                (player: IPlayerData) => (
+                  <motion.div
+                    key={player?.id}
+                    initial={{ scale: 0.97 }}
+                    animate={{ scale: [1.1, 0.99, 1] }}
+                    exit={{ scale: 0.97 }}
+                  >
+                    {player ? (
+                      <PokerCharacter
+                        character={player}
+                        status="PENDING"
+                        handleVoteFunction={() => ''}
+                      // status={roomStatus}
+                      // handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
+                      />
+                    ) : <></>}
+                  </motion.div>
+                )
+              )}
+            </AnimatePresence>
+          </Flex>
+        </GridItem>
+      ))}
     </Grid >
   );
 };
