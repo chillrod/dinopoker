@@ -2,9 +2,7 @@ import { Box, Flex, Grid, GridItem, Link as LinkChakra } from "@chakra-ui/react"
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { NotificationsService } from "../../../services/notifications/notifications.service";
 
-import { Button } from "../../atoms/button/button";
 import { DinoPoker } from "../../atoms/dinopoker";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
 import { PokerMenu } from "../poker-menu/poker-menu";
@@ -28,49 +26,41 @@ export const Nav = () => {
               </Link>
             </Grid>
 
-            {!id && (
-              <>
-                <Grid
-                  gap={4}
-                  gridTemplateColumns={[
-                    "repeat(3, auto)",
-                    "repeat(3, auto)",
-                    "repeat(4, auto)",
-                  ]}
-                  alignItems="center"
-                  justifyItems="end"
-                >
-                  {lang === "pt" && (
-                    <LinkChakra
-                      href="https://nubank.com.br/pagar/152tv/6xqf3wx7rA"
-                      target="_blank"
-                    >
-                      Donating
-                    </LinkChakra>
-                  )}
+            <>
+              <Grid
+                gap={4}
+                gridTemplateColumns={[
+                  "repeat(3, auto)",
+                  "repeat(3, auto)",
+                  "repeat(4, auto)",
+                ]}
+                alignItems="center"
+                justifyItems="end"
+              >
+                {lang === "pt" && (
                   <LinkChakra
+                    href="https://nubank.com.br/pagar/152tv/6xqf3wx7rA"
                     target="_blank"
-                    href="https://github.com/chillrod"
                   >
-                    Follow me on Github
+                    Donating
                   </LinkChakra>
+                )}
+                <LinkChakra
+                  target="_blank"
+                  href="https://github.com/chillrod"
+                >
+                  Follow me on Github
+                </LinkChakra>
+                {!id && (
                   <MenuChangeLanguage />
-                  <Box display={["none", "none", "none", "block"]}>
-                    <Button onClick={() => NotificationsService.emitBottomLoading({
-                      message: "Creating room",
-                      show: true,
-                    })}>{t("home.play-poker")}</Button>
-                  </Box>
-                </Grid>
-              </>
-            )}
+                )}
+              </Grid>
+            </>
           </Flex>
         </GridItem>
-        {id && (
-          <GridItem justifySelf="end">
-            <PokerMenu />
-          </GridItem>
-        )}
+        <GridItem justifySelf="end">
+          <PokerMenu />
+        </GridItem>
       </Grid>
     </Box>
   );
