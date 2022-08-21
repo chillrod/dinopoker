@@ -13,7 +13,6 @@ interface FocusableElement {
 
 interface IMessageBox {
   open?: boolean;
-  closeOnOverlayClick?: boolean;
 }
 
 export const MessageBox = ({ open = false }: IMessageBox) => {
@@ -34,7 +33,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
     emitter.on("EMIT_MESSAGEBOX", ({ message, func, children, onClose, persistent }) => {
       setIsOpen(true);
 
-      setOverlayClick(persistent);
+      setOverlayClick(!persistent);
 
       setCurrentMessage(message);
 

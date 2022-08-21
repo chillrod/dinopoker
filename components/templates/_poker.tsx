@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { appFirebase } from "../../config/firebase/firebase";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
 import { IRoomData } from "../../model/RoomData";
+import { getLocalStorage } from "../../services/local-storage/handler";
 import { CardPoints } from "../atoms/card-points/card-points";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 import { PlainTemplate } from "./_plain-template";
