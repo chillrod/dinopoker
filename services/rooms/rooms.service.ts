@@ -58,15 +58,25 @@ export const RoomsService = {
     }
   },
 
-  async CHANGE_PLAYER_VOTE(player: IPlayerData) {
+  async UPDATE_PLAYER({
+    player,
+    roomId,
+    key,
+    value,
+  }: {
+    player?: string;
+    key?: string;
+    roomId?: string | string[];
+    value?: any;
+  }) {
     if (!player) return;
 
     await set(
       child(
         ref(db),
-        "dinopoker-room/" + player.room + "/players/" + player.id + "/vote"
+        "dinopoker-room/" + roomId + "/players/" + player + `/${key}`
       ),
-      player.vote
+      value
     );
   },
 

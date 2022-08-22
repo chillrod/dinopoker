@@ -14,6 +14,7 @@ export const CardPoints = ({
 }: ICardPoints) => {
   return (
     <Button
+      _hover={{ bg: selected ? "dino.primary" : 'dino.base2' }}
       disabled={disabled}
       role="@dino-cardpoint"
       onClick={() => onClick && onClick(point)}

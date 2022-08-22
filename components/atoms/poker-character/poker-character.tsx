@@ -3,19 +3,35 @@ import useTranslation from "next-translate/useTranslation";
 
 import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
+import { RoomDataStatus } from "../../../model/RoomData";
 
 interface ICharacterCardProps {
   character: IPlayerData;
-  handleVoteFunction: (status: string, vote: number) => string | number;
-  status: string;
+  status?: RoomDataStatus;
 }
 
 export const PokerCharacter = ({
   character,
-  handleVoteFunction,
   status,
 }: ICharacterCardProps) => {
   const { t } = useTranslation("common");
+
+  const parseSecretVoteBasedOnRoomStatus = (status?: RoomDataStatus, vote?: number) => {
+    if (!status) return '-';
+
+    const states: { [key in RoomDataStatus]: string | number | undefined } = {
+      1: "-",
+      2: "-",
+      3: vote,
+    };
+
+    return states[status]
+
+    // if (status === "REVEALED" && !isRevealed) return "-";
+
+    // return states[status];
+  };
+
 
   const parseCharacterTeam = (team: number) => {
     const arrayState = [
@@ -39,13 +55,11 @@ export const PokerCharacter = ({
 
     if (character.vote) return "dino.primary";
 
-    return "dino.base3";
+    return "none";
   };
 
   return (
     <>
-      {/* {JSON.stringify(character)} */}
-      {/* {JSON.stringify(CharacterList[character?.character || 0])} */}
       <Flex direction="column" alignItems="center" gap={2}>
         <Tag
           fontSize="sm"
@@ -67,7 +81,7 @@ export const PokerCharacter = ({
             color="dino.text"
           >
             {character?.vote ? (
-              <>{handleVoteFunction(status, character.vote)}</>
+              <>{parseSecretVoteBasedOnRoomStatus(status, character.vote)}</>
             ) : (
               "-"
             )}

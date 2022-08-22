@@ -27,10 +27,9 @@ const GameRoom = () => {
     RoomsService.CHECK_STATE({ roomId: id })
   }
 
-
   useEffect(() => {
     const handler = (url: string) => {
-      if (url === '/') return RoomsService.PLAYER_REMOVE({ roomId: id });
+      if (url === '/') RoomsService.PLAYER_REMOVE({ roomId: id });
     }
 
     router.events.on("routeChangeStart", handler);
@@ -41,8 +40,8 @@ const GameRoom = () => {
   }, []);
 
   useEffect(() => {
-    roomCheckState()
 
+    roomCheckState()
     emitter.on('EMIT_ROOM_STATE', async ({ hasPlayer, hasRoom, player }) => {
 
       if (!hasRoom) {

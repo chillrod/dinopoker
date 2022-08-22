@@ -30,6 +30,8 @@ export const PokerRoundData = ({
   }>({});
 
   const [isRevealed, setIsRevealed] = useState(false);
+  const [revealingTimeout, setRevealingTimeout] = useState(3);
+
 
   const copyRoomLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -55,7 +57,7 @@ export const PokerRoundData = ({
   }, [currentPlayers]);
 
   // useEffect(() => {
-  //   if (roomStatus === "PENDING")
+  //   if (roomStatus === RoomDataStatus.PENDING) {
   //     [setIsRevealed(false), setRevealingTimeout(3)];
 
   //   if (revealingTimeout === 0) {
@@ -64,7 +66,7 @@ export const PokerRoundData = ({
   //     return;
   //   }
 
-  //   if (roomStatus === "REVEALED") {
+  //   if (roomStatus === RoomDataStatus.) {
   //     const countInterval = setInterval(() => {
   //       setRevealingTimeout(revealingTimeout - 1);
   //     }, 800);
@@ -102,13 +104,13 @@ export const PokerRoundData = ({
           justifyContent="center"
           alignItems="center"
         >
-          {currentPlayers.length > 1 ? (
-            <PokerRoomStatus
-              roomStatus={roomStatus}
-              isRevealed={isRevealed}
-            />
+          {/* {currentPlayers?.length > 1 ? ( */}
+          <PokerRoomStatus
+            roomStatus={roomStatus}
+            isRevealed={isRevealed}
+          />
 
-          ) :
+          {/* ) :
             <Flex mt={2} direction="column">
               <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
                 Invite your team mates
@@ -120,7 +122,7 @@ export const PokerRoundData = ({
               />
             </Flex>
 
-          }
+          } */}
         </Flex>
       </GridItem>
 
@@ -150,10 +152,7 @@ export const PokerRoundData = ({
                     {player ? (
                       <PokerCharacter
                         character={player}
-                        status="PENDING"
-                        handleVoteFunction={() => ''}
-                      // status={roomStatus}
-                      // handleVoteFunction={parseSecretVoteBasedOnRoomStatus}
+                        status={roomStatus}
                       />
                     ) : <></>}
                   </motion.div>
