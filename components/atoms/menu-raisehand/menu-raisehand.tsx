@@ -1,11 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { child, getDatabase, ref, onValue } from "firebase/database";
-import { useEffect, useState } from "react";
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { Speaker } from "react-feather";
 
-import useTranslation from "next-translate/useTranslation";
-
-import { appFirebase } from "../../../config/firebase/firebase";
 import { getLocalStorage } from "../../../services/local-storage/handler";
 import { NotificationsService } from "../../../services/notifications/notifications.service";
 import { RoomsService } from "../../../services/rooms/rooms.service";
@@ -14,42 +12,28 @@ import { IconButton } from "../../atoms/icon-button/icon-button";
 export const MenuRaiseHand = () => {
   const { t } = useTranslation("common");
 
-  const [isRaisingHand, setIsRaisingHand] = useState(true);
+  const router = useRouter();
 
-  // const handleRaiseHand = async () => {
-  //   try {
-  //     await RoomsService.updatePlayerRaiseHand(
-  //       getLocalStorage("character")?.player,
-  //       !isRaisingHand
-  //     );
-  //   } catch (err: any) {
-  //     NotificationsService.emitToast(err.message);
-  //   }
-  // };
+  const { id } = router.query
 
-  useEffect(() => {
-    const db = getDatabase(appFirebase);
+  const [isRaisingHand, setIsRaisingHand] = useState(false);
 
-    const roomStatus = child(
-      ref(db),
-      "dinopoker-room/" +
-      getLocalStorage("character")?.player.room +
-      "/players/" +
-      getLocalStorage("character")?.player?.id +
-      "/raiseHand"
-    );
+  const handleRaiseHand = async (raisingHand: boolean) => {
+    try {
+      RoomsService.UPDATE_PLAYER({
+        roomId: id,
+        key: 'raiseHand',
+        value: !raisingHand,
+        player: getLocalStorage('user-client-key')
+      })
 
-    const unsubRoomDbRef = onValue(roomStatus, (data) => {
-      setIsRaisingHand(data.val());
-    });
+    } catch (err: any) {
+      NotificationsService.emitToast(err.message);
+    }
+  };
 
-    return () => {
-      unsubRoomDbRef();
-    };
-  }, []);
-
-  const returnBg = () => {
-    if (!isRaisingHand) return "purple.500";
+  const returnBg = (raisingHand: boolean) => {
+    if (raisingHand) return "purple.500";
 
     return "purple.300";
   };
@@ -65,9 +49,9 @@ export const MenuRaiseHand = () => {
           {t("poker.actions.room-action")}
         </Text>
         <IconButton
-          // onClick={() => handleRaiseHand()}
+          onClick={() => [setIsRaisingHand(!isRaisingHand), handleRaiseHand(!isRaisingHand)]}
           color={returnColor()}
-          bg={returnBg()}
+          bg={returnBg(isRaisingHand)}
           ariaLabel={t("poker.actions.raise-hand")}
           icon={<Speaker />}
         />
