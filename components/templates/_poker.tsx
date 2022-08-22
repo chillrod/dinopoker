@@ -1,12 +1,12 @@
 import { Box, Center, GridItem, Spinner, Stack } from "@chakra-ui/react";
-import { DataSnapshot, getDatabase, onChildAdded, onChildChanged, onChildRemoved, onValue, ref } from "firebase/database";
+import { DataSnapshot, getDatabase, onValue, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { appFirebase } from "../../config/firebase/firebase";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
 import { IPlayerData } from "../../model/PlayerData";
-import { IRoomData } from "../../model/RoomData";
+import { IRoomData, RoomDataStatus } from "../../model/RoomData";
 import { getLocalStorage } from "../../services/local-storage/handler";
 import { RoomsService } from "../../services/rooms/rooms.service";
 import { CardPoints } from "../atoms/card-points/card-points";
@@ -14,14 +14,13 @@ import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 import { PlainTemplate } from "./_plain-template";
 
 const db = getDatabase(appFirebase)
-const room = ({ id }: { id?: string | string[] }) => ref(db, `dinopoker-room/${id}`)
+const status = ({ id }: { id?: string | string[] }) => ref(db, `dinopoker-room/${id}/status`)
+const voteSystem = ({ id }: { id?: string | string[] }) => ref(db, `dinopoker-room/${id}/voteSystem`)
 const players = ({ id }: { id?: string | string[] }) => ref(db, `dinopoker-room/${id}/players`)
 
 export const Poker = () => {
   const router = useRouter();
-
-  const [ROOM_DATA, SET_ROOM_DATA] = useState<IRoomData>();
-  const [ROOM_PLAYERS, SET_ROOM_PLAYERS] = useState<{ [key: string]: string }>({});
+  const [ROOM_DATA, SET_ROOM_DATA] = useState<IRoomData>({} as IRoomData);
   const [CURRENT_PLAYER, SET_CURRENT_PLAYER] = useState<IPlayerData>();
 
   const { id } = router.query;
@@ -42,21 +41,30 @@ export const Poker = () => {
   const handleDisabled = (players?: IPlayerData[]): boolean => {
     if (!players) return true;
 
-
-    return Object.keys(players).length <= 0
+    return Object.keys(players).length === 0
   }
 
-  const roomDataListener = (snapshot: DataSnapshot) => {
-    SET_ROOM_DATA(snapshot.val())
-  }
 
   useEffect(() => {
-    const subscribeRoom = onValue(room({ id }), (data) => {
-      roomDataListener(data)
+    const subscribeStatus = onValue(status({ id }), (data) => {
+      if (data.val() === RoomDataStatus.PENDING) {
+        RoomsService.UPDATE_PLAYER({
+          roomId: id,
+          key: 'vote',
+          value: null,
+          player: getLocalStorage('user-client-key')
+        })
+      }
+
+      SET_ROOM_DATA((prevState) => ({ ...prevState, status: data.val() }))
+    })
+
+    const subscribeVoteSystem = onValue(voteSystem({ id }), (data) => {
+      SET_ROOM_DATA((prevState) => ({ ...prevState, voteSystem: data.val() }))
     })
 
     const subscribePlayers = onValue(players({ id }), (data) => {
-      SET_ROOM_PLAYERS(data.val())
+      SET_ROOM_DATA((prevState) => ({ ...prevState, players: data.val() }))
 
       if (!getLocalStorage('user-client-key')) return;
 
@@ -66,7 +74,8 @@ export const Poker = () => {
     })
 
     return () => {
-      subscribeRoom()
+      subscribeStatus()
+      subscribeVoteSystem()
       subscribePlayers()
     }
   }, [])
@@ -104,9 +113,9 @@ export const Poker = () => {
         justifyContent="center"
         alignSelf="center"
       >
-        {ROOM_PLAYERS ? (<>
+        {ROOM_DATA.players ? (<>
           <PokerRoundData
-            currentPlayers={handleCurrentPlayers(ROOM_PLAYERS)}
+            currentPlayers={handleCurrentPlayers(ROOM_DATA.players)}
             roomStatus={ROOM_DATA?.status}
             updateRoomStatus={() => { }}
           />
@@ -125,13 +134,13 @@ export const Poker = () => {
           w={["80vw", "80vw", "100%", "100%"]}
           margin="0 auto"
         >
-          {VoteSystemOptions[ROOM_DATA ? ROOM_DATA.voteSystem : 0]?.voteSystem.map(
+          {VoteSystemOptions[ROOM_DATA.voteSystem]?.voteSystem.map(
             (number: number) => (
               <Box
                 key={number}
               >
                 <CardPoints
-                  disabled={handleDisabled(ROOM_DATA?.players)}
+                  disabled={handleDisabled(ROOM_DATA.players)}
                   onClick={(vote) => RoomsService.UPDATE_PLAYER({
                     roomId: id,
                     player: CURRENT_PLAYER?.id,

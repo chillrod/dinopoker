@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, remove, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 
 import { appFirebase } from "../../config/firebase/firebase";
 import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
@@ -78,6 +78,20 @@ export const RoomsService = {
       ),
       value
     );
+  },
+
+  async UPDATE_ROOM({
+    roomId,
+    key,
+    value,
+  }: {
+    roomId?: string | string[];
+    key?: string;
+    value?: any;
+  }) {
+    if (!roomId) return;
+
+    await set(child(ref(db), "dinopoker-room/" + roomId + "/" + key), value);
   },
 
   async CHECK_STATE({ roomId }: { roomId?: string | string[] }) {

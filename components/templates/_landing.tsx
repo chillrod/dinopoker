@@ -1,4 +1,4 @@
-import { Box, Container, Flex, GridItem, Heading, Highlight, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, GridItem, Heading, Highlight, Stack, Text } from "@chakra-ui/react";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { ButtonBox } from "../atoms/button-box/button-box";

@@ -1,15 +1,22 @@
 import { Flex, Img, Tag } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { RoomDataStatus } from "../../model/RoomData";
-import { Button } from "../atoms/button/button"
+import { RoomsService } from "../../services/rooms/rooms.service";
+import { Button } from "../atoms/button/button";
 
-export const PokerRoomStatus = ({ roomStatus, isRevealed }: { roomStatus?: number, isRevealed: boolean }) => {
+interface IPokerRoomStatus { roomStatus?: number, revealingTimeout?: number, isRevealed?: boolean }
+
+export const PokerRoomStatus = ({ roomStatus, revealingTimeout, isRevealed }: IPokerRoomStatus) => {
+    const router = useRouter();
+
+    const { id } = router.query
 
     const { t } = useTranslation("common");
 
-    const [revealingTimeout, setRevealingTimeout] = useState(3);
+
     const [voteLoading, setVoteLoading] = useState(false);
 
     const parseActionsAndTextBasedOnStatus = (roomStatus?: number) => {
@@ -29,7 +36,11 @@ export const PokerRoomStatus = ({ roomStatus, isRevealed }: { roomStatus?: numbe
             return (
                 <Button
                     loading={voteLoading}
-                // onClick={() => updateRoomStatus(roomStatus)}
+                    onClick={() => RoomsService.UPDATE_ROOM({
+                        roomId: id,
+                        key: 'status',
+                        value: RoomDataStatus.REVEALED
+                    })}
                 >
                     {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
                 </Button>
@@ -52,9 +63,13 @@ export const PokerRoomStatus = ({ roomStatus, isRevealed }: { roomStatus?: numbe
                 <>
                     <Button
                         loading={voteLoading}
-                    // onClick={() => updateRoomStatus(roomStatus)}
+                        onClick={() => RoomsService.UPDATE_ROOM({
+                            roomId: id,
+                            key: 'status',
+                            value: RoomDataStatus.PENDING
+                        })}
                     >
-                        {/* {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."} */}
+                        {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
                     </Button>
 
                     <Flex mt={2}>
@@ -72,16 +87,16 @@ export const PokerRoomStatus = ({ roomStatus, isRevealed }: { roomStatus?: numbe
         },
     };
 
-
     return (
-        <div><p>
-
-            {roomStatus ? (
+        <>
+            {roomStatus && !isRevealed ? (
                 <>
                     {stateHandler[roomStatus]()}
                 </>
-            ) : <></>}
-        </p></div>
+            ) : <>
+                {stateHandler[RoomDataStatus.NOTE_REVEALED]()}
+            </>}
+        </>
     )
 
 

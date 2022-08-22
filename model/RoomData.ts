@@ -11,5 +11,5 @@ export interface IRoomData {
 export enum RoomDataStatus {
   PENDING = 1,
   REVEALED = 2,
-  UNKNOWN = 3,
+  NOTE_REVEALED = 3,
 }
