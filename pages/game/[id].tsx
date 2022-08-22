@@ -23,7 +23,7 @@ const GameRoom = () => {
     }
   }, [])
 
-  const roomCheckState = () => {
+  const roomCheckState = async () => {
     RoomsService.CHECK_STATE({ roomId: id })
   }
 
@@ -42,6 +42,7 @@ const GameRoom = () => {
   useEffect(() => {
 
     roomCheckState()
+
     emitter.on('EMIT_ROOM_STATE', async ({ hasPlayer, hasRoom, player }) => {
 
       if (!hasRoom) {

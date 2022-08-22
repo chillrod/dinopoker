@@ -2,7 +2,9 @@ import { Box, Flex, Grid, GridItem, Link as LinkChakra } from "@chakra-ui/react"
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import { emitter } from "../../../services/emitter/emitter";
 import { DinoPoker } from "../../atoms/dinopoker";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
 import { PokerMenu } from "../poker-menu/poker-menu";
@@ -12,6 +14,7 @@ export const Nav = () => {
   const { t, lang } = useTranslation("common");
 
   const { id } = router.query;
+
 
   return (
     <Box as="nav" height="auto" p={6}>
@@ -32,7 +35,7 @@ export const Nav = () => {
                 gridTemplateColumns={[
                   "repeat(3, auto)",
                   "repeat(3, auto)",
-                  "repeat(4, auto)",
+                  "repeat(3, auto)",
                 ]}
                 alignItems="center"
                 justifyItems="end"
@@ -57,9 +60,6 @@ export const Nav = () => {
               </Grid>
             </>
           </Flex>
-        </GridItem>
-        <GridItem justifySelf="end">
-          <PokerMenu />
         </GridItem>
       </Grid>
     </Box>

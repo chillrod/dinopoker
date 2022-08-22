@@ -10,6 +10,10 @@ export const PlayerService = {
     emitter.emit("PLAYER_CHARACTER", characterId);
   },
 
+  SET_SPECTATOR(spectator: boolean) {
+    emitter.emit("SET_SPECTATOR", spectator);
+  },
+
   preparePlayer(playerData: IPlayerData) {
     const preparedPlayer: IPlayerData = {
       ...playerData,

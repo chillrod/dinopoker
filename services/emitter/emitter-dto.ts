@@ -8,6 +8,8 @@ export type Events = {
   PLAYER_NAME: string;
   PLAYER_CHARACTER: number;
 
+  SET_SPECTATOR: boolean;
+
   EMIT_MESSAGEBOX: {
     message: string;
     func: keyof Events;

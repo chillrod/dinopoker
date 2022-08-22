@@ -1,4 +1,4 @@
-import { Box, Center, GridItem, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Center, Grid, GridItem, Heading, Spinner, Stack, Tag } from "@chakra-ui/react";
 import { DataSnapshot, getDatabase, onValue, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -7,9 +7,12 @@ import { appFirebase } from "../../config/firebase/firebase";
 import { VoteSystemOptions } from "../../config/vote-system/vote-system";
 import { IPlayerData } from "../../model/PlayerData";
 import { IRoomData, RoomDataStatus } from "../../model/RoomData";
+import { emitter } from "../../services/emitter/emitter";
 import { getLocalStorage } from "../../services/local-storage/handler";
+import { PlayerService } from "../../services/player/player.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
 import { CardPoints } from "../atoms/card-points/card-points";
+import { PokerMenu } from "../molecules/poker-menu/poker-menu";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 import { PlainTemplate } from "./_plain-template";
 
@@ -22,6 +25,7 @@ export const Poker = () => {
   const router = useRouter();
   const [ROOM_DATA, SET_ROOM_DATA] = useState<IRoomData>({} as IRoomData);
   const [CURRENT_PLAYER, SET_CURRENT_PLAYER] = useState<IPlayerData>();
+  const [SPECTATOR, SET_SPECTATOR] = useState(false);
 
   const { id } = router.query;
 
@@ -57,6 +61,7 @@ export const Poker = () => {
       }
 
       SET_ROOM_DATA((prevState) => ({ ...prevState, status: data.val() }))
+
     })
 
     const subscribeVoteSystem = onValue(voteSystem({ id }), (data) => {
@@ -70,6 +75,12 @@ export const Poker = () => {
 
       const currentPlayer = data.child(getLocalStorage('user-client-key'))
 
+      if (currentPlayer.val() === 'spectator') {
+        SET_CURRENT_PLAYER(currentPlayer.val())
+
+        return PlayerService.SET_SPECTATOR(true)
+      }
+
       SET_CURRENT_PLAYER({ ...currentPlayer.val(), id: currentPlayer.key })
     })
 
@@ -80,81 +91,103 @@ export const Poker = () => {
     }
   }, [])
 
+
+
+  useEffect(() => {
+    emitter.on('SET_SPECTATOR', (data) => {
+      SET_SPECTATOR(data);
+    })
+
+    return () => {
+      emitter.off('SET_SPECTATOR')
+    }
+  }, [])
+
   return (
-    <PlainTemplate
-      areas={[
-        `
+    <>
+      {ROOM_DATA.players && !SPECTATOR && (
+        <Grid justifyItems="end">
+          <PokerMenu />
+        </Grid>
+      )}
+      <PlainTemplate
+        areas={[
+          `
             "poker"
             "poker"
             "vote"
             `,
-        `
+          `
             "poker"
             "poker"
             "vote"
             `,
-        `
+          `
             "poker"
             "poker"
             "vote"
             `,
-        `
+          `
             "poker"
             "poker"
             "vote"
             `,
-      ]}
-      cols={["1fr", "1fr", "1fr", "1fr"]}
-      rows={["auto auto 1fr", "auto auto 1fr", "auto auto 1fr"]}
-    >
-      <GridItem
-        area="poker"
-        h="100%"
-        justifyContent="center"
-        alignSelf="center"
+        ]}
+        cols={["1fr", "1fr", "1fr", "1fr"]}
+        rows={["auto auto 1fr", "auto auto 1fr", "auto auto 1fr"]}
       >
+
         {ROOM_DATA.players ? (<>
-          <PokerRoundData
-            currentPlayers={handleCurrentPlayers(ROOM_DATA.players)}
-            roomStatus={ROOM_DATA?.status}
-            updateRoomStatus={() => { }}
-          />
-        </>) : <>
+          <GridItem
+            area="poker"
+            h="100%"
+            justifyContent="center"
+            alignSelf="center"
+          >
+            <PokerRoundData
+              currentPlayers={handleCurrentPlayers(ROOM_DATA.players)}
+              roomStatus={ROOM_DATA?.status}
+              updateRoomStatus={() => { }}
+            />
+          </GridItem>
+          <GridItem
+            area="vote"
+            alignSelf="center"
+            justifySelf="center"
+          >
+            <Stack direction="row" overflowX="auto" maxW="100vw"
+              w={["80vw", "80vw", "100%", "100%"]}
+              margin="0 auto"
+            >
+              {VoteSystemOptions[ROOM_DATA.voteSystem]?.voteSystem.map(
+                (number: number) => (
+                  <Box
+                    key={number}
+                  >
+                    <CardPoints
+                      disabled={handleDisabled(ROOM_DATA.players) || CURRENT_PLAYER === 'spectator'}
+                      onClick={(vote) => RoomsService.UPDATE_PLAYER({
+                        roomId: id,
+                        player: CURRENT_PLAYER?.id,
+                        value: CURRENT_PLAYER?.vote === vote ? 0 : vote,
+                        key: 'vote'
+                      })}
+                      selected={CURRENT_PLAYER?.vote === number}
+                      point={number}
+                    />
+                  </Box>
+                )
+              )}
+            </Stack>
+          </GridItem>
+        </>
+        ) : <>
           <Center>
             <Spinner />
           </Center>
         </>}
-      </GridItem>
-      <GridItem
-        area="vote"
-        alignSelf="center"
-        justifySelf="center"
-      >
-        <Stack direction="row" overflowX="auto" maxW="100vw"
-          w={["80vw", "80vw", "100%", "100%"]}
-          margin="0 auto"
-        >
-          {VoteSystemOptions[ROOM_DATA.voteSystem]?.voteSystem.map(
-            (number: number) => (
-              <Box
-                key={number}
-              >
-                <CardPoints
-                  disabled={handleDisabled(ROOM_DATA.players)}
-                  onClick={(vote) => RoomsService.UPDATE_PLAYER({
-                    roomId: id,
-                    player: CURRENT_PLAYER?.id,
-                    value: CURRENT_PLAYER?.vote === vote ? 0 : vote,
-                    key: 'vote'
-                  })}
-                  selected={CURRENT_PLAYER?.vote === number}
-                  point={number}
-                />
-              </Box>
-            )
-          )}
-        </Stack>
-      </GridItem>
-    </PlainTemplate>
+
+      </PlainTemplate>
+    </>
   );
 };

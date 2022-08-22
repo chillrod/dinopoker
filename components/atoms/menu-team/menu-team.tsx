@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Codepen, Server } from "react-feather";
 
 import { PlayerDataTeam } from "../../../model/PlayerData";
@@ -39,6 +39,7 @@ export const MenuTeam = () => {
       setCurrentTeam(PlayerDataTeam.UNKNOWN);
     }
   };
+
 
   return (
     <>

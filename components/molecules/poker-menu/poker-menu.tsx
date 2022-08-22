@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, MenuButton, Menu as MenuChakra, MenuList } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Heading, MenuButton, Menu as MenuChakra, MenuList } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { Menu } from "react-feather";
 
@@ -10,9 +10,9 @@ export const PokerMenu = () => {
 
   return (
     <>
-      <Grid borderRadius="md" display={["none", "none", "block"]}>
+      <Grid borderRadius="md">
         <Flex gap={7}>
-          {[<MenuRaiseHand key={1} />, <MenuTeam key={2} />].map(
+          {[<MenuTeam key={1} />].map(
             (Component, id) => (
               <div key={id}>
                 <Flex>{Component}</Flex>
@@ -21,7 +21,7 @@ export const PokerMenu = () => {
           )}
         </Flex>
       </Grid>
-      <Grid display={["block", "block", "none"]}>
+      {/* <Grid display={["block", "block", "none"]}>
         <MenuChakra>
           <MenuButton
             as={Button}
@@ -31,7 +31,7 @@ export const PokerMenu = () => {
           >
           </MenuButton>
           <MenuList bg="dino.base5">
-            {[<MenuRaiseHand key={1} />, <MenuTeam key={2} />].map(
+            {[<MenuTeam key={1} />].map(
               (Component, id) => (
                 <Box key={id} mb={2} p={4}>
                   <Flex>{Component}</Flex>
@@ -40,7 +40,7 @@ export const PokerMenu = () => {
             )}
           </MenuList>
         </MenuChakra>
-      </Grid>
+      </Grid> */}
     </>
   );
 };
