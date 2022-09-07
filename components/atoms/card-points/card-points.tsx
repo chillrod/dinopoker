@@ -14,20 +14,16 @@ export const CardPoints = ({
 }: ICardPoints) => {
   return (
     <Button
+      _hover={{ bg: selected ? "dino.primary" : 'dino.base2' }}
       disabled={disabled}
       role="@dino-cardpoint"
       onClick={() => onClick && onClick(point)}
-      _hover={{
-        transform: "translateY(-2%)",
-        backgroundColor: "dino.primary",
-      }}
       size="sm"
-      bg={selected ? "dino.primary" : "gray.700"}
+      bg={selected ? "dino.primary" : "dino.base3"}
       width={["auto", "6em"]}
-      height={["auto", "8em"]}
-      p={2}
+      height={["9em", "8em"]}
     >
-      <Grid gap={2}>
+      <Grid gap={2} p={4}>
         <GridItem justifySelf="start">
           <Box>
             <Text as="span">{point}</Text>
@@ -38,14 +34,14 @@ export const CardPoints = ({
             sx={{
               display: "grid",
             }}
-            bg="gray.400"
-            width="6ch"
-            h="6ch"
+            bg="dino.base1"
+            width="5ch"
+            h="5ch"
             borderRadius="full"
           >
             <Text
               fontSize="3xl"
-              color="dino.secondary"
+              color="dino.text"
               fontWeight={600}
               alignSelf="center"
             >

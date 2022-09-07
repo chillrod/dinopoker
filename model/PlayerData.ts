@@ -1,3 +1,5 @@
+import { CharacterList } from "../config/characters";
+
 export interface IPlayerData {
   raiseHand?: boolean;
   character?: number;
@@ -13,3 +15,13 @@ export enum PlayerDataTeam {
   BACKEND = 2,
   UNKNOWN = 3,
 }
+
+export const InitializePlayerData = (player: IPlayerData): IPlayerData => ({
+  raiseHand: false,
+  character: Math.floor(Math.random() * CharacterList.length),
+  name: "",
+  vote: 0,
+  room: "",
+  team: PlayerDataTeam.UNKNOWN,
+  ...player,
+});

@@ -1,22 +1,42 @@
 import { Avatar, AvatarBadge, Flex, Tag } from "@chakra-ui/react";
-
 import useTranslation from "next-translate/useTranslation";
 
 import { CharacterList } from "../../../config/characters";
 import { IPlayerData } from "../../../model/PlayerData";
+import { RoomDataStatus } from "../../../model/RoomData";
 
 interface ICharacterCardProps {
   character: IPlayerData;
-  handleVoteFunction: (status: string, vote: number) => string | number;
-  status: string;
+  status?: RoomDataStatus;
+  isRevealed?: boolean;
 }
 
 export const PokerCharacter = ({
   character,
-  handleVoteFunction,
   status,
+  isRevealed
 }: ICharacterCardProps) => {
   const { t } = useTranslation("common");
+
+  const parseSecretVoteBasedOnRoomStatus = (status?: RoomDataStatus, vote?: number, revealed?: boolean) => {
+    if (!status) return '-';
+
+    const states: { [key in RoomDataStatus]: string | number | undefined } = {
+      1: "-",
+      2: '-',
+      3: vote,
+    };
+
+
+    if (revealed) return states[RoomDataStatus.NOTE_REVEALED];
+
+    return states[status]
+
+    // if (status === "REVEALED" && !isRevealed) return "-";
+
+    // return states[status];
+  };
+
 
   const parseCharacterTeam = (team: number) => {
     const arrayState = [
@@ -36,12 +56,11 @@ export const PokerCharacter = ({
   };
 
   const parseCharacterColor = (character: IPlayerData) => {
-    if (character.raiseHand) return "yellow";
+    if (character.raiseHand) return "yellow.500";
 
-    if (character.vote) return "purple.400";
+    if (character.vote) return "dino.primary";
 
-
-    return 'dino.base2'
+    return "none";
   };
 
   return (
@@ -54,10 +73,9 @@ export const PokerCharacter = ({
           {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
           {character?.team ? `(${parseCharacterTeam(character.team)})` : "-"}
         </Tag>
-
         <Avatar
           loading="eager"
-          src={CharacterList[character?.character || 0].src}
+          src={`/${CharacterList[character?.character || 0].src}`}
           size="lg"
           name={character.name ? character.name : "Unknown"}
           bg={parseCharacterColor(character)}
@@ -68,7 +86,7 @@ export const PokerCharacter = ({
             color="dino.text"
           >
             {character?.vote ? (
-              <>{handleVoteFunction(status, character.vote)}</>
+              <>{parseSecretVoteBasedOnRoomStatus(status, character.vote, isRevealed)}</>
             ) : (
               "-"
             )}

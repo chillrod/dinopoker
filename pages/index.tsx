@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 
 import Head from "next/head";
-import HomeView from "../components/templates/_home";
-// import Landing from "../components/templates/_landing";
+import { Landing } from "../components/templates/_landing";
 
 const Home: NextPage = () => {
   return (
@@ -16,7 +15,7 @@ const Home: NextPage = () => {
         ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomeView />
+      <Landing />
     </div>
   );
 };

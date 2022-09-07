@@ -5,8 +5,8 @@ import { emitter } from "./emitter/emitter";
 
 export const ToastProvider = () => {
   useEffect(() => {
-    emitter.on("EMIT_TOAST", (data) => {
-      emitToast({ message: data });
+    emitter.on("EMIT_TOAST", ({ message, state }) => {
+      emitToast({ message, state });
     });
 
     return () => {

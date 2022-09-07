@@ -1,40 +1,66 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Link as LinkChakra } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import { Button } from "../../atoms/button/button";
+import { emitter } from "../../../services/emitter/emitter";
 import { DinoPoker } from "../../atoms/dinopoker";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
 import { PokerMenu } from "../poker-menu/poker-menu";
 
 export const Nav = () => {
   const router = useRouter();
-  const { t } = useTranslation("common");
+  const { t, lang } = useTranslation("common");
 
   const { id } = router.query;
 
+
   return (
-    <Box as="nav" height="auto" px={6} pt={6}>
+    <Box as="nav" height="auto" p={6}>
       <Grid templateColumns="1fr auto" alignItems="center">
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-              <DinoPoker />
-              {!id && <MenuChangeLanguage />}
+              <Link href='/'>
+                <LinkChakra>
+                  <DinoPoker />
+                </LinkChakra>
+              </Link>
             </Grid>
 
-            {/* {!id && (
-              <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-                <Button>{t("home.play-poker")}</Button>
+            <>
+              <Grid
+                gap={4}
+                gridTemplateColumns={[
+                  "repeat(3, auto)",
+                  "repeat(3, auto)",
+                  "repeat(3, auto)",
+                ]}
+                alignItems="center"
+                justifyItems="end"
+              >
+                {lang === "pt" && (
+                  <LinkChakra
+                    href="https://nubank.com.br/pagar/152tv/6xqf3wx7rA"
+                    target="_blank"
+                  >
+                    Donating
+                  </LinkChakra>
+                )}
+                <LinkChakra
+                  target="_blank"
+                  href="https://github.com/chillrod"
+                >
+                  Follow me on Github
+                </LinkChakra>
+                {!id && (
+                  <MenuChangeLanguage />
+                )}
               </Grid>
-            )} */}
+            </>
           </Flex>
         </GridItem>
-        {id && (
-          <GridItem justifySelf="end">
-            <PokerMenu />
-          </GridItem>
-        )}
       </Grid>
     </Box>
   );

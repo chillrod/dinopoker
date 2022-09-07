@@ -1,194 +1,146 @@
-import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
-import { generate as uuid } from "short-uuid";
+import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 
 import { appFirebase } from "../../config/firebase/firebase";
-import { IPlayerData } from "../../model/PlayerData";
-import { setLocalStorage } from "../local-storage/handler";
-import { PlayerService } from "../player/player.service";
+import { InitializePlayerData, IPlayerData } from "../../model/PlayerData";
+import { RoomDataStatus } from "../../model/RoomData";
+import { makeUuid } from "../../utils/MakeUuid";
+import { getLocalStorage, setLocalStorage } from "../local-storage/handler";
+import { NotificationsService } from "../notifications/notifications.service";
 
-const mountCharacterLocalStorage = (player: IPlayerData) => {
-  setLocalStorage("character", {
-    room: player.room,
-    player,
-  });
-};
+const db = getDatabase(appFirebase);
 
 export const RoomsService = {
-  generateUuid() {
-    return uuid();
-  },
-  async createRoom({ name, character }: IPlayerData) {
-    const db = getDatabase(appFirebase);
-    const uuid = this.generateUuid();
+  async CREATE_ROOM({
+    player,
+    voteSystem,
+  }: {
+    player: IPlayerData;
+    voteSystem: string;
+  }) {
+    const roomId = makeUuid();
 
-    const player = PlayerService.preparePlayer({
-      name,
-      character,
-      room: uuid,
+    const playerData = InitializePlayerData({
+      ...player,
+      room: roomId,
     });
 
     try {
-      await set(ref(db, "dinopoker-room/" + uuid), {
-        id: uuid,
-        roomStatus: "PENDING",
+      await set(ref(db, "dinopoker-room/" + roomId), {
+        id: roomId,
+        status: RoomDataStatus.PENDING,
+        voteSystem: voteSystem,
       });
 
-      await RoomsService.joinPlayerToRoom(player);
-
-      return { uuid, player };
+      return { playerFromCreateRoom: playerData };
     } catch (err: any) {
       throw new Error(err);
     }
   },
 
-  async joinPlayerToRoom(player: IPlayerData) {
-    if (!player) return;
-
-    const db = getDatabase(appFirebase);
-
-    const preparedPlayer = PlayerService.preparePlayer({
-      name: player.name,
-      character: player.character,
-      room: player.room,
-    });
-
-    const checkIfRoomExists = await RoomsService.checkIfRoomExists({
-      roomId: player.room,
-    });
-
-    if (!checkIfRoomExists) {
-      throw new Error("Room does not exist");
-    }
-
+  async JOIN_ROOM({ player }: { player: IPlayerData }) {
     try {
+      const room = await get(ref(db, "dinopoker-room/" + player.room));
+
+      if (!room.exists() || !player.room) {
+        throw new Error("Room not found");
+      }
+
       const data = await push(
         ref(db, "dinopoker-room/" + player.room + "/players"),
-        preparedPlayer
+        {
+          ...player,
+        }
       ).then((res) => res);
 
-      const playerData = {
-        room: player.room,
-        player: {
-          ...preparedPlayer,
-          id: data.key,
-        },
-      };
-
-      mountCharacterLocalStorage({ ...player, id: data.key || "" });
-
-      return playerData;
+      setLocalStorage("user-client-key", data.key);
     } catch (err: any) {
       throw new Error(err);
     }
   },
 
-  async getCharacters(room?: string | string[]) {
-    const db = getDatabase(appFirebase);
-
-    const data = await get(
-      child(ref(db), "dinopoker-room/" + room + "/players/")
-    );
-
-    return data.val();
-  },
-
-  async setCharacterToRoom(player: IPlayerData) {
+  async UPDATE_PLAYER({
+    player,
+    roomId,
+    key,
+    value,
+  }: {
+    player?: string;
+    key?: string;
+    roomId?: string | string[];
+    value?: any;
+  }) {
     if (!player) return;
-
-    const db = getDatabase(appFirebase);
-
-    await set(
-      child(ref(db), "dinopoker-room/" + player.room + "/players/" + player.id),
-      {
-        ...player,
-      }
-    );
-
-    mountCharacterLocalStorage(player);
-  },
-
-  async resetPlayerVote(player: IPlayerData) {
-    if (!player) return;
-
-    const db = getDatabase(appFirebase);
 
     await set(
       child(
         ref(db),
-        "dinopoker-room/" + player.room + "/players/" + player.id + "/vote"
+        "dinopoker-room/" + roomId + "/players/" + player + `/${key}`
       ),
-      0
+      value
     );
-
-    mountCharacterLocalStorage(player);
   },
 
-  async changePlayerVote(player: IPlayerData) {
-    if (!player) return;
-
-    const db = getDatabase(appFirebase);
-
-    await set(
-      child(
-        ref(db),
-        "dinopoker-room/" + player.room + "/players/" + player.id + "/vote"
-      ),
-      player.vote
-    );
-
-    mountCharacterLocalStorage(player);
-  },
-
-  async updateRoomStatus(roomId?: string | string[], roomStatus?: string) {
+  async UPDATE_ROOM({
+    roomId,
+    key,
+    value,
+  }: {
+    roomId?: string | string[];
+    key?: string;
+    value?: any;
+  }) {
     if (!roomId) return;
 
-    const db = getDatabase(appFirebase);
+    await set(child(ref(db), "dinopoker-room/" + roomId + "/" + key), value);
+  },
 
-    await set(
-      child(ref(db), "dinopoker-room/" + roomId + "/roomStatus"),
-      roomStatus
+  async CHECK_STATE({ roomId }: { roomId?: string | string[] }) {
+    const room = await get(ref(db, "dinopoker-room/" + roomId));
+
+    const players = await get(
+      ref(db, "dinopoker-room/" + roomId + "/players")
+    ).then((res) => res);
+
+    if (!getLocalStorage("user-client-key"))
+      return NotificationsService.emitRoomState({
+        hasPlayer: false,
+        hasRoom: room.exists(),
+      });
+
+    const hasChild = players.hasChild(getLocalStorage("user-client-key"));
+
+    return NotificationsService.emitRoomState({
+      hasPlayer: hasChild,
+      hasRoom: room.exists(),
+      ...(hasChild && {
+        player: players.child(getLocalStorage("user-client-key")),
+      }),
+    });
+  },
+
+  PLAYER_NODE({ roomId }: { roomId?: string | string[] }) {
+    return child(
+      ref(db),
+      `dinopoker-room/${roomId}/players/${getLocalStorage("user-client-key")}`
     );
   },
 
-  async updatePlayerRaiseHand(player: IPlayerData, raiseHand: boolean) {
-    if (!player) return;
+  async SET_SPECTATOR({ roomId }: { roomId?: string | string[] }) {
+    const player = getLocalStorage("user-client-key");
 
-    const db = getDatabase(appFirebase);
-
-    await set(
-      child(
-        ref(db),
-        "dinopoker-room/" + player.room + "/players/" + player.id + "/raiseHand"
-      ),
-      raiseHand
-    );
-
-    mountCharacterLocalStorage(player);
+    if (player)
+      await set(
+        child(ref(db), "dinopoker-room/" + roomId + "/players/" + player),
+        "spectator"
+      );
   },
 
-  async updatePlayerTeam(player: IPlayerData, team: number) {
-    if (!player) return;
+  async PLAYER_REMOVE({ roomId }: { roomId?: string | string[] }) {
+    const player = getLocalStorage("user-client-key");
 
-    const db = getDatabase(appFirebase);
-
-    await set(
-      child(
-        ref(db),
-        "dinopoker-room/" + player.room + "/players/" + player.id + "/team"
-      ),
-      team
-    );
-
-    mountCharacterLocalStorage({ ...player, team });
-  },
-
-  async checkIfRoomExists({ roomId }: { roomId?: string }): Promise<boolean> {
-    const db = getDatabase(appFirebase);
-
-    const exists = await get(child(ref(db), "dinopoker-room/" + roomId)).then(
-      (res) => res.exists()
-    );
-
-    return !!exists;
+    if (player)
+      await remove(
+        child(ref(db), "dinopoker-room/" + roomId + "/players/" + player)
+      );
   },
 };

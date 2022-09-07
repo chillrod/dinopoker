@@ -48,8 +48,8 @@ export const CharacterCard = ({
       disabled={disabled}
       size={size}
       p={2}
-      w={["4.5em", "5.5em", "9em"]}
-      h={["4.5em", "5.5em", "9em"]}
+      w={["4.5em", "4.5em", "100%"]}
+      h={["4.5em", "4.5em", "5em"]}
     >
       <Box w="100%" h="100%">
         <Img
