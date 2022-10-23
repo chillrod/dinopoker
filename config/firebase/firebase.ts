@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5OZzYbBmxvnGxTj-m3U98S1o6S0GQk0Y",
@@ -13,28 +14,7 @@ const firebaseConfig = {
 
 export const appFirebase = initializeApp(firebaseConfig);
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
-// const provider = new GoogleAuthProvider();
-
-export const auth = getAuth();
-// signInWithPopup(auth, provider)
-//   .then((result) => {
-//     // This gives you a Google Access Token. You can use it to access the Google API.
-//     const credential = GoogleAuthProvider.credentialFromResult(result);
-//     const token = credential?.accessToken;
-//     console.log("🚀 ~ file: firebase.ts ~ line 26 ~ .then ~ token", token);
-//     // The signed-in user info.
-//     const user = result.user;
-//     // ...
-//   })
-//   .catch((error) => {
-//     // Handle Errors here.
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     // The email of the user's account used.
-//     const email = error.customData.email;
-//     // The AuthCredential type that was used.
-//     const credential = GoogleAuthProvider.credentialFromError(error);
-//     // ...
-//   });
+const appCheck = initializeAppCheck(appFirebase, {
+  provider: new ReCaptchaV3Provider("6Le5V5ghAAAAAOBc-YdHrILbimG6Vzw57rNJvFoo"),
+  isTokenAutoRefreshEnabled: true,
+});
