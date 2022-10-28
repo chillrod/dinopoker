@@ -7,97 +7,98 @@ import { RoomDataStatus } from "../../model/RoomData";
 import { RoomsService } from "../../services/rooms/rooms.service";
 import { Button } from "../atoms/button/button";
 
-interface IPokerRoomStatus { roomStatus?: number, revealingTimeout?: number, isRevealed?: boolean }
+interface IPokerRoomStatus {
+  roomStatus?: number;
+  revealingTimeout?: number;
+  isRevealed?: boolean;
+}
 
-export const PokerRoomStatus = ({ roomStatus, revealingTimeout, isRevealed }: IPokerRoomStatus) => {
-    const router = useRouter();
+export const PokerRoomStatus = ({
+  roomStatus,
+  revealingTimeout,
+  isRevealed,
+}: IPokerRoomStatus) => {
+  const router = useRouter();
 
-    const { id } = router.query
+  const { id } = router.query;
 
-    const { t } = useTranslation("common");
+  const { t } = useTranslation("common");
 
+  const [voteLoading, setVoteLoading] = useState(false);
 
-    const [voteLoading, setVoteLoading] = useState(false);
-
-    const parseActionsAndTextBasedOnStatus = (roomStatus?: number) => {
-        const states: { [status: number]: string } = {
-            1: t("poker.actions.reveal-votes"),
-            2: t("poker.actions.restart-votes"),
-        };
-
-        if (!roomStatus) return;
-
-
-        return states[roomStatus];
+  const parseActionsAndTextBasedOnStatus = (roomStatus?: number) => {
+    const states: { [status: number]: string } = {
+      1: t("poker.actions.reveal-votes"),
+      2: t("poker.actions.restart-votes"),
     };
 
-    const stateHandler: { [key: number]: () => React.ReactElement } = {
-        1: () => {
-            return (
-                <Button
-                    loading={voteLoading}
-                    onClick={() => RoomsService.UPDATE_ROOM({
-                        roomId: id,
-                        key: 'status',
-                        value: RoomDataStatus.REVEALED
-                    })}
-                >
-                    {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
-                </Button>
-            );
-        },
+    if (!roomStatus) return;
 
-        2: () => {
-            return (
-                <Flex direction="column" justifyContent="center">
-                    <Tag fontSize="lg" colorScheme="purple" fontWeight={600}>
-                        {t("poker.actions.revealing-in")} {revealingTimeout}
-                    </Tag>
-                    <Img src="/dino1.svg" w="50px" margin="0 auto" mt={5} />
-                </Flex>
-            );
-        },
+    return states[roomStatus];
+  };
 
-        3: () => {
-            return (
-                <>
-                    <Button
-                        loading={voteLoading}
-                        onClick={() => RoomsService.UPDATE_ROOM({
-                            roomId: id,
-                            key: 'status',
-                            value: RoomDataStatus.PENDING
-                        })}
-                    >
-                        {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
-                    </Button>
+  const stateHandler: { [key: number]: () => React.ReactElement } = {
+    1: () => {
+      return (
+        <Button
+          loading={voteLoading}
+          onClick={() =>
+            RoomsService.UPDATE_ROOM({
+              roomId: id,
+              key: "status",
+              value: RoomDataStatus.REVEALED,
+            })
+          }
+        >
+          {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
+        </Button>
+      );
+    },
 
+    2: () => {
+      return (
+        <Tag fontSize="lg" colorScheme="purple" fontWeight={600}>
+          {t("poker.actions.revealing-in")} {revealingTimeout}
+        </Tag>
+      );
+    },
+
+    3: () => {
+      return (
+        <>
+          <Button
+            loading={voteLoading}
+            onClick={() =>
+              RoomsService.UPDATE_ROOM({
+                roomId: id,
+                key: "status",
+                value: RoomDataStatus.PENDING,
+              })
+            }
+          >
+            {parseActionsAndTextBasedOnStatus(roomStatus) || "Carregando..."}
+          </Button>
+          {/* 
                     <Flex mt={2}>
                         <Tag fontSize={["sm", "sm", "lg"]} mx={2}>
                             {t("poker.actions.team-1-note")}:{" "}
-                            {/* {calculateMd("team1").max || 0} */}
                         </Tag>
                         <Tag fontSize={["sm", "sm", "lg"]} mx={2}>
                             {t("poker.actions.team-2-note")}:{" "}
-                            {/* {calculateMd("team2").max || 0} */}
                         </Tag>
-                    </Flex>
-                </>
-            );
-        },
-    };
-
-    return (
-        <>
-            {roomStatus && !isRevealed ? (
-                <>
-                    {stateHandler[roomStatus]()}
-                </>
-            ) : <>
-                {stateHandler[RoomDataStatus.NOTE_REVEALED]()}
-            </>}
+                    </Flex> */}
         </>
-    )
+      );
+    },
+  };
 
-
-}
+  return (
+    <>
+      {roomStatus && !isRevealed ? (
+        <>{stateHandler[roomStatus]()}</>
+      ) : (
+        <>{stateHandler[RoomDataStatus.NOTE_REVEALED]()}</>
+      )}
+    </>
+  );
+};

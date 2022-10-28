@@ -12,14 +12,9 @@ import ScreenLoading from "../components/templates/_screen-loading";
 import { emitter } from "../services/emitter/emitter";
 import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
-import { BottomLoading } from "../components/templates/_top-bottom-loading";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState<{ show: boolean; message?: string }>({
-    show: false,
-  });
-
-  const [topBottomLoading, setTopBottomLoading] = useState<{ show: boolean; message?: string }>({
     show: false,
   });
 
@@ -35,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const screenLoadingTransition = {
     initial: {
-      opacity: 0.80,
+      opacity: 0.8,
       transition: {
         duration: 0.1,
       },
@@ -81,28 +76,14 @@ function MyApp({ Component, pageProps }: AppProps) {
             </motion.div>
           </>
         )}
-
-        {topBottomLoading.show && (
-          <motion.div
-            variants={screenLoadingTransition}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            <BottomLoading />
-          </motion.div>
-        )}
       </AnimatePresence>
 
-
-      <Container maxW={['container.lg', 'container.xl', 'container.xl']}>
-        {!loading.show && (
-          <>
-            <MessageBox />
-            <Component {...pageProps} />
-          </>
-        )}
-      </Container>
+      {!loading.show && (
+        <>
+          <MessageBox />
+          <Component {...pageProps} />
+        </>
+      )}
     </ChakraProvider>
   );
 }

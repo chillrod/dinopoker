@@ -15,14 +15,13 @@ export const Nav = () => {
 
   const { id } = router.query;
 
-
   return (
-    <Box as="nav" height="auto" p={6}>
+    <Box as="nav" p={2} px={4}>
       <Grid templateColumns="1fr auto" alignItems="center">
         <GridItem>
           <Flex justifyContent="space-between" alignItems="center">
             <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-              <Link href='/'>
+              <Link href="/">
                 <LinkChakra>
                   <DinoPoker />
                 </LinkChakra>
@@ -48,15 +47,10 @@ export const Nav = () => {
                     Donating
                   </LinkChakra>
                 )}
-                <LinkChakra
-                  target="_blank"
-                  href="https://github.com/chillrod"
-                >
+                <LinkChakra target="_blank" href="https://github.com/chillrod">
                   Follow me on Github
                 </LinkChakra>
-                {!id && (
-                  <MenuChangeLanguage />
-                )}
+                {!id && <MenuChangeLanguage />}
               </Grid>
             </>
           </Flex>

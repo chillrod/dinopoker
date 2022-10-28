@@ -1,4 +1,4 @@
-import { Avatar, AvatarBadge, Flex, Tag } from "@chakra-ui/react";
+import { Avatar, AvatarBadge, Flex, Tag, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 
 import { CharacterList } from "../../../config/characters";
@@ -14,29 +14,31 @@ interface ICharacterCardProps {
 export const PokerCharacter = ({
   character,
   status,
-  isRevealed
+  isRevealed,
 }: ICharacterCardProps) => {
   const { t } = useTranslation("common");
 
-  const parseSecretVoteBasedOnRoomStatus = (status?: RoomDataStatus, vote?: number, revealed?: boolean) => {
-    if (!status) return '-';
+  const parseSecretVoteBasedOnRoomStatus = (
+    status?: RoomDataStatus,
+    vote?: number,
+    revealed?: boolean
+  ) => {
+    if (!status) return "-";
 
     const states: { [key in RoomDataStatus]: string | number | undefined } = {
       1: "-",
-      2: '-',
+      2: "-",
       3: vote,
     };
 
-
     if (revealed) return states[RoomDataStatus.NOTE_REVEALED];
 
-    return states[status]
+    return states[status];
 
     // if (status === "REVEALED" && !isRevealed) return "-";
 
     // return states[status];
   };
-
 
   const parseCharacterTeam = (team: number) => {
     const arrayState = [
@@ -70,7 +72,9 @@ export const PokerCharacter = ({
           fontSize="sm"
           color={character?.team ? parseCharacterTeamColor(character.team) : ""}
         >
-          {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
+          <Text noOfLines={1} maxWidth="8em" mr={1}>
+            {character.raiseHand ? `${character.name} 🤚` : character.name}{" "}
+          </Text>
           {character?.team ? `(${parseCharacterTeam(character.team)})` : "-"}
         </Tag>
         <Avatar
@@ -86,7 +90,13 @@ export const PokerCharacter = ({
             color="dino.text"
           >
             {character?.vote ? (
-              <>{parseSecretVoteBasedOnRoomStatus(status, character.vote, isRevealed)}</>
+              <>
+                {parseSecretVoteBasedOnRoomStatus(
+                  status,
+                  character.vote,
+                  isRevealed
+                )}
+              </>
             ) : (
               "-"
             )}
