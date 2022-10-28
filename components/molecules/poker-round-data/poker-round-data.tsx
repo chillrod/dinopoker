@@ -12,7 +12,6 @@ import { PokerCharacter } from "../../atoms/poker-character/poker-character";
 import { PokerRoomStatus } from "../../templates/_poker-roomstatus";
 
 export interface IPokerRoundData {
-  updateRoomStatus: (roomStatus: string) => void;
   roomStatus?: RoomDataStatus;
   currentPlayers: any;
 }
@@ -20,7 +19,6 @@ export interface IPokerRoundData {
 export const PokerRoundData = ({
   currentPlayers,
   roomStatus,
-  updateRoomStatus,
 }: IPokerRoundData) => {
   const { t } = useTranslation("common");
 
@@ -31,7 +29,6 @@ export const PokerRoundData = ({
   const [revealingTimeout, setRevealingTimeout] = useState(3);
   const [isRevealed, setIsRevealed] = useState(false);
 
-
   const copyRoomLink = () => {
     navigator.clipboard.writeText(window.location.href);
 
@@ -41,17 +38,15 @@ export const PokerRoundData = ({
     });
   };
 
-
   useMemo(() => {
     if (!currentPlayers) return;
 
     setCurrentPlayerPositions({
-      ["top"]: [...currentPlayers.slice(0, 4)],
-      ["bottom"]: [...currentPlayers.slice(4, 8)],
-      ["left"]: [...currentPlayers.slice(8, 12)],
-      ["right"]: [...currentPlayers.slice(12, 16)],
+      ["top"]: [...currentPlayers.slice(0, 3)],
+      ["bottom"]: [...currentPlayers.slice(3, 6)],
+      ["left"]: [...currentPlayers.slice(6, 9)],
+      ["right"]: [...currentPlayers.slice(9, 12)],
     });
-
   }, [currentPlayers]);
 
   useEffect(() => {
@@ -73,14 +68,12 @@ export const PokerRoundData = ({
     }
   }, [roomStatus, revealingTimeout]);
 
-
-
   return (
     <Grid
       minH="30vh"
       justifyContent="center"
       alignItems="center"
-      gridTemplateColumns="10% 60% 10%"
+      gridTemplateColumns="10% 50% 10%"
       gridTemplateRows="auto auto auto"
       gap={4}
       gridTemplateAreas={`
@@ -92,8 +85,7 @@ export const PokerRoundData = ({
       <GridItem
         bg="dino.base3"
         p={5}
-        minH="150px"
-        height={["10em", "8em"]}
+        h="100px"
         borderRadius="full"
         area="table"
       >
@@ -104,13 +96,13 @@ export const PokerRoundData = ({
           justifyContent="center"
           alignItems="center"
         >
-          {currentPlayers?.length > 1 ? (
+          {currentPlayers?.length === 1 ? (
             <PokerRoomStatus
               roomStatus={roomStatus}
               revealingTimeout={revealingTimeout}
               isRevealed={isRevealed}
             />
-          ) :
+          ) : (
             <Flex mt={2} direction="column">
               <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
                 Invite your team mates
@@ -121,7 +113,7 @@ export const PokerRoundData = ({
                 icon={<Share2 />}
               />
             </Flex>
-          }
+          )}
         </Flex>
       </GridItem>
 
@@ -154,7 +146,9 @@ export const PokerRoundData = ({
                         status={roomStatus}
                         isRevealed={isRevealed}
                       />
-                    ) : <></>}
+                    ) : (
+                      <></>
+                    )}
                   </motion.div>
                 )
               )}
@@ -162,6 +156,6 @@ export const PokerRoundData = ({
           </Flex>
         </GridItem>
       ))}
-    </Grid >
+    </Grid>
   );
 };

@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5OZzYbBmxvnGxTj-m3U98S1o6S0GQk0Y",
@@ -14,11 +13,10 @@ const firebaseConfig = {
 
 export const appFirebase = initializeApp(firebaseConfig);
 
-if (typeof window !== "undefined") {
-  initializeAppCheck(appFirebase, {
-    provider: new ReCaptchaV3Provider(
-      "6Le5V5ghAAAAAOBc-YdHrILbimG6Vzw57rNJvFoo"
-    ),
-    isTokenAutoRefreshEnabled: true,
-  });
-}
+import { getAuth, signInAnonymously } from "firebase/auth";
+
+const auth = getAuth();
+
+signInAnonymously(auth).catch((error) => {
+  console.log("You've got an error: ", error);
+});

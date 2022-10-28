@@ -78,14 +78,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         )}
       </AnimatePresence>
 
-      <Container maxW={["container.lg", "container.xl", "container.xl"]}>
-        {!loading.show && (
-          <>
-            <MessageBox />
-            <Component {...pageProps} />
-          </>
-        )}
-      </Container>
+      {!loading.show && (
+        <>
+          <MessageBox />
+          <Component {...pageProps} />
+        </>
+      )}
     </ChakraProvider>
   );
 }

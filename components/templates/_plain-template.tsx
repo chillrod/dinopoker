@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/react";
+import { Container, Grid } from "@chakra-ui/react";
 
 export const PlainTemplate = ({
   cols,
@@ -16,21 +16,19 @@ export const PlainTemplate = ({
   justify?: string;
 }) => {
   return (
-    <Grid
-      alignItems={align}
-      justifyItems={justify}
-      bg="dino.base5"
-      height="100%"
-      borderRadius="2xl"
-      gap={6}
-      p={8}
-      h='full'
-      minH="100vh"
-      gridTemplateRows={rows}
-      gridTemplateColumns={cols}
-      gridTemplateAreas={areas}
-    >
-      {children}
-    </Grid>
+    <Container maxW="container.xl">
+      <Grid
+        alignItems={align}
+        justifyItems={justify}
+        bg="dino.base5"
+        minH="100vh"
+        p={6}
+        gridTemplateRows={rows}
+        gridTemplateColumns={cols}
+        gridTemplateAreas={areas}
+      >
+        {children}
+      </Grid>
+    </Container>
   );
 };
