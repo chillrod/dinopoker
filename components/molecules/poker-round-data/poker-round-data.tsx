@@ -96,7 +96,7 @@ export const PokerRoundData = ({
           justifyContent="center"
           alignItems="center"
         >
-          {currentPlayers?.length === 1 ? (
+          {currentPlayers?.length > 1 ? (
             <PokerRoomStatus
               roomStatus={roomStatus}
               revealingTimeout={revealingTimeout}
