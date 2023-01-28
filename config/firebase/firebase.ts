@@ -12,11 +12,3 @@ const firebaseConfig = {
 };
 
 export const appFirebase = initializeApp(firebaseConfig);
-
-import { getAuth, signInAnonymously } from "firebase/auth";
-
-const auth = getAuth();
-
-signInAnonymously(auth).catch((error) => {
-  console.log("You've got an error: ", error);
-});
