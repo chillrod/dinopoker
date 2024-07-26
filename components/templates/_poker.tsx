@@ -1,4 +1,13 @@
-import { Box, Center, Grid, GridItem, Heading, Spinner, Stack, Tag } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Grid,
+  GridItem,
+  Heading,
+  Spinner,
+  Stack,
+  Tag,
+} from "@chakra-ui/react";
 import { DataSnapshot, getDatabase, onValue, ref } from "firebase/database";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,6 +24,7 @@ import { CardPoints } from "../atoms/card-points/card-points";
 import { PokerMenu } from "../molecules/poker-menu/poker-menu";
 import { PokerRoundData } from "../molecules/poker-round-data/poker-round-data";
 import { PlainTemplate } from "./_plain-template";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const db = getDatabase(appFirebase);
 const status = ({ id }: { id?: string | string[] }) =>

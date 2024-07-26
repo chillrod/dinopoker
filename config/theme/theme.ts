@@ -23,7 +23,7 @@ const ChakraTheme = extendTheme({
   styles: {
     global: () => ({
       body: {
-        bg: "#0E0E0E",
+        bg: "dino.base5",
       },
     }),
   },

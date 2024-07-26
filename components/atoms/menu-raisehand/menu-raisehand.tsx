@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Speaker } from "react-feather";
+import { AlertCircle } from "react-feather";
 
 import { getLocalStorage } from "../../../services/local-storage/handler";
 import { NotificationsService } from "../../../services/notifications/notifications.service";
@@ -33,9 +33,9 @@ export const MenuRaiseHand = () => {
   };
 
   const returnBg = (raisingHand: boolean) => {
-    if (raisingHand) return "purple.500";
+    if (raisingHand) return "dino.secondary";
 
-    return "purple.300";
+    return "dino.primary";
   };
 
   const returnColor = () => {
@@ -53,7 +53,7 @@ export const MenuRaiseHand = () => {
           color={returnColor()}
           bg={returnBg(isRaisingHand)}
           ariaLabel={t("poker.actions.raise-hand")}
-          icon={<Speaker />}
+          icon={<AlertCircle />}
         />
       </Flex>
     </>

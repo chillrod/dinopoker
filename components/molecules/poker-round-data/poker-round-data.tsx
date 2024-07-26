@@ -10,6 +10,7 @@ import { NotificationsService } from "../../../services/notifications/notificati
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { PokerCharacter } from "../../atoms/poker-character/poker-character";
 import { PokerRoomStatus } from "../../templates/_poker-roomstatus";
+import ConfettiExplosion from "react-confetti-explosion";
 
 export interface IPokerRoundData {
   roomStatus?: RoomDataStatus;
@@ -25,6 +26,8 @@ export const PokerRoundData = ({
   const [currentPlayerPositions, setCurrentPlayerPositions] = useState<{
     [key: string]: IPlayerData[];
   }>({});
+
+  const [isExploding, setIsExploding] = useState(false);
 
   const [revealingTimeout, setRevealingTimeout] = useState(3);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -56,6 +59,8 @@ export const PokerRoundData = ({
     if (revealingTimeout === 0) {
       setIsRevealed(true);
 
+      setIsExploding(true);
+
       return;
     }
 
@@ -69,93 +74,101 @@ export const PokerRoundData = ({
   }, [roomStatus, revealingTimeout]);
 
   return (
-    <Grid
-      minH="30vh"
-      justifyContent="center"
-      alignItems="center"
-      gridTemplateColumns="10% 50% 10%"
-      gridTemplateRows="auto auto auto"
-      gap={4}
-      gridTemplateAreas={`
+    <>
+      {isExploding && (
+        <ConfettiExplosion
+          onComplete={() => setIsExploding(false)}
+          zIndex={20}
+        />
+      )}
+      <Grid
+        minH="30vh"
+        justifyContent="center"
+        alignItems="center"
+        gridTemplateColumns="10% 50% 10%"
+        gridTemplateRows="auto auto auto"
+        gap={4}
+        gridTemplateAreas={`
                        "left top right"
                        "left table right"
                        "left bottom right"
                        `}
-    >
-      <GridItem
-        bg="dino.base3"
-        p={5}
-        h="100px"
-        borderRadius="full"
-        area="table"
       >
-        <Flex
-          h="100%"
-          gap={2}
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          {currentPlayers?.length > 1 ? (
-            <PokerRoomStatus
-              roomStatus={roomStatus}
-              revealingTimeout={revealingTimeout}
-              isRevealed={isRevealed}
-            />
-          ) : (
-            <Flex mt={2} direction="column">
-              <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
-                Invite your team mates
-              </Tag>
-              <IconButton
-                onClick={() => copyRoomLink()}
-                ariaLabel="Share"
-                icon={<Share2 />}
-              />
-            </Flex>
-          )}
-        </Flex>
-      </GridItem>
-
-      {Object.keys(currentPlayerPositions).map((playerPosition) => (
         <GridItem
-          justifySelf="center"
-          key={playerPosition}
-          area={playerPosition}
+          bg="dino.base3"
+          p={5}
+          h="100px"
+          borderRadius="full"
+          area="table"
         >
           <Flex
-            gap={4}
-            direction={
-              playerPosition === "left" || playerPosition === "right"
-                ? "column"
-                : "row"
-            }
+            h="100%"
+            gap={2}
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            <AnimatePresence>
-              {currentPlayerPositions[playerPosition].map(
-                (player: IPlayerData) => (
-                  <motion.div
-                    key={player?.id}
-                    initial={{ scale: 0.97 }}
-                    animate={{ scale: [1.1, 0.99, 1] }}
-                    exit={{ scale: 0.97 }}
-                  >
-                    {player ? (
-                      <PokerCharacter
-                        character={player}
-                        status={roomStatus}
-                        isRevealed={isRevealed}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </motion.div>
-                )
-              )}
-            </AnimatePresence>
+            {currentPlayers?.length > 1 ? (
+              <PokerRoomStatus
+                roomStatus={roomStatus}
+                revealingTimeout={revealingTimeout}
+                isRevealed={isRevealed}
+              />
+            ) : (
+              <Flex mt={2} direction="column">
+                <Tag mb={2} fontSize={["sm", "sm", "lg"]} mx={2}>
+                  Invite your team mates
+                </Tag>
+                <IconButton
+                  onClick={() => copyRoomLink()}
+                  ariaLabel="Share"
+                  icon={<Share2 />}
+                />
+              </Flex>
+            )}
           </Flex>
         </GridItem>
-      ))}
-    </Grid>
+
+        {Object.keys(currentPlayerPositions).map((playerPosition) => (
+          <GridItem
+            justifySelf="center"
+            key={playerPosition}
+            area={playerPosition}
+          >
+            <Flex
+              gap={4}
+              direction={
+                playerPosition === "left" || playerPosition === "right"
+                  ? "column"
+                  : "row"
+              }
+            >
+              <AnimatePresence>
+                {currentPlayerPositions[playerPosition].map(
+                  (player: IPlayerData) => (
+                    <motion.div
+                      key={player?.id}
+                      initial={{ scale: 0.97 }}
+                      animate={{ scale: [1.1, 0.99, 1] }}
+                      exit={{ scale: 0.97 }}
+                    >
+                      {player ? (
+                        <PokerCharacter
+                          character={player}
+                          status={roomStatus}
+                          isRevealed={isRevealed}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </motion.div>
+                  )
+                )}
+              </AnimatePresence>
+            </Flex>
+          </GridItem>
+        ))}
+      </Grid>
+    </>
   );
 };
