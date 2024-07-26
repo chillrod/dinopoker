@@ -26,7 +26,15 @@ import { BarChart, CheckCircle, UserPlus, Users } from "react-feather";
 import { WithSpeechBubbles } from "./_testimonials";
 import { LargeWithLogoLeft } from "./_footer";
 
-const Feature = ({ text, icon, iconBg }) => {
+const Feature = ({
+  text,
+  icon,
+  iconBg,
+}: {
+  text: string;
+  icon: React.ReactNode;
+  iconBg: string;
+}) => {
   return (
     <Stack direction={"row"} align={"center"}>
       <Flex
@@ -96,7 +104,6 @@ export const Landing = () => {
           </Text>
           <Stack spacing={6} direction={"row"}>
             <Button
-              colorScheme={"orange"}
               bg={"dino.primary"}
               onClick={() => handleCreate()}
             >

@@ -8,59 +8,57 @@ import { Poker } from "../../components/templates/_poker";
 import { emitter } from "../../services/emitter/emitter";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const GameRoom = () => {
   const router = useRouter();
 
   const { id } = router.query;
 
-
   useEffect(() => {
     onDisconnect(RoomsService.PLAYER_NODE({ roomId: id })).remove();
 
     return () => {
       onDisconnect(RoomsService.PLAYER_NODE({ roomId: id })).cancel();
-    }
-  }, [])
+    };
+  }, []);
 
   const roomCheckState = async () => {
-    RoomsService.CHECK_STATE({ roomId: id })
-  }
+    RoomsService.CHECK_STATE({ roomId: id });
+  };
 
   useEffect(() => {
     const handler = (url: string) => {
-      if (url === '/') RoomsService.PLAYER_REMOVE({ roomId: id });
-    }
+      if (url === "/") RoomsService.PLAYER_REMOVE({ roomId: id });
+    };
 
     router.events.on("routeChangeStart", handler);
 
     return () => {
-      router.events.off('routeChangeStart', () => null)
-    }
+      router.events.off("routeChangeStart", () => null);
+    };
   }, []);
 
   useEffect(() => {
+    roomCheckState();
 
-    roomCheckState()
-
-    emitter.on('EMIT_ROOM_STATE', async ({ hasPlayer, hasRoom, player }) => {
-
+    emitter.on("EMIT_ROOM_STATE", async ({ hasPlayer, hasRoom, player }) => {
       if (!hasRoom) {
         NotificationsService.emitScreenLoading({
           show: true,
-          message: 'Invalid room, redirecting...'
-        })
+          message: "Invalid room, redirecting...",
+        });
 
         await router.push("/");
 
         NotificationsService.emitScreenLoading({
           show: false,
-        })
+        });
       }
 
-      const playerData = hasPlayer ? player?.val() : '';
+      const playerData = hasPlayer ? player?.val() : "";
 
-      if (!hasPlayer || playerData?.toString() === 'spectator') {
+      if (!hasPlayer || playerData?.toString() === "spectator") {
         NotificationsService.emitMessageBox({
           children: <JoinRoomDialog room={id?.toString()} />,
           message: "",
@@ -69,12 +67,12 @@ const GameRoom = () => {
           persistent: true,
         });
       }
-    })
+    });
 
     return () => {
-      emitter.off('EMIT_ROOM_STATE')
-    }
-  }, [])
+      emitter.off("EMIT_ROOM_STATE");
+    };
+  }, []);
 
   return (
     <>
