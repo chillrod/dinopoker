@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Grid, Heading, MenuButton, Menu as MenuChakra, MenuList } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  MenuButton,
+  Menu as MenuChakra,
+  MenuList,
+} from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { Menu } from "react-feather";
 
@@ -12,13 +21,12 @@ export const PokerMenu = () => {
     <>
       <Grid borderRadius="md">
         <Flex gap={7}>
-          {[<MenuTeam key={1} />].map(
-            (Component, id) => (
-              <div key={id}>
-                <Flex>{Component}</Flex>
-              </div>
-            )
-          )}
+          {[<MenuTeam key={1} />].map((Component, id) => (
+            <div key={id}>
+              <Flex>{Component}</Flex>
+            </div>
+          ))}
+          <MenuRaiseHand />
         </Flex>
       </Grid>
       {/* <Grid display={["block", "block", "none"]}>

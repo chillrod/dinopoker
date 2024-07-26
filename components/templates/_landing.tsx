@@ -1,4 +1,19 @@
-import { Box, Flex, GridItem, Heading, Highlight, Stack, Text } from "@chakra-ui/react";
+import {
+  AlertIcon,
+  Box,
+  Container,
+  Flex,
+  GridItem,
+  Heading,
+  Highlight,
+  Icon,
+  SimpleGrid,
+  Stack,
+  StackDivider,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import Image from "next/image";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { ButtonBox } from "../atoms/button-box/button-box";
@@ -7,6 +22,27 @@ import { HeadText } from "../atoms/head-text/head-text";
 import CreateRoomDialog from "./_create-room-dialog";
 import JoinRoomDialog from "./_join-room-dialog";
 import { PlainTemplate } from "./_plain-template";
+import { BarChart, CheckCircle, UserPlus, Users } from "react-feather";
+import { WithSpeechBubbles } from "./_testimonials";
+import { LargeWithLogoLeft } from "./_footer";
+
+const Feature = ({ text, icon, iconBg }) => {
+  return (
+    <Stack direction={"row"} align={"center"}>
+      <Flex
+        w={8}
+        h={8}
+        align={"center"}
+        justify={"center"}
+        rounded={"full"}
+        bg={iconBg}
+      >
+        {icon}
+      </Flex>
+      <Text fontWeight={600}>{text}</Text>
+    </Stack>
+  );
+};
 
 export const Landing = () => {
   const handleCreate = () => {
@@ -26,115 +62,104 @@ export const Landing = () => {
   };
 
   return (
-    <PlainTemplate
-      align="center"
-      areas={[
-        `
-    "hero hero"
-    "dino dino"
-    `,
-        `
-    "hero hero"
-    "dino dino"
-      `,
-        `
-    "hero hero"
-    "dino dino"
-      `,
-        `
-    "hero dino"
-    "hero dino"
-      `,
-      ]}
-      cols={["1fr", "1fr", "1fr", "auto auto"]}
+    <div
+      style={{
+        opacity: 0.8,
+        backgroundImage: "radial-gradient(#412f6e 0.5px, #111111 0.5px)",
+        backgroundSize: "20px 20px",
+      }}
     >
-
-      <GridItem
-        gridArea="hero"
-        alignSelf="start"
-      >
-
-        <Stack spacing={3}
-          direction="column"
+      <Container maxW={"6xl"}>
+        <Stack
+          textAlign={"center"}
+          align={"center"}
+          spacing={{ base: 8, md: 10 }}
+          py={{ base: 20, md: 28 }}
         >
-          <Heading as='h1' fontSize={['3xl', '3xl', '4xl', '6xl']} fontWeight={600}>
-            <Highlight
-              query={['real time', 'with your teammates']}
-              styles={{ color: 'dino.primary' }}
-            >
-              Improve sprint estimates with real time connection with your teammates
-            </Highlight>
+          <Heading
+            fontWeight={600}
+            fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
+            lineHeight={"110%"}
+          >
+            Sprints estimation <Text as="span">made easy with a </Text>
+            <Text as={"span"} color={"dino.primary"}>
+              easy to use planning poker tool
+            </Text>
           </Heading>
           <Text
-            fontSize={['lg', 'lg', 'xl', '2xl']}
+            color={"dino.base1"}
+            maxW={"3xl"}
+            fontSize={{ base: "2xl", sm: "lg", md: "xl" }}
           >
-            <Highlight
-              query="planning poker tool"
-              styles={{ fontWeight: 800, color: 'dino.text' }}
-            >
-              We connect your team to a game like planning poker tool,
-            </Highlight>
-            <br />
-            making the estimation phase less boring and way less static.
+            We connect your team to a game like planning poker tool, making the
+            estimation phase less boring and way less static.
           </Text>
-
-          <Box display={['block', 'block', 'block', 'none']}>
-            <Button onClick={() => handleCreate()} size="lg">
+          <Stack spacing={6} direction={"row"}>
+            <Button
+              colorScheme={"orange"}
+              bg={"dino.primary"}
+              onClick={() => handleCreate()}
+            >
               Try planning poker free
             </Button>
-          </Box>
-          <Box display={['block', 'block', 'block', 'none']}>
-
-            <Button
-              bg="dino.secondary"
-              onClick={() => handleJoin()}
-              size="sm"
-            >
-              Or join a room
+            <Button bg="dino.secondary" onClick={() => handleJoin()}>
+              Join a room
             </Button>
-          </Box>
-          <Flex
-            display={['none', 'none', 'none', 'inherit']}
-            gap={2}
-            alignItems="center"
-            w="100%"
-            wrap={["wrap", "nowrap"]}
-          >
-            <ButtonBox
-              onClick={() => handleCreate()}
-              text="Create a planning poker room"
-              image="/dino2.svg"
-            />
-
-            <ButtonBox
-              onClick={() => handleJoin()}
-              secondary
-              text="Join a planning poker room"
-              image="/dino3.svg"
-            />
-          </Flex>
+          </Stack>
+          <Flex w={"full"}></Flex>
         </Stack>
 
-      </GridItem>
-
-      <GridItem
-        gridArea="dino"
-        alignSelf="start"
-        h="100%"
-        justifySelf="center"
-      >
-        <HeadText
-          head="Newsletter"
-          tags={[
-            "Dino poker is currently in beta!",
-            `Our goal is to provide a full solution to 
-            handle phases of the Scrum framework.`,
-            `Currently, we have a functional planning poker tool, 
-            that is completely free.`,
-          ]}
-        />
-      </GridItem>
-    </PlainTemplate >
-
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+          <Stack spacing={4}>
+            <Text
+              textTransform={"uppercase"}
+              color={"dino.text"}
+              fontWeight={600}
+              fontSize={"sm"}
+              bg={useColorModeValue("dino.secondary", "dino.primary")}
+              p={2}
+              alignSelf={"flex-start"}
+              rounded={"md"}
+            >
+              Our goal
+            </Text>
+            <Heading>
+              Boost Your Team's Agility with Our Planning Poker Tool
+            </Heading>
+            <Text color={"dino.base1"} fontSize={"lg"}>
+              Streamline your project planning with our intuitive Planning Poker
+              tool. Effortlessly estimate tasks, collaborate in real-time, and
+              achieve more accurate sprint planning with ease.
+            </Text>
+          </Stack>
+          <Stack
+            spacing={4}
+            divider={
+              <StackDivider
+                borderColor={useColorModeValue("dino.primary", "gray.700")}
+              />
+            }
+          >
+            <Feature
+              icon={<Users width={15} height={15} />}
+              iconBg="green.400"
+              text={"Real-Time Collaboration"}
+            />
+            <Feature
+              icon={<BarChart width={15} height={15} />}
+              iconBg="red.400"
+              text="Customizable Estimation"
+            />
+            <Feature
+              icon={<CheckCircle width={15} height={15} />}
+              iconBg="yellow.400"
+              text={"Team stack separation"}
+            />
+          </Stack>
+        </SimpleGrid>
+        <WithSpeechBubbles />
+      </Container>
+      <LargeWithLogoLeft />
+    </div>
   );
 };

@@ -122,7 +122,7 @@ const CreateRoomDialog = () => {
                 />
               </Box>
               <Box>
-                <FormLabel>Selecione o modelo de pontuação</FormLabel>
+                <FormLabel>Select the vote system</FormLabel>
                 <Select
                   options={SelectParser({
                     options: VoteSystemOptions,
