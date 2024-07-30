@@ -14,7 +14,7 @@ export const DinoPoker = ({ justify = "center", small }: IDinoPoker) => {
         <Text fontWeight={600} textAlign="center" fontSize={['sm', 'lg', 'xl', '2xl']}>
           {"dino"}
           <Text fontWeight={300} as="span" color="dino.primary">
-            {"poker.app"}
+            {"planningpoker"}
           </Text>
         </Text>
       </GridItem>

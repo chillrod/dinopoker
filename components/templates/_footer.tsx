@@ -47,7 +47,7 @@ export const LargeWithLogoLeft = () => {
             <Box>
               <DinoPoker justify="start" />
             </Box>
-            <Text fontSize={"sm"}>© 2024 Dino Poker. All rights reserved</Text>
+            <Text fontSize={"sm"}>© 2024 Dino Planning Poker. All rights reserved</Text>
           </Stack>
           {/* <Stack align={"flex-start"}>
             <ListHeader>Product</ListHeader>
