@@ -10,7 +10,6 @@ import { NotificationsService } from "../../../services/notifications/notificati
 import { IconButton } from "../../atoms/icon-button/icon-button";
 import { PokerCharacter } from "../../atoms/poker-character/poker-character";
 import { PokerRoomStatus } from "../../templates/_poker-roomstatus";
-import ConfettiExplosion from "react-confetti-explosion";
 
 export interface IPokerRoundData {
   roomStatus?: RoomDataStatus;
@@ -26,8 +25,6 @@ export const PokerRoundData = ({
   const [currentPlayerPositions, setCurrentPlayerPositions] = useState<{
     [key: string]: IPlayerData[];
   }>({});
-
-  const [isExploding, setIsExploding] = useState(false);
 
   const [revealingTimeout, setRevealingTimeout] = useState(3);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -59,8 +56,6 @@ export const PokerRoundData = ({
     if (revealingTimeout === 0) {
       setIsRevealed(true);
 
-      setIsExploding(true);
-
       return;
     }
 
@@ -75,12 +70,6 @@ export const PokerRoundData = ({
 
   return (
     <>
-      {isExploding && (
-        <ConfettiExplosion
-          onComplete={() => setIsExploding(false)}
-          zIndex={20}
-        />
-      )}
       <Grid
         minH="30vh"
         justifyContent="center"
