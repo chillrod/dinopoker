@@ -56,8 +56,6 @@ export const PokerRoundData = ({
     if (revealingTimeout === 0) {
       setIsRevealed(true);
 
-      setIsExploding(true);
-
       return;
     }
 
