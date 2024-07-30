@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <Head>
-        <title>dinopoker - Online planningpoker for agile teams</title>
+        <title>dinoplanningpoker - Online sprint estimation for agile teams</title>
         <link rel="canonical" href="/" />
         <meta
           name="description"
