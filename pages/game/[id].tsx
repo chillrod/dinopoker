@@ -8,7 +8,6 @@ import { Poker } from "../../components/templates/_poker";
 import { emitter } from "../../services/emitter/emitter";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { RoomsService } from "../../services/rooms/rooms.service";
-import ConfettiExplosion from "react-confetti-explosion";
 
 const GameRoom = () => {
   const router = useRouter();
