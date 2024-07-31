@@ -105,11 +105,6 @@ export const Poker = () => {
 
   return (
     <>
-      {ROOM_DATA.players && !SPECTATOR && (
-        <Grid justifyItems="end" mb={2} w="98%">
-          <PokerMenu />
-        </Grid>
-      )}
       <PlainTemplate
         areas={[
           `

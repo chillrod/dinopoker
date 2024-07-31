@@ -1,9 +1,17 @@
 import {
+  Avatar,
   Box,
+  Center,
   Flex,
   Grid,
   GridItem,
   Link as LinkChakra,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Stack,
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
@@ -14,6 +22,7 @@ import { emitter } from "../../../services/emitter/emitter";
 import { DinoPoker } from "../../atoms/dinopoker";
 import { MenuChangeLanguage } from "../menu-changelanguage/menu-changelanguage";
 import { PokerMenu } from "../poker-menu/poker-menu";
+import { Button } from "../../atoms/button/button";
 
 export const Nav = () => {
   const router = useRouter();
@@ -22,46 +31,17 @@ export const Nav = () => {
   const { id } = router.query;
 
   return (
-    <Box as="nav" p={2} px={4}>
-      <Grid templateColumns="1fr" alignItems="center">
-        <GridItem>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Grid gap={4} gridTemplateColumns="repeat(2, auto)">
-              <Link href="/">
-                <LinkChakra>
-                  <DinoPoker />
-                </LinkChakra>
-              </Link>
-            </Grid>
-
-            <>
-              <Grid
-                gap={4}
-                gridTemplateColumns={[
-                  "repeat(3, auto)",
-                  "repeat(3, auto)",
-                  "repeat(3, auto)",
-                ]}
-                alignItems="center"
-                justifyItems="end"
-              >
-                {/* {lang === "pt" && (
-                  <LinkChakra
-                    href="https://nubank.com.br/pagar/152tv/6xqf3wx7rA"
-                    target="_blank"
-                  >
-                    Donating
-                  </LinkChakra>
-                )} */}
-                {/* <LinkChakra target="_blank" href="https://github.com/chillrod"> */}
-                {/* Follow me on Github */}
-                {/* </LinkChakra> */}
-                {/* {!id && <MenuChangeLanguage />} */}
-              </Grid>
-            </>
-          </Flex>
-        </GridItem>
-      </Grid>
+    <Box px={4} position="sticky" top={0} zIndex={10}>
+      <Flex h={16} alignItems={"center"} justifyContent={id ? 'space-between' : "center"}>
+        <Box>
+          <Link href="/">
+            <LinkChakra>
+              <DinoPoker />
+            </LinkChakra>
+          </Link>
+        </Box>
+        {id && <PokerMenu />}
+      </Flex>
     </Box>
   );
 };

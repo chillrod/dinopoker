@@ -14,19 +14,18 @@ export const MenuRaiseHand = () => {
 
   const router = useRouter();
 
-  const { id } = router.query
+  const { id } = router.query;
 
-  const [isRaisingHand, setIsRaisingHand] = useState(false);
+  const [isRaisingHand, setIsRaisingHand] = useState(true);
 
   const handleRaiseHand = async (raisingHand: boolean) => {
     try {
       RoomsService.UPDATE_PLAYER({
         roomId: id,
-        key: 'raiseHand',
+        key: "raiseHand",
         value: !raisingHand,
-        player: getLocalStorage('user-client-key')
-      })
-
+        player: getLocalStorage("user-client-key"),
+      });
     } catch (err: any) {
       NotificationsService.emitToast(err.message);
     }
@@ -39,7 +38,7 @@ export const MenuRaiseHand = () => {
   };
 
   const returnColor = () => {
-    return "dino.base4";
+    return isRaisingHand ? "dino.primary" : "dino.secondary";
   };
 
   return (
@@ -49,7 +48,10 @@ export const MenuRaiseHand = () => {
           {t("poker.actions.room-action")}
         </Text>
         <IconButton
-          onClick={() => [setIsRaisingHand(!isRaisingHand), handleRaiseHand(!isRaisingHand)]}
+          onClick={() => [
+            setIsRaisingHand(!isRaisingHand),
+            handleRaiseHand(!isRaisingHand),
+          ]}
           color={returnColor()}
           bg={returnBg(isRaisingHand)}
           ariaLabel={t("poker.actions.raise-hand")}
