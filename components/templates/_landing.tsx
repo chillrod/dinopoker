@@ -1,12 +1,7 @@
 import {
-  AlertIcon,
-  Box,
   Container,
   Flex,
-  GridItem,
   Heading,
-  Highlight,
-  Icon,
   SimpleGrid,
   Stack,
   StackDivider,
@@ -16,14 +11,11 @@ import {
 import Image from "next/image";
 
 import { NotificationsService } from "../../services/notifications/notifications.service";
-import { ButtonBox } from "../atoms/button-box/button-box";
 import { Button } from "../atoms/button/button";
-import { HeadText } from "../atoms/head-text/head-text";
 import CreateRoomDialog from "./_create-room-dialog";
 import JoinRoomDialog from "./_join-room-dialog";
-import { PlainTemplate } from "./_plain-template";
-import { BarChart, CheckCircle, UserPlus, Users } from "react-feather";
-import { WithSpeechBubbles } from "./_testimonials";
+import { BarChart, CheckCircle, Users } from "react-feather";
+import { Testimonials } from "./_testimonials";
 import { LargeWithLogoLeft } from "./_footer";
 
 const Feature = ({
@@ -90,7 +82,7 @@ export const Landing = () => {
             lineHeight={"110%"}
           >
             Sprints estimation <Text as="span">made easy with a </Text>
-            <Text as={"span"} color={"dino.primary"}>
+            <Text as={"span"} color={"dino.primary"} mr={2}>
               easy to use planning poker tool
             </Text>
           </Heading>
@@ -99,14 +91,11 @@ export const Landing = () => {
             maxW={"3xl"}
             fontSize={{ base: "2xl", sm: "lg", md: "xl" }}
           >
-            We connect your team to a game like planning poker tool, making the
-            estimation phase less boring and way less static.
+            We connect your team to a game-like planning poker tool, making the
+            estimation phase less boring and much less static.
           </Text>
           <Stack spacing={6} direction={"row"}>
-            <Button
-              bg={"dino.primary"}
-              onClick={() => handleCreate()}
-            >
+            <Button bg={"dino.primary"} onClick={() => handleCreate()}>
               Try planning poker free
             </Button>
             <Button bg="dino.secondary" onClick={() => handleJoin()}>
@@ -128,7 +117,7 @@ export const Landing = () => {
               alignSelf={"flex-start"}
               rounded={"md"}
             >
-              Our goal
+              Our Service
             </Text>
             <Heading>
               Boost Your Team's Agility with Our Planning Poker Tool
@@ -149,22 +138,22 @@ export const Landing = () => {
           >
             <Feature
               icon={<Users width={15} height={15} />}
-              iconBg="green.400"
+              iconBg="green.500"
               text={"Real-Time Collaboration"}
             />
             <Feature
               icon={<BarChart width={15} height={15} />}
-              iconBg="red.400"
-              text="Customizable Estimation"
+              iconBg="red.500"
+              text="Accurate Task Estimation"
             />
             <Feature
               icon={<CheckCircle width={15} height={15} />}
-              iconBg="yellow.400"
-              text={"Team stack separation"}
+              iconBg="yellow.500"
+              text={"Team stack division"}
             />
           </Stack>
         </SimpleGrid>
-        <WithSpeechBubbles />
+        <Testimonials />
       </Container>
       <LargeWithLogoLeft />
     </div>
