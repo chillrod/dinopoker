@@ -1,4 +1,13 @@
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  Box,
+  Grid,
+  GridItem,
+  Text,
+} from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { RefObject, useEffect, useRef, useState } from "react";
 
@@ -21,7 +30,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const [isOpen, setIsOpen] = useState(open);
   const [overlayClick, setOverlayClick] = useState<boolean | undefined>(true);
   const [currentMessage, setCurrentMessage] = useState("");
-  const [currentFunc, setCurrentFunc] = useState<keyof Events>();
+  const [currentFunc, setCurrentFunc] = useState<keyof Events | null>(null);
   const [userOnClose, setUserOnClose] = useState<() => void>();
   const [loading, setLoading] = useState(false);
 
@@ -30,19 +39,24 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const cancelRef: RefObject<FocusableElement> = useRef(null);
 
   useEffect(() => {
-    emitter.on("EMIT_MESSAGEBOX", ({ message, func, children, onClose, persistent }) => {
-      setIsOpen(true);
+    emitter.on(
+      "EMIT_MESSAGEBOX",
+      ({ message, func, children, onClose, persistent }) => {
+        setIsOpen(true);
 
-      setOverlayClick(!persistent);
+        setOverlayClick(!persistent);
 
-      setCurrentMessage(message);
+        setCurrentMessage(message);
 
-      setCurrentFunc(func);
+        if (func) {
+          setCurrentFunc(func);
+        }
 
-      setUserOnClose(() => onClose);
+        setUserOnClose(() => onClose);
 
-      setCurrentChildren(children);
-    });
+        setCurrentChildren(children);
+      }
+    );
 
     emitter.on("EMIT_MESSAGEBOX_LOADING", (data) => {
       setLoading(data);
@@ -61,6 +75,8 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
   const handleActionConfirm = () => {
     if (currentFunc) {
       NotificationsService.emitConfirm({ func: currentFunc });
+    } else {
+      setIsOpen(false);
     }
   };
 
@@ -69,12 +85,12 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
       bg="dino.base5"
       {...(isOpen
         ? {
-          opacity: "0.6",
-          position: "absolute",
-          h: "100%",
-          w: "100vw",
-          zIndex: "2",
-        }
+            opacity: "0.6",
+            position: "absolute",
+            h: "100%",
+            w: "100vw",
+            zIndex: "2",
+          }
         : {})}
     >
       <AlertDialog
@@ -82,7 +98,7 @@ export const MessageBox = ({ open = false }: IMessageBox) => {
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={() => setIsOpen(false)}
-        motionPreset='slideInBottom'
+        motionPreset="slideInBottom"
         isCentered
       >
         <AlertDialogContent

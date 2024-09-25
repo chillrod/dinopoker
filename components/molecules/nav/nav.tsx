@@ -1,4 +1,4 @@
-import { Box, Flex, Link as LinkChakra } from "@chakra-ui/react";
+import { Badge, Box, Flex, Link as LinkChakra } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +8,8 @@ import Image from "next/image";
 
 export const Nav = () => {
   const router = useRouter();
+  const { route } = router;
+
   const { t, lang } = useTranslation("common");
 
   const { id } = router.query;
@@ -28,13 +30,21 @@ export const Nav = () => {
         alignItems={"center"}
         justifyContent={id ? "space-between" : "center"}
       >
-        <Box>
+        <Box display="flex" alignItems="center" gap={6}>
           <Link href="/">
             <LinkChakra display="flex" alignItems="center" gap={2}>
               <Image src="/dino3.svg" alt="Dino Poker" width={40} height={40} />
               <DinoPoker />
             </LinkChakra>
           </Link>
+          {route === "/" && (
+            <Link href="/wheel">
+              <LinkChakra href="/wheel">
+                Daily Wheel
+                <Badge color="dino.primary">New</Badge>
+              </LinkChakra>
+            </Link>
+          )}
         </Box>
         {id && <PokerMenu />}
       </Flex>
