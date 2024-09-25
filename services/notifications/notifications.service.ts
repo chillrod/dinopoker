@@ -12,7 +12,7 @@ export const NotificationsService = {
     persistent,
   }: {
     message: string;
-    func: keyof Events;
+    func?: keyof Events;
     children: React.ReactElement;
     onClose?: () => void | Promise<boolean>;
     persistent?: boolean;
