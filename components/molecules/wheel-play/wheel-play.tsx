@@ -22,7 +22,9 @@ export const WheelPlay = (props: WheelPlayProps) => {
         NotificationsService.emitMessageBox({
           children: (
             <Box>
-              <Text fontWeight="bold">Congrats {winner}</Text>
+              <Text>
+                Today's daily organizer goes to <Text as="span" fontWeight="bold" fontSize="lg"> {winner}</Text>
+              </Text>
             </Box>
           ),
           message: "",
