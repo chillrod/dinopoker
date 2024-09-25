@@ -20,10 +20,15 @@ export const WheelPlay = (props: WheelPlayProps) => {
       segColors={listOfChakraUIColors}
       onFinished={(winner) =>
         NotificationsService.emitMessageBox({
+          persistent: true,
           children: (
             <Box>
               <Text>
-                Today's daily organizer goes to <Text as="span" fontWeight="bold" fontSize="lg"> {winner}</Text>
+                Today's daily organizer goes to{" "}
+                <Text as="span" fontWeight="bold" fontSize="lg">
+                  {" "}
+                  {winner}
+                </Text>
               </Text>
             </Box>
           ),
